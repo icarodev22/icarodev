@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ticketX™ — Seus ingressos, sem complicação</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+
+*, *::before, *::after{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+:root{
+  --blue:#2D00FF;
+  --cyan:#00C8FF;
+  --magenta:#C800FF;
+  --white:#FFFFFF;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family:'Syne',sans-serif;
+  background:#000;
+  color:#fff;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* CURSOR */
+
+.cursor{
+  width:12px;
+  height:12px;
+  background:var(--cyan);
+  border-radius:50%;
+  position:fixed;
+  pointer-events:none;
+  z-index:9999;
+  mix-blend-mode:exclusion;
+}
+
+.cursor-ring{
+  width:36px;
+  height:36px;
+  border:1.5px solid var(--magenta);
+  border-radius:50%;
+  position:fixed;
+  pointer-events:none;
+  z-index:9998;
+  mix-blend-mode:exclusion;
+}
+
+/* NAV */
+
+nav{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+
+  z-index:100;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:20px 40px;
+
+  backdrop-filter:blur(20px);
+
+  background:rgba(0,0,0,.4);
+
+  border-bottom:1px solid rgba(0,200,255,.1);
+}
+
+.nav-logo{
+  font-family:'Space Mono',monospace;
+  font-size:1.4rem;
+  font-weight:700;
+  color:#fff;
+  text-decoration:none;
+}
+
+.nav-logo span{
+  color:var(--cyan);
+}
+
+.nav-links{
+  display:flex;
+  gap:36px;
+  list-style:none;
+}
+
+.nav-links a{
+  color:rgba(255,255,255,.6);
+  text-decoration:none;
+  font-size:.85rem;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.nav-links a:hover{
+  color:var(--cyan);
+}
+
+.nav-cta{
+  background:var(--blue);
+  color:#fff;
+  border:none;
+  padding:10px 24px;
+  border-radius:999px;
+  font-family:'Space Mono',monospace;
+  cursor:none;
+}
+
+/* HERO */
+
+.hero{
+  min-height:100vh;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  text-align:center;
+
+  position:relative;
+
+  padding:120px 40px 80px;
+
+  overflow:hidden;
+}
+
+.hero-bg{
+  position:absolute;
+  inset:0;
+
+  background:
+  radial-gradient(
+    ellipse 80% 60% at 50% 40%,
+    #1a00aa 0%,
+    #000 70%
+  );
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+  max-width:900px;
+}
+
+.hero-badge{
+  display:inline-block;
+
+  border:1px solid var(--cyan);
+
+  color:var(--cyan);
+
+  font-family:'Space Mono',monospace;
+
+  font-size:.72rem;
+
+  letter-spacing:3px;
+
+  padding:6px 18px;
+
+  border-radius:999px;
+
+  margin-bottom:32px;
+}
+
+.hero-title{
+  font-size:clamp(3.5rem,10vw,8rem);
+
+  font-weight:800;
+
+  line-height:.95;
+
+  letter-spacing:-4px;
+
+  margin-bottom:32px;
+}
+
+.line-blue{
+  color:var(--cyan);
+}
+
+.line-mag{
+  background:
+  linear-gradient(
+    90deg,
+    var(--cyan),
+    var(--magenta)
+  );
+
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.hero-sub{
+  font-size:1.1rem;
+
+  color:rgba(255,255,255,.65);
+
+  max-width:560px;
+
+  margin:0 auto 48px;
+
+  line-height:1.7;
+}
+
+.hero-actions{
+  display:flex;
+  gap:16px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+.btn-primary{
+  background:
+  linear-gradient(
+    135deg,
+    var(--blue),
+    var(--magenta)
+  );
+
+  color:#fff;
+
+  border:none;
+
+  padding:16px 40px;
+
+  border-radius:999px;
+
+  font-family:'Space Mono',monospace;
+
+  cursor:none;
+}
+
+.btn-ghost{
+  background:transparent;
+
+  color:rgba(255,255,255,.7);
+
+  border:1px solid rgba(255,255,255,.2);
+
+  padding:16px 40px;
+
+  border-radius:999px;
+
+  font-family:'Space Mono',monospace;
+
+  cursor:none;
+}
+
+/* SECTION */
+
+section{
+  padding:100px 40px;
+}
+
+.section-label{
+  display:inline-flex;
+
+  border:1px solid var(--cyan);
+
+  color:var(--cyan);
+
+  border-radius:999px;
+
+  padding:6px 18px;
+
+  font-family:'Space Mono',monospace;
+
+  margin-bottom:24px;
+}
+
+/* SOBRE */
+
+.sobre{
+  background:
+  radial-gradient(
+    ellipse 70% 80% at 20% 50%,
+    #1500aa 0%,
+    #000 60%
+  );
+}
+
+.sobre-inner{
+  max-width:1100px;
+
+  margin:auto;
+
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
+
+  gap:80px;
+
+  align-items:center;
+}
+
+.sobre-text h2{
+  font-size:clamp(2.5rem,5vw,4.5rem);
+
+  font-weight:800;
+
+  line-height:1;
+
+  letter-spacing:-3px;
+
+  margin-bottom:32px;
+}
+
+.sobre-text h2 em{
+  font-style:normal;
+
+  background:
+  linear-gradient(
+    90deg,
+    var(--cyan),
+    var(--magenta)
+  );
+
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.sobre-text p{
+  color:rgba(255,255,255,.7);
+
+  line-height:1.8;
+
+  margin-bottom:20px;
+}
+
+/* BENEFITS */
+
+.conosco{
+  background:#000;
+}
+
+.conosco-inner{
+  max-width:1100px;
+  margin:auto;
+}
+
+.conosco-inner h2{
+  font-size:clamp(2.5rem,5vw,4rem);
+
+  font-weight:800;
+
+  letter-spacing:-3px;
+
+  margin-bottom:64px;
+}
+
+.benefits-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+}
+
+.benefit-card{
+  background:rgba(45,0,255,.1);
+
+  border:1px solid rgba(0,200,255,.2);
+
+  border-radius:24px;
+
+  padding:40px 32px;
+
+  backdrop-filter:blur(20px);
+}
+
+.benefit-card h3{
+  font-size:1.5rem;
+  margin-bottom:10px;
+}
+
+.benefit-card p{
+  color:rgba(255,255,255,.6);
+  line-height:1.6;
+}
+
+/* EVENTOS */
+
+.eventos{
+
+  background:
+  radial-gradient(
+    ellipse 70% 80% at 50% 50%,
+    #0b0b25 0%,
+    #000 70%
+  );
+
+}
+
+.eventos-inner{
+  max-width:1200px;
+  margin:auto;
+}
+
+.eventos-inner h2{
+
+  font-size:clamp(2.5rem,5vw,4rem);
+
+  font-weight:800;
+
+  letter-spacing:-3px;
+
+  margin-bottom:12px;
+}
+
+.eventos-inner h2 em{
+
+  font-style:normal;
+
+  background:
+  linear-gradient(
+    90deg,
+    var(--cyan),
+    var(--magenta)
+  );
+
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.eventos-sub{
+  color:rgba(255,255,255,.5);
+  margin-bottom:50px;
+}
+
+.eventos-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:28px;
+}
+
+.evento-card{
+
+  background:
+  rgba(255,255,255,.03);
+
+  border:
+  1px solid rgba(255,255,255,.08);
+
+  border-radius:26px;
+
+  overflow:hidden;
+
+  transition:.3s;
+
+  backdrop-filter:blur(12px);
+}
+
+.evento-card:hover{
+  transform:translateY(-8px);
+
+  border-color:
+  rgba(0,200,255,.4);
+}
+
+.evento-card img{
+  width:100%;
+  height:420px;
+  object-fit:cover;
+}
+
+.evento-info{
+  padding:24px;
+}
+
+.evento-info h3{
+  font-size:1.5rem;
+  margin-bottom:10px;
+}
+
+.evento-local{
+  color:rgba(255,255,255,.55);
+}
+
+.evento-bottom{
+  margin-top:28px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.evento-bottom small{
+  display:block;
+  color:rgba(255,255,255,.4);
+}
+
+.evento-bottom strong{
+  font-size:1.5rem;
+  color:var(--cyan);
+}
+
+.evento-bottom a{
+
+  background:
+  linear-gradient(
+    135deg,
+    var(--blue),
+    var(--magenta)
+  );
+
+  color:#fff;
+
+  text-decoration:none;
+
+  padding:14px 24px;
+
+  border-radius:999px;
+
+  font-family:'Space Mono',monospace;
+}
+
+/* FAQ */
+
+.faq{
+  background:
+  radial-gradient(
+    ellipse 60% 70% at 80% 50%,
+    #1500aa 0%,
+    #000 60%
+  );
+}
+
+.faq-inner{
+  max-width:800px;
+  margin:auto;
+}
+
+.faq-inner h2{
+  font-size:clamp(2.5rem,5vw,4rem);
+
+  font-weight:800;
+
+  letter-spacing:-3px;
+
+  margin-bottom:16px;
+}
+
+.faq-item{
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.faq-q{
+  width:100%;
+
+  background:none;
+
+  border:none;
+
+  color:#fff;
+
+  text-align:left;
+
+  padding:24px 0;
+
+  font-size:1rem;
+
+  cursor:none;
+
+  display:flex;
+  justify-content:space-between;
+}
+
+.faq-a{
+  max-height:0;
+  overflow:hidden;
+
+  color:rgba(255,255,255,.6);
+
+  transition:max-height .4s ease;
+}
+
+.faq-item.open .faq-a{
+  max-height:200px;
+  padding-bottom:24px;
+}
+
+/* FEEDBACKS */
+
+.feedbacks{
+  background:#000;
+}
+
+.feedbacks-inner{
+  max-width:1100px;
+  margin:auto;
+}
+
+.feedback-track{
+  display:flex;
+  gap:24px;
+  overflow:auto;
+  padding-top:40px;
+}
+
+.feedback-card{
+  min-width:320px;
+
+  background:rgba(45,0,255,.1);
+
+  border:1px solid rgba(0,200,255,.2);
+
+  border-radius:20px;
+
+  padding:28px;
+}
+
+.feedback-card p{
+  color:rgba(255,255,255,.75);
+
+  line-height:1.6;
+
+  margin:14px 0;
+}
+
+/* CTA */
+
+.cta-section{
+  text-align:center;
+
+  background:
+  radial-gradient(
+    ellipse 80% 80% at 50% 50%,
+    #1500aa 0%,
+    #000 70%
+  );
+}
+
+.cta-section h2{
+  font-size:clamp(2.5rem,6vw,5.5rem);
+
+  font-weight:800;
+
+  line-height:1;
+
+  margin-bottom:24px;
+}
+
+.cta-section h2 em{
+  font-style:normal;
+
+  background:
+  linear-gradient(
+    90deg,
+    var(--cyan),
+    var(--magenta)
+  );
+
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.cta-section p{
+  color:rgba(255,255,255,.6);
+  margin-bottom:48px;
+}
+
+/* FOOTER */
+
+footer{
+  background:#000;
+
+  border-top:1px solid rgba(255,255,255,.06);
+
+  padding:48px 40px;
+
+  text-align:center;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+  .sobre-inner,
+  .benefits-grid,
+  .eventos-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:768px){
+
+  nav{
+    padding:16px 20px;
+  }
+
+  .nav-links{
+    display:none;
+  }
+
+  section{
+    padding:70px 24px;
+  }
+
+  body{
+    cursor:auto;
+  }
+
+  .cursor,
+  .cursor-ring{
+    display:none;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+
+<nav>
+
+  <a href="#" class="nav-logo">
+    ticket<span>X</span>™
+  </a>
+
+  <ul class="nav-links">
+
+    <li><a href="#sobre">Sobre nós</a></li>
+
+    <li><a href="#conosco">Benefícios</a></li>
+
+    <li><a href="#eventos">Eventos</a></li>
+
+    <li><a href="#faq">Dúvidas</a></li>
+
+    <li><a href="#feedbacks">Feedbacks</a></li>
+
+  </ul>
+
+  <button class="nav-cta">
+    Comprar ingresso
+  </button>
+
+</nav>
+
+<!-- HERO -->
+
+<section class="hero">
+
+  <div class="hero-bg"></div>
+
+  <div class="hero-content">
+
+    <div class="hero-badge">
+      🎟 Comissário autorizado de grandes produtoras
+    </div>
+
+    <h1 class="hero-title">
+
+      <span class="line-blue">
+        seus
+      </span>
+
+      <br>
+
+      <span class="line-mag">
+        ingressos_
+      </span>
+
+      <br>
+
+      sem taxa.
+
+    </h1>
+
+    <p class="hero-sub">
+      A TicketX conecta você aos melhores eventos com praticidade, segurança e benefícios exclusivos.
+    </p>
+
+    <div class="hero-actions">
+
+      <button 
+  class="btn-primary"
+  onclick="document.getElementById('eventos').scrollIntoView({behavior:'smooth'})"
+>
+  🎟 Garantir meu ingresso
+</button>
+
+      <button 
+  class="btn-ghost"
+  onclick="document.getElementById('sobre').scrollIntoView({behavior:'smooth'})"
+>
+  Saiba mais
+</button>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- SOBRE -->
+
+<section class="sobre" id="sobre">
+
+  <div class="sobre-inner">
+
+    <div class="sobre-text">
+
+      <div class="section-label">
+        sobre nós_
+      </div>
+
+      <h2>
+        Conectando você às
+        <em>melhores experiências</em>
+      </h2>
+
+      <p>
+        A TicketX atua na venda de ingressos conectando você aos melhores eventos.
+      </p>
+
+      <p>
+        Segurança, praticidade e suporte real.
+      </p>
+
+    </div>
+
+    <img
+      src="img/MOSAICO_ticketX_01.png"
+      style="width:100%;border-radius:24px;"
+    >
+
+  </div>
+
+</section>
+
+<!-- BENEFICIOS -->
+
+<section class="conosco" id="conosco">
+
+  <div class="conosco-inner">
+
+    <div class="section-label">
+      conosco_
+    </div>
+
+    <h2>
+      Por que escolher a TicketX?
+    </h2>
+
+    <div class="benefits-grid">
+
+      <div class="benefit-card">
+
+        <h3>
+          ⚡ Compra rápida
+        </h3>
+
+        <p>
+          Processo simples e direto.
+        </p>
+
+      </div>
+
+      <div class="benefit-card">
+
+        <h3>
+          🏷️ Sem taxa
+        </h3>
+
+        <p>
+          Ingressos com preço justo.
+        </p>
+
+      </div>
+
+      <div class="benefit-card">
+
+        <h3>
+          💬 Suporte online
+        </h3>
+
+        <p>
+          Atendimento rápido no WhatsApp.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<<!-- EVENTOS -->
+
+<section class="eventos" id="eventos">
+
+  <div class="eventos-inner">
+
+    <div class="section-label">
+      eventos_
+    </div>
+
+    <h2>
+      Festas <em>disponíveis</em>
+    </h2>
+
+    <p class="eventos-sub">
+      Garanta seu ingresso sem complicação.
+    </p>
+
+    <div class="eventos-grid">
+
+      <!-- EVENTO 1 -->
+      <div class="evento-card">
+
+        <img src="assets/WEDONACOPA.jpg" alt="Wedo na Copa">
+
+        <div class="evento-info">
+
+          <h3>
+            Wedo Na Copa
+          </h3>
+
+          <span class="evento-local">
+            📍 Recife
+          </span>
+
+          <div class="evento-bottom">
+
+            <div>
+              <small>Ingresso</small>
+              <strong>R$120</strong>
+            </div>
+
+            <a href="https://wa.me/5581992777571?text=Ol%C3%A1%2C%20tenho%20interesse%20no%20ingresso%20do%20Wedo%20na%20Copa." target="_blank">
+              Comprar
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- EVENTO 2 -->
+      <div class="evento-card">
+
+        <img src="assets/AMORÉ LANÇAMENTO.png" alt="Réveillon Amoré">
+
+        <div class="evento-info">
+
+          <h3>
+            Amoré Réveillon
+          </h3>
+
+          <span class="evento-local">
+            📍 Maracaípe
+          </span>
+
+          <div class="evento-bottom">
+
+            <div>
+              <small>Ingresso</small>
+              <strong>link Com 5% OFF</strong>
+            </div>
+
+            <a href="https://wa.me/5581992777571?text=Ol%C3%A1%2C%20tenho%20interesse%20no%20ingresso%20do%20Amor%C3%A9%20R%C3%A9veillon." target="_blank">
+              Comprar
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- EVENTO 3 -->
+      <div class="evento-card">
+
+        <img src="assets/FOGUEIRA GRADE.jpeg" alt="Carvalheira Na Fogueira">
+
+        <div class="evento-info">
+
+          <h3>
+            Carvalheira na Fogueira
+          </h3>
+
+          <span class="evento-local">
+            📍 Campina Grande
+          </span>
+
+          <div class="evento-bottom">
+
+            <div>
+              <small>Ingresso</small>
+              <strong>CONSULTAR</strong>
+            </div>
+
+            <a href="https://wa.me/5581992777571?text=Ol%C3%A1%2C%20tenho%20interesse%20no%20ingresso%20do%20Carvalheira%20na%20Fogueira." target="_blank">
+              Comprar
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- EVENTO 4 -->
+      <div class="evento-card">
+
+        <img src="assets/GINGA GRADE.png" alt="Ginga Recife">
+
+        <div class="evento-info">
+
+          <h3>
+            Ginga Recife
+          </h3>
+
+          <span class="evento-local">
+            📍 Recife
+          </span>
+
+          <div class="evento-bottom">
+
+            <div>
+              <small>Ingresso</small>
+              <strong>R$100</strong>
+            </div>
+
+            <a href="https://wa.me/5581992777571?text=Ol%C3%A1%2C%20tenho%20interesse%20no%20ingresso%20do%20Ginga%20Recife." target="_blank">
+              Comprar
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- EVENTO 5 -->
+      <div class="evento-card">
+
+        <img src="assets/MANIFESTO LANÇAMENTO.PNG" alt="Manifesto">
+
+        <div class="evento-info">
+
+          <h3>
+            Manifesto Musical
+          </h3>
+
+          <span class="evento-local">
+            📍 Recife
+          </span>
+
+          <div class="evento-bottom">
+
+            <div>
+              <small>Ingresso</small>
+              <strong>R$100</strong>
+            </div>
+
+            <a href="https://wa.me/5581992777571?text=Ol%C3%A1%2C%20tenho%20interesse%20no%20ingresso%20do%20Manifesto%20Musical." target="_blank">
+              Comprar
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- EVENTO 6 -->
+      <div class="evento-card">
+
+        <img src="assets/ARENAN1.jpg" alt="Arena N1°">
+
+        <div class="evento-info">
+
+          <h3>
+            ARENA N1°
+          </h3>
+
+          <span class="evento-local">
+            📍 Recife
+          </span>
+
+          <div class="evento-bottom">
+
+            <div>
+              <small>Ingressos</small>
+              <strong>Link Com 5% OFF</strong>
+            </div>
+
+            <a href="https://www.sympla.com.br/evento/arena-n1-em-recife/3415182?d=TICKETX" target="_blank">
+              Comprar
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- FAQ -->
+
+<section class="faq" id="faq">
+
+  <div class="faq-inner">
+
+    <div class="section-label">
+      dúvidas_
+    </div>
+
+    <h2>
+      Perguntas frequentes
+    </h2>
+
+    <div class="faq-item">
+
+      <button class="faq-q" onclick="toggleFaq(this)">
+
+        Como funciona a compra?
+
+        <span>▾</span>
+
+      </button>
+
+      <div class="faq-a">
+        Escolha o evento, pague e receba digitalmente.
+      </div>
+
+    </div>
+
+    <div class="faq-item">
+
+      <button class="faq-q" onclick="toggleFaq(this)">
+
+        Os ingressos são seguros?
+
+        <span>▾</span>
+
+      </button>
+
+      <div class="faq-a">
+        Sim, todos os ingressos são validados.
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- FEEDBACKS -->
+
+<section class="feedbacks" id="feedbacks">
+
+  <div class="feedbacks-inner">
+
+    <div class="section-label">
+      feedbacks_
+    </div>
+
+    <div class="feedback-track">
+
+      <div class="feedback-card">
+
+        ★★★★★
+
+        <p>
+          “Comprei rápido e chegou na hora.”
+        </p>
+
+      </div>
+
+      <div class="feedback-card">
+
+        ★★★★★
+
+        <p>
+          “Melhor plataforma de ingressos.”
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- CTA -->
+
+<section class="cta-section">
+
+  <div class="section-label">
+    garanta já_
+  </div>
+
+  <h2>
+    Bora pro próximo
+    <em>evento?</em>
+  </h2>
+
+  <p>
+    Chama no WhatsApp e garante teu ingresso.
+  </p>
+
+  <div class="hero-actions">
+
+    <a href="https://wa.me/5581992777571">
+
+      <button class="btn-primary">
+        WhatsApp
+      </button>
+
+    </a>
+
+  </div>
+
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+
+  © 2025 TicketX™
+
+</footer>
+
+<script>
+
+const cursor=document.getElementById('cursor');
+
+const ring=document.getElementById('cursorRing');
+
+let mx=0,my=0,rx=0,ry=0;
+
+document.addEventListener('mousemove',e=>{
+
+  mx=e.clientX;
+  my=e.clientY;
+
+  cursor.style.left=mx-6+'px';
+  cursor.style.top=my-6+'px';
+
+});
+
+function animRing(){
+
+  rx+=(mx-rx)*0.12;
+  ry+=(my-ry)*0.12;
+
+  ring.style.left=rx-18+'px';
+  ring.style.top=ry-18+'px';
+
+  requestAnimationFrame(animRing);
+
+}
+
+animRing();
+
+function toggleFaq(btn){
+
+  const item=btn.parentElement;
+
+  item.classList.toggle('open');
+
+}
+
+</script>
+
+</body>
+</html>
