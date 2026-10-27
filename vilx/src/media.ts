@@ -12,7 +12,7 @@ export type Media = {
   alt: string
 }
 
-const base = '/media/'
+const base = 'media/' // relativo: funciona servido na raiz ou aberto do disco
 // No build de arquivo único (npm run build:single) as fotos vêm embutidas
 // como data URIs neste mapa; no site normal ele não existe.
 const inlined = (globalThis as { __VILX_MEDIA__?: Record<string, string> }).__VILX_MEDIA__

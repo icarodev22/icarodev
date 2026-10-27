@@ -235,7 +235,15 @@ export function createGLLayer(opts: GLLayerOptions): GLLayer {
       p.mesh.position.set(x + box.w / 2 - width / 2, height / 2 - (box.y + box.h / 2), 0)
       p.drawn = true
     })
-    renderer.render({ scene, camera })
+    try {
+      renderer.render({ scene, camera })
+    } catch (err) {
+      // Ex.: página aberta via file://, onde o navegador não deixa a foto
+      // virar textura. O carrossel segue com as fotos em DOM.
+      console.warn('[FlexCarousel] WebGL indisponível para estas imagens, usando fotos em DOM', err)
+      opts.onLost()
+      return false
+    }
     // Só agora, com a foto já no canvas, a versão em DOM é escondida:
     // nenhum quadro fica sem imagem.
     planes.forEach((p, i) => {
