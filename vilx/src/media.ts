@@ -13,6 +13,10 @@ export type Media = {
 }
 
 const base = '/media/'
+// No build de arquivo único (npm run build:single) as fotos vêm embutidas
+// como data URIs neste mapa; no site normal ele não existe.
+const inlined = (globalThis as { __VILX_MEDIA__?: Record<string, string> }).__VILX_MEDIA__
+const url = (file: string) => inlined?.[file] ?? `${base}${file}`
 
 function m(
   id: string,
@@ -29,7 +33,7 @@ function m(
     source,
     w,
     h,
-    srcset: widths.map((x) => [`${base}${id}-${x}.webp`, x]),
+    srcset: widths.map((x) => [url(`${id}-${x}.webp`), x]),
     alt,
   }
 }
