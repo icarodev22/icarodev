@@ -1,96 +1,80 @@
-import { useRef, useState } from 'react'
 import { links, releases, type Release } from '../content'
 import { coverById, src } from '../media'
 import { Arrow } from '../components/Arrow'
+import { ScrollReveal } from '../components/ScrollReveal/ScrollReveal'
+
+/** "VILX, MC Bruninho & Maduff" → "MC Bruninho & Maduff" (o VILX já é o dono da página) */
+function guests(credits: string | null) {
+  if (!credits) return null
+  const rest = credits.replace(/^VILX,\s*/i, '')
+  return rest === credits ? credits : rest
+}
 
 function Cover({ release }: { release: Release }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const onMove = (e: React.PointerEvent) => {
-    if (e.pointerType !== 'mouse' || !ref.current) return
-    const r = ref.current.getBoundingClientRect()
-    const x = (e.clientX - r.left) / r.width - 0.5
-    const y = (e.clientY - r.top) / r.height - 0.5
-    ref.current.style.setProperty('--rx', `${(-y * 14).toFixed(2)}deg`)
-    ref.current.style.setProperty('--ry', `${(x * 18).toFixed(2)}deg`)
-    ref.current.style.setProperty('--gx', `${((x + 0.5) * 100).toFixed(1)}%`)
-    ref.current.style.setProperty('--gy', `${((y + 0.5) * 100).toFixed(1)}%`)
-  }
-  const onLeave = () => {
-    ref.current?.style.setProperty('--rx', '0deg')
-    ref.current?.style.setProperty('--ry', '0deg')
-  }
   const item = release.cover ? coverById[release.cover] : null
+  if (item) {
+    return <img src={src(item)} width={item.w} height={item.h} alt={item.alt} loading="lazy" decoding="async" />
+  }
+  // Sem capa nos materiais: arte tipográfica, sem imitar uma capa real.
+  const [first, ...rest] = release.title.split(' ')
   return (
-    <div className="release__cover-wrap" onPointerMove={onMove} onPointerLeave={onLeave}>
-      <div ref={ref} className={`release__cover ${item ? '' : 'release__cover--type'}`}>
-        {item ? (
-          <img src={src(item)} width={item.w} height={item.h} alt={item.alt} loading="lazy" decoding="async" />
-        ) : (
-          <div className="release__type" role="img" aria-label={`${release.title}: arte tipográfica (capa original não fornecida)`}>
-            {release.title.split(' ').map((w) => (
-              <span key={w}>{w}</span>
-            ))}
-          </div>
-        )}
-        <span className="release__shine" aria-hidden="true" />
-      </div>
+    <div className="rcard__type" role="img" aria-label={`${release.title}: arte tipográfica provisória (capa original não fornecida)`}>
+      <span>{first}</span>
+      <span className="serif">{rest.join(' ')}</span>
     </div>
   )
 }
 
 export function Lancamentos() {
-  const [hover, setHover] = useState<number | null>(null)
   return (
     <section id="lancamentos" className="section lancamentos" aria-labelledby="lancamentos-title">
-      <header className="section-head">
-        <span className="mono">02 / Lançamentos</span>
-        <span className="rule" data-reveal="rule" />
-      </header>
+      <p className="eyebrow">
+        <span className="eyebrow__n">02</span>Lançamentos
+      </p>
 
-      <div className="lancamentos__lead">
-        <h2 id="lancamentos-title" className="display" data-reveal>
-          +15 milhões
-          <br />
-          <span>de streams</span>
+      <div className="lanc__head">
+        <h2 id="lancamentos-title" className="lanc__title">
+          <ScrollReveal as="span" className="lanc__number" mode="once" splitBy="chars" stagger={0.035} baseOpacity={0} baseOffset={24} blurStrength={3}>
+            +15 milhões
+          </ScrollReveal>
+          <ScrollReveal as="span" className="lanc__unit serif" mode="once" stagger={0.08} baseOpacity={0} baseOffset={12} delay={0.25}>
+            de streams
+          </ScrollReveal>
         </h2>
-        <p data-reveal style={{ ['--d' as string]: '0.12s' }}>
+        <ScrollReveal className="t-lede lanc__lede" mode="scrub" splitBy="words" stagger={0.035} baseOpacity={0.12} blurStrength={3} baseOffset={8} smoothing={0.12}>
           Na produção musical, VILX soma mais de 15 milhões de streams. Os sucessos que puxam esse número:
-        </p>
+        </ScrollReveal>
       </div>
 
-      <ol className={`releases ${hover !== null ? 'has-hover' : ''}`}>
-        {releases.map((r, i) => (
-          <li
-            key={r.title}
-            className={`release ${hover === i ? 'is-hover' : ''}`}
-            data-reveal
-            style={{ ['--d' as string]: `${i * 0.08}s` }}
-            onPointerEnter={() => setHover(i)}
-            onPointerLeave={() => setHover(null)}
-          >
-            <span className="release__n mono">{String(i + 1).padStart(2, '0')}</span>
-            <Cover release={r} />
-            <div className="release__info">
-              <h3 className="display">{r.title}</h3>
-              {r.credits && <p className="release__credits">{r.credits}</p>}
-            </div>
-            {r.stat && <p className="release__stat display">{r.stat}</p>}
-          </li>
-        ))}
-      </ol>
+      <ul className="rcards" aria-label="Lançamentos">
+        {releases.map((r, i) => {
+          const g = guests(r.credits)
+          return (
+            <li key={r.title} className="rcard" data-reveal style={{ ['--d' as string]: `${i * 0.09}s` }}>
+              <div className="rcard__cover">
+                <Cover release={r} />
+              </div>
+              <div className="rcard__body">
+                <div className="rcard__top">
+                  <span className="rcard__n serif">{String(i + 1).padStart(2, '0')}</span>
+                  {r.stat && <span className="rcard__stat">{r.stat}</span>}
+                </div>
+                <h3 className="rcard__title">{r.title}</h3>
+                <p className="rcard__credits">{g ? `com ${g}` : 'VILX'}</p>
+                <a className="rcard__link" href={links.spotifyArtist} target="_blank" rel="noopener noreferrer" aria-label={`Ouvir ${r.title} no perfil do VILX no Spotify`}>
+                  Ouvir no Spotify
+                  <Arrow />
+                </a>
+              </div>
+            </li>
+          )
+        })}
+      </ul>
 
       <div className="listen" data-reveal>
         <div className="listen__copy">
-          <span className="mono">Ouça agora</span>
-          <p>Toque a faixa aqui mesmo ou abra o perfil completo do VILX no Spotify.</p>
-          <div className="listen__actions">
-            <a className="btn btn--red" href={links.spotifyArtist} target="_blank" rel="noopener noreferrer">
-              Perfil no Spotify <Arrow />
-            </a>
-            <a className="btn btn--line" href={links.spotifyTrack} target="_blank" rel="noopener noreferrer">
-              Abrir a faixa <Arrow />
-            </a>
-          </div>
+          <p className="t-h3">Ouça agora</p>
+          <p className="t-meta">Uma faixa do VILX, direto do Spotify.</p>
         </div>
         <div className="listen__player">
           <iframe

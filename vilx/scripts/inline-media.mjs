@@ -6,8 +6,19 @@ const root = new URL('..', import.meta.url).pathname
 const file = join(root, 'dist-single/index.html')
 let html = readFileSync(file, 'utf8')
 const b64 = (p) => readFileSync(join(root, 'public', p)).toString('base64')
+// uma largura por foto: a maior até 1600 px (ou a menor, se todas passarem)
+const byId = {}
+for (const f of readdirSync(join(root, 'public/media'))) {
+  const m = f.match(/^(.*)-(\d+)\.webp$/)
+  if (m) (byId[m[1]] ??= []).push(+m[2])
+}
 const map = {}
-for (const f of readdirSync(join(root, 'public/media'))) map[f] = `data:image/webp;base64,${b64('media/' + f)}`
+for (const [id, ws] of Object.entries(byId)) {
+  ws.sort((a, b) => a - b)
+  const w = [...ws].reverse().find((x) => x <= 1600) ?? ws[0]
+  const f = `${id}-${w}.webp`
+  map[f] = `data:image/webp;base64,${b64('media/' + f)}`
+}
 html = html.replace('<head>', `<head>\n<script>window.__VILX_MEDIA__=${JSON.stringify(map)}</script>`)
 html = html.replace('/favicon.svg', `data:image/svg+xml;base64,${b64('favicon.svg')}`)
 writeFileSync(file, html)

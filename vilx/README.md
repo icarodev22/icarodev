@@ -1,6 +1,17 @@
 # VILX — site oficial
 
-Portfólio do VILX (João Vilaça, Recife/PE). Vite + React + TypeScript, Three.js na abertura e OGL no carrossel e no fundo líquido.
+Portfólio do VILX (João Vilaça, Recife/PE). Vite + React + TypeScript, Three.js na abertura, OGL no carrossel e no fundo líquido, GSAP + ScrollTrigger na revelação de texto.
+
+## Tipografia
+
+- **Bricolage Grotesque** (variável: peso, largura e tamanho óptico) para títulos, texto, navegação e números.
+- **Instrument Serif itálica** só como acento editorial (uma palavra em títulos, índices, assinatura).
+
+Fontes auto-hospedadas via Fontsource; sem dependência do Google Fonts.
+
+## ScrollReveal
+
+`src/components/ScrollReveal/`. Revela texto por palavra, linha ou letra com GSAP + ScrollTrigger, em modo `scrub` (acompanha a rolagem) ou `once`. O texto nunca começa escondido por CSS; com movimento reduzido não há animação. A implementação de referência do React Bits não veio junto com o pedido, então a API segue a configuração descrita (`mode`, `splitBy`, `effect`, `stagger`, `baseOpacity`, `enableBlur`, `blurStrength`, `baseRotation`, `baseOffset`, `smoothing`).
 
 ```bash
 npm install
@@ -39,10 +50,12 @@ leitores de tela); um canvas OGL redesenha cada foto com curvatura de profundida
 proporcional à velocidade e uma lente sob o cursor. Sem WebGL, as fotos em DOM continuam visíveis.
 Mouse, toque (gesto vertical continua rolando a página), roda horizontal, setas, Home/End e botões.
 
+Loop contínuo sem clones: cada foto é reposicionada em módulo do comprimento da faixa e só dá a volta depois de sair inteira da tela. Avança sozinho a cada ~5 s; pausa com mouse em cima, foco, arrasto, aba em segundo plano ou movimento reduzido.
+
 ## Imagens
 
 Cada imagem é usada uma única vez (`src/media.ts` é o registro; `npm run audit:images` valida).
-As fotos foram otimizadas para WebP por `scripts/prep_media.py`.
+As fotos foram otimizadas para WebP por `scripts/prep_media.py` (História até 2200 px, Shows até a resolução original de cada arquivo; nada é ampliado).
 
 | Seção | Arquivo | Origem |
 | --- | --- | --- |

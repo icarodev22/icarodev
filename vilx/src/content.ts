@@ -39,7 +39,7 @@ export const story = [
   {
     n: '03',
     title: 'Funk',
-    text: 'No funk achou a identidade: batida brasileira com pop e eletrônica na mistura.',
+    text: 'Batida brasileira com pop e eletrônica na mistura: a sonoridade que o levou aos grandes eventos do Nordeste.',
   },
   {
     n: '04',

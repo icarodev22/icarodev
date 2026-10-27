@@ -5,12 +5,16 @@ Z = os.path.join(S, 'zip/vilx')
 os.makedirs(OUT, exist_ok=True)
 
 def save(im, name, sizes):
+    # Nunca amplia: larguras maiores que o original viram a largura original.
     im = ImageOps.exif_transpose(im).convert('RGB')
+    done = set()
     for w in sizes:
-        r = im.copy()
-        if r.width > w:
-            r = r.resize((w, round(r.height * w / r.width)), Image.LANCZOS)
-        r.save(os.path.join(OUT, f'{name}-{w}.webp'), 'WEBP', quality=80, method=6)
+        w = min(w, im.width)
+        if w in done:
+            continue
+        done.add(w)
+        r = im if im.width == w else im.resize((w, round(im.height * w / im.width)), Image.LANCZOS)
+        r.save(os.path.join(OUT, f'{name}-{w}.webp'), 'WEBP', quality=84, method=6)
         print(name, w, r.size)
 
 # section -> source file
@@ -30,8 +34,8 @@ shows = {
   'show-ao-vivo-02': 'SaveClip.App_723331329_18583822774025506_3507121043668839164_n.jpg',
   'show-ao-vivo-03': 'SaveClip.App_847630209_18107120033522829_7466428019234493679_n.jpg',
 }
-for k, f in hist.items(): save(Image.open(os.path.join(Z, f)), k, [800, 1400])
-for k, f in shows.items(): save(Image.open(os.path.join(Z, f)), k, [1024])
+for k, f in hist.items(): save(Image.open(os.path.join(Z, f)), k, [960, 1600, 2200])
+for k, f in shows.items(): save(Image.open(os.path.join(Z, f)), k, [800, 1400])
 
 # covers cropped from the release (Spotify share cards, page 4)
 p = Image.open(os.path.join(S, 'pdfimg/c-001.jpg')); save(p.crop((26, 29, 386, 389)), 'capa-o-predio-vai-tremer', [360])

@@ -157,7 +157,7 @@ export function Intro() {
           <span />
         </div>
 
-        <div className="intro__meta mono" aria-hidden="true">
+        <div className="intro__meta" aria-hidden="true">
           <span>{artist.realName}</span>
           <span>{artist.origin}</span>
         </div>
@@ -168,15 +168,15 @@ export function Intro() {
             {rest.map((w, i) => (
               <span key={w}>
                 {' '}
-                <span className="intro__sign-word" style={{ transitionDelay: `${0.18 + i * 0.12}s` }}>
-                  {w}
+                <span className="intro__sign-word serif" style={{ transitionDelay: `${0.18 + i * 0.12}s` }}>
+                  {w.toLowerCase()}
                 </span>
               </span>
             ))}
           </span>
         </h1>
 
-        <a className="intro__cue mono" href="#historia">
+        <a className="intro__cue" href="#historia">
           <span>Role</span>
           <i aria-hidden="true" />
         </a>

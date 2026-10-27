@@ -11,6 +11,8 @@ export type FlexCarouselItem = {
   alt: string
   /** Legenda exibida abaixo da foto. `null` = sem legenda de evento. */
   caption: string | null
+  /** enquadramento (object-position) */
+  pos?: string
 }
 
 export type FlexCarouselProps = {
@@ -24,34 +26,42 @@ export type FlexCarouselProps = {
   radius?: number
   /** Texto usado quando a foto não tem legenda confirmada. */
   fallbackCaption?: string
+  /** Avanço automático, em ms (0 desliga). Pausa com interação. */
+  autoplay?: number
 }
 
 /**
- * FlexCarousel
+ * FlexCarousel (loop contínuo)
  *
  * A faixa em DOM é a fonte da verdade: layout, legendas, teclado e leitores de
- * tela funcionam sem WebGL. Por cima dela, um canvas OGL redesenha cada foto
- * como um plano com curvatura de profundidade, distorção líquida proporcional
- * à velocidade do arrasto e uma lente sutil sob o cursor. Se o WebGL falhar,
- * as fotos em DOM simplesmente continuam visíveis.
+ * tela funcionam sem WebGL. Por cima, um canvas OGL redesenha cada foto com
+ * curvatura de profundidade, distorção líquida proporcional à velocidade e
+ * uma lente sob o cursor.
+ *
+ * Loop sem clones: cada foto é reposicionada individualmente em módulo do
+ * comprimento total da faixa. Uma foto só "dá a volta" quando já saiu
+ * inteira da tela, então não há salto nem espaço vazio na emenda, e nenhuma
+ * foto aparece duas vezes nem existe em duplicata para o leitor de tela.
  */
 export function FlexCarousel({
   items,
   label,
-  distortion = 0.55,
+  distortion = 0.5,
   bend = 0.5,
-  radius = 6,
+  radius = 16,
   fallbackCaption = 'Ao vivo',
+  autoplay = 5200,
 }: FlexCarouselProps) {
   const rootRef = useRef<HTMLDivElement>(null)
   const viewportRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLUListElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const goToRef = useRef<(i: number) => void>(() => {})
+  const stepRef = useRef<(d: number) => void>(() => {})
   const [index, setIndex] = useState(0)
   const [near, setNear] = useState(false)
   const [gl, setGl] = useState(false)
   const uid = useId()
+  const n = items.length
 
   // Só baixa as fotos quando a seção se aproxima da tela.
   useEffect(() => {
@@ -87,104 +97,108 @@ export function FlexCarousel({
     const frames = itemEls.map((el) => el.querySelector<HTMLElement>('[data-flex-frame]')!)
     const imgs = itemEls.map((el) => el.querySelector<HTMLImageElement>('img')!)
 
+    // ---- geometria (medida sem transformações: offsetLeft ignora transform)
+    let vpW = 0
+    let total = 1
+    let lo = 0
+    let L: number[] = []
+    let W: number[] = []
+    let Y: number[] = []
+    let H: number[] = []
+
+    const measure = () => {
+      vpW = viewport.clientWidth
+      const gap = parseFloat(getComputedStyle(track).columnGap) || 0
+      L = itemEls.map((el) => el.offsetLeft)
+      W = frames.map((f) => f.offsetWidth)
+      H = frames.map((f) => f.offsetHeight)
+      const vpTop = viewport.getBoundingClientRect().top
+      Y = frames.map((f) => f.getBoundingClientRect().top - vpTop)
+      total = Math.max(1, L[n - 1] + W[n - 1] + gap - L[0])
+      // faixa de posições válidas: a foto só reaparece do outro lado quando
+      // já está inteira fora da tela
+      lo = -(Math.max(...W) + gap)
+      glLayer?.resize()
+      dirty = true
+      render()
+    }
+
+    const mod = (a: number, m: number) => ((a % m) + m) % m
+    const wrapX = (i: number, off: number) => mod(L[i] + off - lo, total) + lo
+    const centerAt = (i: number, off: number) => wrapX(i, off) + W[i] / 2
+
+    const nearestAt = (off: number) => {
+      let best = 0
+      let bd = Infinity
+      for (let i = 0; i < n; i++) {
+        const d = Math.abs(centerAt(i, off) - vpW / 2)
+        if (d < bd) {
+          bd = d
+          best = i
+        }
+      }
+      return best
+    }
+
     // ---- estado de movimento
     let current = 0
     let target = 0
-    let min = 0
-    let max = 0
-    let vpW = 0
-    let centers: number[] = [] // centro de cada item relativo à faixa (px)
-    let layout: { x: number; y: number; w: number; h: number }[] = []
+    let ease = 11
     let velocity = 0
     let visible = false
     let raf = 0
     let last = performance.now()
     let activeIndex = 0
     let dirty = true
-    let applied = 0 // deslocamento realmente escrito no DOM
+    let disposed = false
 
-    const apply = (x: number) => {
-      applied = x
-      track.style.transform = `translate3d(${x.toFixed(2)}px,0,0)`
-    }
+    const centerOn = (i: number, from = target) => from + (vpW / 2 - centerAt(i, from))
 
-    const snapPositions = () => centers.map((c) => vpW / 2 - c)
-
-    const measure = () => {
-      vpW = viewport.clientWidth
-      const trackRect = track.getBoundingClientRect()
-      const canvasRect = canvas.getBoundingClientRect()
-      centers = frames.map((f) => {
-        const r = f.getBoundingClientRect()
-        return r.left - trackRect.left + r.width / 2
-      })
-      // posição de cada moldura dentro do canvas, com a faixa em x = 0
-      layout = frames.map((f) => {
-        const r = f.getBoundingClientRect()
-        return {
-          x: r.left - canvasRect.left - applied,
-          y: r.top - canvasRect.top,
-          w: r.width,
-          h: r.height,
-        }
-      })
-      const snaps = snapPositions()
-      max = snaps[0] ?? 0
-      min = snaps[snaps.length - 1] ?? 0
-      target = clamp(target, min, max)
-      current = clamp(current, min, max)
-      if (!started) {
-        current = target = max
-        started = true
-      }
-      apply(current)
-      glLayer?.resize()
-      dirty = true
-    }
-    let started = false
-
-    const nearestIndex = (x: number) => {
-      const snaps = snapPositions()
-      let best = 0
-      for (let i = 1; i < snaps.length; i++) if (Math.abs(snaps[i] - x) < Math.abs(snaps[best] - x)) best = i
-      return best
-    }
-
-    const goTo = (i: number) => {
-      const snaps = snapPositions()
-      const k = clamp(i, 0, snaps.length - 1)
-      target = snaps[k]
+    const goTo = (i: number, soft = false) => {
+      target = centerOn(mod(i, n))
+      ease = soft ? 3.4 : 9
       if (reduced) current = target
       dirty = true
       kick()
     }
-    goToRef.current = (i) => goTo(i)
+    stepRef.current = (d) => {
+      touch()
+      goTo(activeIndex + d)
+    }
+
+    // ---- interação e avanço automático
+    let lastInteraction = 0
+    let hovering = false
+    const touch = () => (lastInteraction = performance.now())
+
+    const autoTimer = window.setInterval(() => {
+      if (!autoplay || reduced || !visible || dragging || hovering) return
+      if (document.visibilityState !== 'visible') return
+      if (root.contains(document.activeElement)) return
+      if (performance.now() - lastInteraction < autoplay * 1.4) return
+      goTo(activeIndex + 1, true)
+    }, autoplay || 1e9)
 
     // ---- arrasto (mouse e toque)
     let dragging = false
     let pointerId = -1
     let startX = 0
     let startY = 0
-    let startTarget = 0
+    let startOff = 0
     let lastMoveX = 0
     let lastMoveT = 0
     let dragVel = 0
     let axis: 'x' | 'y' | null = null
     let moved = false
 
-    const rubber = (x: number) => {
-      if (x > max) return max + (x - max) * 0.35
-      if (x < min) return min + (x - min) * 0.35
-      return x
-    }
-
     const onDown = (e: PointerEvent) => {
       if (e.button !== 0) return
+      touch()
       dragging = true
       pointerId = e.pointerId
       startX = lastMoveX = e.clientX
       startY = e.clientY
-      startTarget = target = current
+      startOff = target = current
       lastMoveT = performance.now()
       dragVel = 0
       axis = e.pointerType === 'mouse' ? 'x' : null
@@ -216,7 +230,8 @@ export function FlexCarousel({
       lastMoveX = e.clientX
       lastMoveT = now
       // resposta 1:1 ao dedo, sem atraso
-      target = current = rubber(startTarget + dx)
+      target = current = startOff + dx
+      touch()
       dirty = true
       kick()
     }
@@ -227,8 +242,10 @@ export function FlexCarousel({
       root.classList.remove('is-dragging')
       if (viewport.hasPointerCapture(pointerId)) viewport.releasePointerCapture(pointerId)
       // inércia curta: projeta ~180ms à frente e encaixa na foto mais próxima
-      const projected = current + dragVel * 180
-      goTo(nearestIndex(clamp(projected, min, max)))
+      const projected = current + clamp(dragVel, -4, 4) * 180
+      target = projected
+      goTo(nearestAt(projected))
+      touch()
     }
 
     const onClick = (e: MouseEvent) => {
@@ -243,19 +260,22 @@ export function FlexCarousel({
     const onWheel = (e: WheelEvent) => {
       if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return
       e.preventDefault()
-      target = clamp(target - e.deltaX, min, max)
+      touch()
+      target -= e.deltaX
+      ease = 11
       dirty = true
       kick()
       clearTimeout(wheelTimer)
-      wheelTimer = window.setTimeout(() => goTo(nearestIndex(target)), 140)
+      wheelTimer = window.setTimeout(() => goTo(nearestAt(target)), 140)
     }
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight') goTo(activeIndex + 1)
       else if (e.key === 'ArrowLeft') goTo(activeIndex - 1)
       else if (e.key === 'Home') goTo(0)
-      else if (e.key === 'End') goTo(items.length - 1)
+      else if (e.key === 'End') goTo(n - 1)
       else return
+      touch()
       e.preventDefault()
     }
 
@@ -270,7 +290,11 @@ export function FlexCarousel({
       dirty = true
       kick()
     }
+    const onEnter = (e: PointerEvent) => {
+      if (e.pointerType === 'mouse') hovering = true
+    }
     const onLeave = () => {
+      hovering = false
       mouse.inside = false
       dirty = true
       kick()
@@ -280,6 +304,7 @@ export function FlexCarousel({
     viewport.addEventListener('pointermove', onMove)
     viewport.addEventListener('pointerup', onUp)
     viewport.addEventListener('pointercancel', onUp)
+    viewport.addEventListener('pointerenter', onEnter)
     viewport.addEventListener('pointerleave', onLeave)
     viewport.addEventListener('click', onClick, true)
     viewport.addEventListener('wheel', onWheel, { passive: false })
@@ -319,8 +344,24 @@ export function FlexCarousel({
         .catch(glFailed)
     }
 
+    // ---- desenho: posiciona cada foto (DOM + WebGL) para o deslocamento atual
+    const layout: { x: number; y: number; w: number; h: number }[] = []
+    let animating = false
+    function render(dt = 0) {
+      for (let i = 0; i < n; i++) {
+        const x = wrapX(i, current)
+        itemEls[i].style.transform = `translate3d(${(x - L[i]).toFixed(2)}px,0,0)`
+        layout[i] = { x, y: Y[i], w: W[i], h: H[i] }
+      }
+      const idx = nearestAt(current)
+      if (idx !== activeIndex) {
+        activeIndex = idx
+        setIndex(idx)
+      }
+      animating = glLayer ? glLayer.render({ offset: 0, layout, velocity, mouse, active: activeIndex, dt }) : false
+    }
+
     // ---- loop: só roda enquanto há movimento e a seção está visível
-    let disposed = false
     function kick() {
       if (!raf && visible && !disposed) {
         last = performance.now()
@@ -334,32 +375,16 @@ export function FlexCarousel({
       last = now
       const prev = current
       if (!dragging) {
-        const k = reduced ? 1 : 1 - Math.exp(-dt * 11)
+        const k = reduced ? 1 : 1 - Math.exp(-dt * ease)
         current += (target - current) * k
         if (Math.abs(target - current) < 0.05) current = target
       }
       const frameVel = (current - prev) / Math.max(dt * 60, 0.001) // px por frame a 60fps
-      velocity += (clamp(frameVel / 50, -1, 1) - velocity) * (1 - Math.exp(-dt * 10))
+      velocity += (clamp(frameVel / 60, -1, 1) - velocity) * (1 - Math.exp(-dt * 10))
       if (Math.abs(velocity) < 0.0005) velocity = 0
 
-      apply(current)
-      const idx = nearestIndex(current)
-      if (idx !== activeIndex) {
-        activeIndex = idx
-        setIndex(idx)
-      }
+      render(dt)
 
-      let animating = false
-      if (glLayer) {
-        animating = glLayer.render({
-          offset: current,
-          layout,
-          velocity,
-          mouse,
-          active: activeIndex,
-          dt,
-        })
-      }
       const moving = current !== target || dragging || velocity !== 0
       if (moving || animating || dirty) {
         dirty = false
@@ -381,33 +406,38 @@ export function FlexCarousel({
 
     const ro = new ResizeObserver(() => {
       measure()
-      goTo(activeIndex)
+      target = current = centerOn(activeIndex, current)
+      render()
     })
     ro.observe(viewport)
     imgs.forEach((img) => {
       if (!img.complete) img.addEventListener('load', measure, { once: true })
     })
     measure()
+    target = current = centerOn(0, 0)
+    render()
 
     return () => {
       disposed = true
       cancelAnimationFrame(raf)
       clearTimeout(wheelTimer)
+      clearInterval(autoTimer)
       vio.disconnect()
       ro.disconnect()
       viewport.removeEventListener('pointerdown', onDown)
       viewport.removeEventListener('pointermove', onMove)
       viewport.removeEventListener('pointerup', onUp)
       viewport.removeEventListener('pointercancel', onUp)
+      viewport.removeEventListener('pointerenter', onEnter)
       viewport.removeEventListener('pointerleave', onLeave)
       viewport.removeEventListener('click', onClick, true)
       viewport.removeEventListener('wheel', onWheel)
       root.removeEventListener('keydown', onKey)
       glLayer?.dispose()
     }
-  }, [near, items, distortion, bend, radius])
+  }, [near, items, n, distortion, bend, radius, autoplay])
 
-  const go = useCallback((d: number) => goToRef.current(index + d), [index])
+  const go = useCallback((d: number) => stepRef.current(d), [])
   const current = items[index]
 
   return (
@@ -428,7 +458,7 @@ export function FlexCarousel({
               data-flex-item
               className={`flex-carousel__item ${i === index ? 'is-active' : ''}`}
               aria-roledescription="slide"
-              aria-label={`${i + 1} de ${items.length}`}
+              aria-label={`${i + 1} de ${n}`}
               aria-current={i === index ? 'true' : undefined}
             >
               <figure>
@@ -436,17 +466,18 @@ export function FlexCarousel({
                   <img
                     src={near ? it.src : undefined}
                     srcSet={near ? it.srcSet : undefined}
-                    sizes="(max-width: 720px) 80vw, 50vw"
+                    sizes="(max-width: 720px) 80vw, 46vw"
                     width={it.width}
                     height={it.height}
                     alt={it.alt}
                     draggable={false}
                     decoding="async"
+                    style={{ objectPosition: it.pos }}
                   />
                 </div>
                 <figcaption>
-                  <span className="mono">{String(i + 1).padStart(2, '0')}</span>
-                  <span className={it.caption ? '' : 'is-muted'}>{it.caption ?? fallbackCaption}</span>
+                  <span className="flex-carousel__num">{String(i + 1).padStart(2, '0')}</span>
+                  <span className={it.caption ? 'flex-carousel__cap' : 'flex-carousel__cap is-muted'}>{it.caption ?? fallbackCaption}</span>
                 </figcaption>
               </figure>
             </li>
@@ -455,26 +486,21 @@ export function FlexCarousel({
       </div>
 
       <div className="flex-carousel__controls">
-        <button type="button" onClick={() => go(-1)} disabled={index === 0} aria-controls={`${uid}-track`} aria-label="Foto anterior">
+        <button type="button" onClick={() => go(-1)} aria-controls={`${uid}-track`} aria-label="Foto anterior">
           <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M15 5l-7 7 7 7" />
+            <path d="M19 12H5M11 6l-6 6 6 6" />
           </svg>
         </button>
-        <p className="flex-carousel__status mono" aria-live="polite">
-          <span>{String(index + 1).padStart(2, '0')}</span>
-          <i style={{ ['--k' as string]: (index + 1) / items.length }} />
-          <span>{String(items.length).padStart(2, '0')}</span>
-          <span className="sr-only">{current?.caption ?? fallbackCaption}</span>
+        <p className="flex-carousel__status" aria-live="polite">
+          <span className="flex-carousel__count">
+            {String(index + 1).padStart(2, '0')}
+            <span className="flex-carousel__of"> / {String(n).padStart(2, '0')}</span>
+          </span>
+          <span className="flex-carousel__now">{current?.caption ?? fallbackCaption}</span>
         </p>
-        <button
-          type="button"
-          onClick={() => go(1)}
-          disabled={index === items.length - 1}
-          aria-controls={`${uid}-track`}
-          aria-label="Próxima foto"
-        >
+        <button type="button" onClick={() => go(1)} aria-controls={`${uid}-track`} aria-label="Próxima foto">
           <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M9 5l7 7-7 7" />
+            <path d="M5 12h14M13 6l6 6-6 6" />
           </svg>
         </button>
       </div>

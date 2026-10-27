@@ -25,12 +25,12 @@ export default function App() {
         <Contato />
       </main>
       <footer className="footer">
-        <span className="display footer__sign">
-          <em>VILX,</em> bola outra
-        </span>
-        <span className="mono">
+        <p className="footer__sign">
+          VILX, <span className="serif">bola outra</span>
+        </p>
+        <p className="t-meta">
           © {new Date().getFullYear()} {artist.name} · {artist.origin}
-        </span>
+        </p>
       </footer>
       <div className="grain" aria-hidden="true" />
     </>
