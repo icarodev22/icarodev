@@ -10,7 +10,8 @@ export function useParallax() {
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
-          const el = e.target as HTMLElement
+          // observa a moldura (o elemento móvel pode estar recortado)
+          const el = (e.target as HTMLElement).querySelector<HTMLElement>('[data-speed]') ?? (e.target as HTMLElement)
           if (e.isIntersecting) visible.add(el)
           else visible.delete(el)
         }
@@ -18,7 +19,7 @@ export function useParallax() {
       },
       { rootMargin: '20% 0px' },
     )
-    els.forEach((el) => io.observe(el))
+    els.forEach((el) => io.observe(el.parentElement ?? el))
     let raf = 0
     const update = () => {
       raf = 0

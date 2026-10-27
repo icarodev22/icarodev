@@ -145,12 +145,21 @@ p {
   transition-delay: var(--d, 0s);
 }
 
+/* O recorte vai no filho: o elemento observado nunca fica 100% recortado,
+   senão o IntersectionObserver nunca o considera visível. */
 .js [data-reveal='clip'] {
   opacity: 1;
   transform: none;
+}
+
+.js [data-reveal='clip'] > * {
   clip-path: inset(100% 0 0 0);
   transition: clip-path 1.2s var(--ease-out);
   transition-delay: var(--d, 0s);
+}
+
+.js [data-reveal='clip'].is-in > * {
+  clip-path: inset(0 0 0 0);
 }
 
 .js [data-reveal='rule'] {
@@ -247,6 +256,7 @@ p {
   }
   .js [data-reveal],
   .js [data-reveal='clip'],
+  .js [data-reveal='clip'] > *,
   .js [data-reveal='rule'] {
     opacity: 1;
     transform: none;
