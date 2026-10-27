@@ -1,0 +1,200 @@
+.flex-carousel {
+  --fc-h: clamp(340px, 62vh, 640px);
+  --fc-gap: clamp(16px, 2.6vw, 40px);
+  --fc-accent: var(--red, #ff2a1f);
+  position: relative;
+  outline: none;
+}
+
+.flex-carousel:focus-visible .flex-carousel__item.is-active .flex-carousel__frame {
+  outline: 2px solid var(--fc-accent);
+  outline-offset: 4px;
+}
+
+.flex-carousel__viewport {
+  position: relative;
+  overflow: hidden;
+  /* gesto vertical continua rolando a página no celular */
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.flex-carousel.is-dragging .flex-carousel__viewport {
+  cursor: grabbing;
+}
+
+.flex-carousel__gl {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.flex-carousel__track {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--fc-gap);
+  margin: 0;
+  padding: 24px 0;
+  list-style: none;
+  width: max-content;
+  will-change: transform;
+}
+
+.flex-carousel__item {
+  flex: none;
+}
+
+.flex-carousel__item figure {
+  margin: 0;
+}
+
+.flex-carousel__frame {
+  position: relative;
+  height: var(--fc-h);
+  border-radius: 6px;
+  overflow: hidden;
+  background: #120708;
+}
+
+.flex-carousel__frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-user-drag: none;
+  transition: filter 0.5s, opacity 0.2s;
+}
+
+/* Sem WebGL: as fotos em DOM fazem o papel todo. */
+.flex-carousel:not(.is-gl) .flex-carousel__item:not(.is-active) img {
+  filter: brightness(0.55);
+}
+
+/* Com WebGL: a foto em DOM só sai depois de desenhada no canvas. */
+.flex-carousel.is-gl .flex-carousel__item.has-tex img {
+  opacity: 0;
+}
+
+.flex-carousel.is-gl .flex-carousel__item.has-tex .flex-carousel__frame {
+  background: transparent;
+}
+
+.flex-carousel__item figcaption {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding-top: 16px;
+  font-size: 15px;
+  font-weight: 550;
+  letter-spacing: 0.01em;
+  color: rgba(244, 237, 231, 0.5);
+  transition: color 0.4s;
+}
+
+.flex-carousel__item figcaption .mono {
+  color: var(--fc-accent);
+  font-size: 11px;
+}
+
+.flex-carousel__item figcaption .is-muted {
+  font-weight: 400;
+}
+
+.flex-carousel__item.is-active figcaption {
+  color: var(--bone, #f4ede7);
+}
+
+.flex-carousel__controls {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 28px;
+  padding: 0 var(--gutter, 24px);
+}
+
+.flex-carousel__controls button {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(244, 237, 231, 0.07);
+  color: var(--bone, #f4ede7);
+  cursor: pointer;
+  transition:
+    background 0.3s,
+    color 0.3s,
+    transform 0.3s var(--ease-out);
+}
+
+.flex-carousel__controls button:hover:not(:disabled) {
+  background: var(--fc-accent);
+  color: #050203;
+}
+
+.flex-carousel__controls button:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.flex-carousel__controls button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.flex-carousel__controls svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.flex-carousel__status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  color: rgba(244, 237, 231, 0.6);
+}
+
+.flex-carousel__status i {
+  position: relative;
+  width: clamp(80px, 16vw, 200px);
+  height: 1px;
+  background: rgba(244, 237, 231, 0.18);
+}
+
+.flex-carousel__status i::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--fc-accent);
+  transform-origin: left;
+  transform: scaleX(var(--k));
+  transition: transform 0.6s var(--ease-out);
+}
+
+@media (max-width: 720px) {
+  .flex-carousel {
+    --fc-h: min(58svh, 128vw);
+  }
+  .flex-carousel__track {
+    padding: 16px 0;
+  }
+}
+
+.flex-carousel__frame {
+  max-width: 86vw;
+}
+
+/* a legenda acompanha a largura da foto, nunca alarga o item */
+.flex-carousel__item figcaption {
+  width: 0;
+  min-width: 100%;
+}
