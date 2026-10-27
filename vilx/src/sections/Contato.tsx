@@ -2,6 +2,7 @@ import { artist, links } from '../content'
 import { Arrow } from '../components/Arrow'
 import { FluidField } from '../components/FluidField'
 import { ScrollReveal } from '../components/ScrollReveal/ScrollReveal'
+import logoVermelho from '../assets/brand/logo-vermelho.png'
 
 export function Contato() {
   const channels = [
@@ -18,9 +19,12 @@ export function Contato() {
           <span className="eyebrow__n">04</span>Contato
         </p>
 
-        <ScrollReveal as="h2" id="contato-title" className="t-display contato__title" mode="once" effect="rise" stagger={0.09} baseOpacity={0} accent={[artist.name]}>
-          {`Contrate o ${artist.name}`}
-        </ScrollReveal>
+        <h2 id="contato-title" className="t-display contato__title">
+          <ScrollReveal as="span" mode="once" effect="rise" stagger={0.09} baseOpacity={0}>
+            Contrate o
+          </ScrollReveal>
+          <img className="contato__logo" src={logoVermelho} alt={artist.name} width={858} height={484} data-reveal />
+        </h2>
 
         <div className="contato__row">
           <ScrollReveal className="t-lede contato__lede" mode="once" stagger={0.02} baseOpacity={0} baseOffset={10}>

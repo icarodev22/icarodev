@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { links } from '../content'
 import { Arrow } from './Arrow'
+import logoBranco from '../assets/brand/logo-branco.png'
 import './nav.css'
 
 const items = [
@@ -75,7 +76,7 @@ export function Nav() {
     <>
       <header className={`nav ${solid ? 'nav--solid' : ''} ${open ? 'nav--menu' : ''}`}>
         <a href="#top" className="nav__logo" aria-label="VILX, voltar ao início">
-          VILX
+          <img src={logoBranco} alt="" width={360} height={192} />
         </a>
 
         <nav className="nav__links" aria-label="Seções">

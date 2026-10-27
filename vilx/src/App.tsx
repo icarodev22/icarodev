@@ -7,6 +7,7 @@ import { Contato } from './sections/Contato'
 import { useReveal } from './hooks/useReveal'
 import { useParallax } from './hooks/useParallax'
 import { artist } from './content'
+import logoSelo from './assets/brand/logo-selo.webp'
 
 export default function App() {
   useReveal()
@@ -26,7 +27,8 @@ export default function App() {
       </main>
       <footer className="footer">
         <p className="footer__sign">
-          VILX, <span className="serif">bola outra</span>
+          <img className="footer__logo" src={logoSelo} alt="VILX" width={480} height={226} loading="lazy" />
+          <span className="serif">bola outra</span>
         </p>
         <p className="t-meta">
           © {new Date().getFullYear()} {artist.name} · {artist.origin}

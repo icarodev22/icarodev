@@ -52,6 +52,17 @@ Mouse, toque (gesto vertical continua rolando a página), roda horizontal, setas
 
 Loop contínuo sem clones: cada foto é reposicionada em módulo do comprimento da faixa e só dá a volta depois de sair inteira da tela. Avança sozinho a cada ~5 s; pausa com mouse em cima, foco, arrasto, aba em segundo plano ou movimento reduzido.
 
+## Logos
+
+Originais em `reference/brand/`; versões de tela geradas por `scripts/prep_brand.py`. Cada versão aparece em um único lugar:
+
+| Versão | Onde |
+| --- | --- |
+| Branca (`logo-branco.png`) | Cabeçalho |
+| Vermelha com contorno (`logo-vermelho.png`) | Título do Contato: "Contrate o [logo]" |
+| Selo oval (`logo-selo.webp`, fundo preto removido) | Rodapé |
+| Preta (`favicon.png`, `apple-touch-icon.png`) | Ícone da aba, sobre quadrado vermelho |
+
 ## Imagens
 
 Cada imagem é usada uma única vez (`src/media.ts` é o registro; `npm run audit:images` valida).

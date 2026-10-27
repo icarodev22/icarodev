@@ -58,14 +58,24 @@ for (const f of files) {
   if (!entries.some((e) => e.id === id)) problems.push(`arquivo fora do registro: ${f}`)
 }
 
+// 5. logos: cada versão usada exatamente uma vez
+const brand = readdirSync(join(root, 'src/assets/brand'))
+const brandUse = {}
+for (const f of brand) {
+  brandUse[f] = code.filter(([, txt]) => txt.includes(`brand/${f}`)).map(([p]) => p)
+  if (brandUse[f].length !== 1) problems.push(`logo ${f} usado ${brandUse[f].length}x: ${brandUse[f].join(', ') || 'nenhum lugar'}`)
+}
+
 console.log('Mapa de imagens\n')
 for (const e of entries) {
   const where = usage[e.key].length ? usage[e.key][0] : '(não usada)'
   console.log(`  ${e.section.padEnd(12)} ${e.id.padEnd(34)} <- ${e.source}  [${where}]`)
 }
 console.log(`  ${'abertura'.padEnd(12)} ${'avatar 3D (voxels)'.padEnd(34)} <- vilx-avatar.jpg  [src/components/intro]`)
+for (const f of brand) console.log(`  ${'logo'.padEnd(12)} ${f.padEnd(34)} <- reference/brand  [${brandUse[f][0] ?? '(não usado)'}]`)
+console.log(`  ${'aba'.padEnd(12)} ${'favicon.png / apple-touch-icon.png'.padEnd(34)} <- vilx-logo-preto.png  [index.html]`)
 if (problems.length) {
   console.error('\nProblemas:\n  ' + problems.join('\n  '))
   process.exit(1)
 }
-console.log(`\nOK: ${entries.length} imagens, nenhuma repetida.`)
+console.log(`\nOK: ${entries.length} fotos/capas e ${brand.length} logos, nenhuma imagem repetida.`)

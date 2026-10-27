@@ -300,3 +300,16 @@
   opacity: 0;
   pointer-events: none;
 }
+
+/* logo (versão branca) */
+.nav__logo img {
+  display: block;
+  width: auto;
+  height: 34px;
+}
+
+@media (max-width: 860px) {
+  .nav__logo img {
+    height: 30px;
+  }
+}

@@ -20,7 +20,9 @@ for (const [id, ws] of Object.entries(byId)) {
   map[f] = `data:image/webp;base64,${b64('media/' + f)}`
 }
 html = html.replace('<head>', `<head>\n<script>window.__VILX_MEDIA__=${JSON.stringify(map)}</script>`)
-html = html.replace('/favicon.svg', `data:image/svg+xml;base64,${b64('favicon.svg')}`)
+for (const icon of ['favicon.png', 'apple-touch-icon.png']) {
+  html = html.replace(new RegExp(`"\\.?/${icon.replace('.', '\\.')}"`), `"data:image/png;base64,${b64(icon)}"`)
+}
 writeFileSync(file, html)
 const left = html.match(/["'(]\/(media|assets)\/[^"')]*/g)
 console.log(`index.html: ${(html.length / 1024 / 1024).toFixed(2)} MB; referências locais restantes: ${left ? left.join(', ') : 0}`)

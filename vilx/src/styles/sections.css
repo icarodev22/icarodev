@@ -733,3 +733,38 @@
 .footer__sign .serif {
   color: var(--red);
 }
+
+/* ===================================================== LOGOS */
+
+/* "Contrate o" + logo vermelho na mesma linha de base */
+.contato__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  column-gap: 0.18em;
+  row-gap: 0.1em;
+}
+
+.contato__logo {
+  height: 1.08em;
+  width: auto;
+  margin-bottom: -0.06em;
+}
+
+.footer__sign {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.footer__logo {
+  height: 44px;
+  width: auto;
+}
+
+@media (max-width: 720px) {
+  /* no celular o logo desce para a própria linha: ganha mais presença */
+  .contato__logo {
+    height: 1.5em;
+  }
+}
