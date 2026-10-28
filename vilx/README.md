@@ -20,28 +20,18 @@ npm run build          # checagem de tipos + build de produção (dist/)
 npm run audit:images   # confere a regra "nenhuma imagem repetida"
 ```
 
-## Abertura 3D
+## Abertura: fragmento do rosto
 
-`src/components/intro/AvatarScene.ts`. O avatar não é uma imagem plana: cada pixel da arte original
-(`reference/vilx-avatar-original.jpg`) vira uma coluna 3D com profundidade própria, gerada por
-`scripts/voxelize.py` em `src/assets/avatar-voxels.json`:
+`src/components/intro/AvatarScene.ts`. O avatar é o mesmo modelo de voxels: cada pixel da arte original (`reference/vilx-avatar-original.jpg`) é uma coluna 3D com a cor original e profundidade gerada a partir da própria arte (`scripts/voxelize.py` → `src/assets/avatar-voxels.json`). A câmera começa em close:
 
-- fundo vermelho e contorno branco removidos, ficando só a silhueta;
-- volume da cabeça a partir da silhueta (domo + distância até a borda);
-- óculos projetados à frente do rosto, cabelo numa camada própria;
-- cores = cores originais de cada pixel; nenhum traço novo é desenhado.
+- desktop: faixa horizontal do cabelo ao bigode, com os óculos encostando nas bordas;
+- celular: faixa vertical (uma lente inteira, nariz e bigode), pensada para o formato em pé.
 
-A cena tem montagem dos voxels na entrada, flutuação, rotação lenta, resposta ao cursor e ao arrasto
-no toque, luz-chave com sombra, contraluz vermelho, luz orbitando, lentes com reflexo, piso
-translúcido com reflexo espelhado (desligado em aparelhos modestos) e degradação automática se a taxa
-de quadros cair. Sem WebGL, ou se o contexto for perdido, entra uma versão 2D com o recorte da arte
-(`src/assets/vilx-avatar-cutout.png`, gerado pelo mesmo script).
+Entrada: obturador de cinema (a imagem se abre a partir de uma fresta na altura dos óculos) enquanto a câmera se aproxima e a luz acende. Depois, só movimento ambiente quase imperceptível e um brilho que cruza as lentes. Ao rolar, a câmera recua até revelar o rosto inteiro. Sem WebGL, o recorte 2D da arte (`src/assets/vilx-avatar-cutout.png`) mostra o mesmo fragmento.
 
-Para regerar os voxels:
+## Fundo contínuo
 
-```bash
-python3 scripts/voxelize.py reference/vilx-avatar-original.jpg src/assets/avatar-voxels.json /tmp/depth.png src/assets/vilx-avatar-cutout.png
-```
+`src/components/AmbientBackground.tsx`. A linguagem do fundo da abertura (tinta vermelha líquida sobre preto) é uma única camada fixa atrás do site inteiro, do topo ao rodapé. A luz muda de lugar conforme a rolagem e a intensidade cai fora da abertura, para o texto continuar legível sem caixas opacas. Renderiza em baixa resolução a ~30 fps, só com a aba visível; com movimento reduzido fica parada; sem WebGL, vira um gradiente estático com a mesma atmosfera.
 
 ## FlexCarousel
 
@@ -92,6 +82,8 @@ Não usadas (disponíveis para o futuro): PART1 Prancheta 1 e 3, PART2 Prancheta
 PART3 Prancheta 2, PART5 Prancheta 2, PART6 Prancheta 1 e 5.
 
 ## Pendências de conteúdo
+
+- **Links das faixas no Spotify e capas oficiais em alta**: o ambiente de desenvolvimento não tem acesso ao Spotify. Preencha `spotify` de cada faixa em `src/content.ts` (o card passa a abrir a própria faixa) e substitua as capas em `public/media/` mantendo os nomes. Até lá, os cards abrem o perfil do VILX e dizem isso.
 
 - **E-mail de contato**: não consta nos materiais. Preencha `links.email` em `src/content.ts` e o
   canal aparece na seção Contato.

@@ -61,8 +61,15 @@ export function Lancamentos() {
                 </div>
                 <h3 className="rcard__title">{r.title}</h3>
                 <p className="rcard__credits">{g ? `com ${g}` : 'VILX'}</p>
-                <a className="rcard__link" href={links.spotifyArtist} target="_blank" rel="noopener noreferrer" aria-label={`Ouvir ${r.title} no perfil do VILX no Spotify`}>
-                  Ouvir no Spotify
+                {/* cada card leva à própria faixa; sem link confirmado, ao perfil (e diz isso) */}
+                <a
+                  className="rcard__link"
+                  href={r.spotify ?? links.spotifyArtist}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={r.spotify ? `Ouvir ${r.title} no Spotify` : `Abrir o perfil do VILX no Spotify, onde está ${r.title}`}
+                >
+                  {r.spotify ? 'Ouvir no Spotify' : 'Ouvir no perfil do Spotify'}
                   <Arrow />
                 </a>
               </div>

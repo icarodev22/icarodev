@@ -8,9 +8,10 @@ import './intro.css'
 type Mode = 'loading' | '3d' | 'fallback'
 
 /**
- * Abertura em tela cheia. Não é um banner: é um palco fixo (sticky) que
- * acompanha a rolagem. A cena 3D é carregada sob demanda; enquanto isso, ou
- * se o aparelho não tiver WebGL, entra uma versão 2D elegante do avatar.
+ * Abertura em tela cheia: um fragmento ampliado do rosto do avatar.
+ * Não é um banner: é um palco fixo (sticky) que acompanha a rolagem — a
+ * câmera começa em close e recua até o rosto inteiro. A cena 3D é carregada
+ * sob demanda; sem WebGL, a versão 2D mostra o mesmo fragmento.
  */
 export function Intro() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -39,10 +40,10 @@ export function Intro() {
             canvas: canvasRef.current,
             reducedMotion: prefersReducedMotion(),
             lowPower: isCoarsePointer() || lowPowerDevice(),
-            onAssembled: () => setSigned(true),
+            // primeiro quadro desenhado: troca o carregamento pela cena
+            onReady: () => setMode('3d'),
             onContextLost: toFallback,
           })
-          setMode('3d')
         } catch (err) {
           console.warn('[intro] cena 3D indisponível, usando versão 2D', err)
           toFallback()
@@ -56,13 +57,10 @@ export function Intro() {
     }
   }, [])
 
-  // A assinatura aparece mesmo que a cena demore ou falhe.
+  // A assinatura entra depois da revelação do rosto — e entra mesmo que a
+  // cena demore ou falhe.
   useEffect(() => {
-    if (mode === 'fallback') {
-      const id = window.setTimeout(() => setSigned(true), 500)
-      return () => clearTimeout(id)
-    }
-    const id = window.setTimeout(() => setSigned(true), 4000)
+    const id = window.setTimeout(() => setSigned(true), mode === 'loading' ? 3500 : 1400)
     return () => clearTimeout(id)
   }, [mode])
 
@@ -136,20 +134,18 @@ export function Intro() {
   const [first, ...rest] = artist.tagline.split(' ')
 
   return (
-    <section ref={sectionRef} className={`intro intro--${mode}`} aria-label="Abertura: avatar do VILX">
+    <section ref={sectionRef} className={`intro intro--${mode}`} aria-label="Abertura: o rosto do VILX">
       <div className="intro__stage">
         <canvas
           ref={canvasRef}
           className="intro__canvas"
           role="img"
-          aria-label="Avatar pixelado do VILX em 3D: cabelo loiro descolorido, óculos escuros e bigode, flutuando em um palco escuro com luz vermelha"
+          aria-label="Close do avatar pixelado do VILX em 3D: óculos escuros, cabelo loiro descolorido e bigode, sob luz vermelha. Ao rolar, a câmera se afasta e revela o rosto inteiro."
         />
 
         {mode === 'fallback' && (
           <div className="intro__fallback" aria-hidden="true">
-            <div className="intro__fallback-glow" />
             <img src={avatarUrl} alt="" className="intro__fallback-img" width={432} height={512} />
-            <div className="intro__fallback-floor" />
           </div>
         )}
 

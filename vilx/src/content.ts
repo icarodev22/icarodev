@@ -12,7 +12,7 @@ export const artist = {
 }
 
 const whatsappNumber = '5527992464768' // botão "ESCRITÓRIO" do release
-const whatsappText = 'Olá! Tenho interesse em contratar o VILX para o meu evento.'
+const whatsappText = 'Olá, gostaria de consultar a disponibilidade e os valores para contratar o VILX para um evento.'
 
 export const links = {
   booking: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappText)}`,
@@ -63,11 +63,13 @@ export type Release = {
   credits: string | null
   stat: string | null
   cover: string | null
+  /** link da faixa no Spotify; null até ser confirmado (o card usa o perfil do artista) */
+  spotify: string | null
 }
 
 export const releases: Release[] = [
-  { title: 'O Prédio Vai Tremer', credits: 'VILX, MC Bruninho & Maduff', stat: '+15M de plays', cover: 'capa-o-predio-vai-tremer' },
-  { title: 'Toda Nua', credits: 'VILX, MC Bruninho & Maduff', stat: '+1M de plays', cover: 'capa-toda-nua' },
+  { title: 'O Prédio Vai Tremer', credits: 'VILX, MC Bruninho & Maduff', stat: '+15M de plays', cover: 'capa-o-predio-vai-tremer', spotify: null },
+  { title: 'Toda Nua', credits: 'VILX, MC Bruninho & Maduff', stat: '+1M de plays', cover: 'capa-toda-nua', spotify: null },
   // Sem capa nos materiais: tratamento tipográfico até o arquivo chegar.
-  { title: 'Sumir Com VC', credits: null, stat: null, cover: null },
+  { title: 'Sumir Com VC', credits: null, stat: null, cover: null, spotify: null },
 ]
