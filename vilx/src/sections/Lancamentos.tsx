@@ -1,4 +1,4 @@
-import { links, releases, type Release } from '../content'
+import { links, releases, spotifyEmbed, spotifyReleases, spotifyUrl, type Release, type SpotifyRelease } from '../content'
 import { coverById, src } from '../media'
 import { Arrow } from '../components/Arrow'
 import { ScrollReveal } from '../components/ScrollReveal/ScrollReveal'
@@ -25,6 +25,45 @@ function Cover({ release }: { release: Release }) {
   )
 }
 
+/** Lançamento vindo de link do Spotify: card no formato padrão quando título e
+ *  capa estão confirmados; até lá, o player oficial (capa e título reais). */
+function SpotifyCard({ release: r, index }: { release: SpotifyRelease; index: number }) {
+  const n = String(index + 1).padStart(2, '0')
+  const cover = r.cover ? coverById[r.cover] : null
+  const label = r.title ? `Ouvir ${r.title} no Spotify` : `Ouvir ${r.kind.toLowerCase()} do VILX no Spotify`
+  return (
+    <li className={`rcard ${cover && r.title ? '' : 'rcard--embed'}`} data-reveal style={{ ['--d' as string]: `${index * 0.09}s` }}>
+      {cover && r.title ? (
+        <div className="rcard__cover">
+          <img src={src(cover)} width={cover.w} height={cover.h} alt={cover.alt} loading="lazy" decoding="async" />
+        </div>
+      ) : (
+        <div className="rcard__embed">
+          <iframe
+            title={`Player do Spotify: ${r.kind.toLowerCase()} do VILX`}
+            src={spotifyEmbed(r)}
+            width="100%"
+            height="352"
+            loading="lazy"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          />
+        </div>
+      )}
+      <div className="rcard__body">
+        <div className="rcard__top">
+          <span className="rcard__n serif">{n}</span>
+          <span className="rcard__kind">{r.kind}</span>
+        </div>
+        {r.title && <h3 className="rcard__title">{r.title}</h3>}
+        <a className="rcard__link" href={spotifyUrl(r)} target="_blank" rel="noopener noreferrer" aria-label={label}>
+          Ouvir no Spotify
+          <Arrow />
+        </a>
+      </div>
+    </li>
+  )
+}
+
 export function Lancamentos() {
   return (
     <section id="lancamentos" className="section lancamentos" aria-labelledby="lancamentos-title">
@@ -42,7 +81,7 @@ export function Lancamentos() {
           </ScrollReveal>
         </h2>
         <ScrollReveal className="t-lede lanc__lede" mode="scrub" splitBy="words" stagger={0.035} baseOpacity={0.12} blurStrength={3} baseOffset={8} smoothing={0.12}>
-          Na produção musical, VILX soma mais de 15 milhões de streams. Os sucessos que puxam esse número:
+          Na produção musical, VILX soma mais de 15 milhões de streams. Ouça os lançamentos:
         </ScrollReveal>
       </div>
 
@@ -76,6 +115,9 @@ export function Lancamentos() {
             </li>
           )
         })}
+        {spotifyReleases.map((r, i) => (
+          <SpotifyCard key={r.id} release={r} index={releases.length + i} />
+        ))}
       </ul>
 
       <div className="listen" data-reveal>

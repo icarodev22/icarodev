@@ -80,6 +80,8 @@ PART3 Prancheta 2, PART5 Prancheta 2, PART6 Prancheta 1 e 5.
 
 ## Pendências de conteúdo
 
+- **Dois lançamentos enviados como links do Spotify** (álbum `5JjmEbWr52rxs5oh47FJEj` e faixa `40k6jQcjvctYmgmqEkPkHw`): aparecem com o player oficial do Spotify, que mostra capa e título reais. Para virarem cards no formato dos demais, preencha `title` e `cover` em `spotifyReleases` (`src/content.ts`) e registre a capa em `src/media.ts`.
+
 - **Links das faixas no Spotify e capas oficiais em alta**: o ambiente de desenvolvimento não tem acesso ao Spotify. Preencha `spotify` de cada faixa em `src/content.ts` (o card passa a abrir a própria faixa) e substitua as capas em `public/media/` mantendo os nomes. Até lá, os cards abrem o perfil do VILX e dizem isso.
 
 - **E-mail de contato**: não consta nos materiais. Preencha `links.email` em `src/content.ts` e o

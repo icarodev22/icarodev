@@ -339,7 +339,9 @@
 /* três cards em sequência; no celular viram faixa com scroll-snap */
 .rcards {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  /* 6 trilhas: os três singles ocupam 2 cada (linha 1); os lançamentos
+     com player do Spotify ocupam 3 cada (linha 2) */
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: clamp(16px, 2vw, 28px);
   margin: 0;
   padding: 0;
@@ -766,4 +768,41 @@
 /* "Contratar VILX": texto curto, botão com presença sem esticar demais */
 .contato__cta {
   min-width: 260px;
+}
+
+/* ---------- lançamentos com player oficial do Spotify ---------- */
+
+.rcard {
+  grid-column: span 2;
+}
+
+.rcard--embed {
+  grid-column: span 3;
+}
+
+.rcard__embed {
+  margin: 10px 10px 0;
+  border-radius: calc(var(--r-lg) - 8px);
+  overflow: hidden;
+  background: #181818;
+  min-height: 352px;
+}
+
+.rcard__embed iframe {
+  display: block;
+  border: 0;
+}
+
+.rcard__kind {
+  font-size: 13px;
+  font-weight: 560;
+  letter-spacing: 0.02em;
+  color: var(--mute);
+}
+
+@media (max-width: 860px) {
+  .rcard,
+  .rcard--embed {
+    grid-column: auto;
+  }
 }

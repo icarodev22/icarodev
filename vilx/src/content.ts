@@ -73,3 +73,24 @@ export const releases: Release[] = [
   // Sem capa nos materiais: tratamento tipográfico até o arquivo chegar.
   { title: 'Sumir Com VC', credits: null, stat: null, cover: null, spotify: null },
 ]
+
+// Lançamentos enviados como links oficiais do Spotify. Título, artista e capa
+// ainda não puderam ser confirmados (o ambiente de desenvolvimento não acessa
+// o Spotify), então o card mostra o player oficial do Spotify, que exibe a
+// capa e o título reais. Ao preencher `title` e `cover` (capa registrada em
+// media.ts), o card passa a ter o mesmo formato dos demais.
+export type SpotifyRelease = {
+  type: 'album' | 'track'
+  id: string
+  kind: string
+  title: string | null
+  cover: string | null
+}
+
+export const spotifyReleases: SpotifyRelease[] = [
+  { type: 'album', id: '5JjmEbWr52rxs5oh47FJEj', kind: 'Álbum', title: null, cover: null },
+  { type: 'track', id: '40k6jQcjvctYmgmqEkPkHw', kind: 'Faixa', title: null, cover: null },
+]
+
+export const spotifyUrl = (r: SpotifyRelease) => `https://open.spotify.com/${r.type}/${r.id}`
+export const spotifyEmbed = (r: SpotifyRelease) => `https://open.spotify.com/embed/${r.type}/${r.id}?utm_source=generator&theme=0`
