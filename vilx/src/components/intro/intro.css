@@ -1,9 +1,12 @@
 .intro {
   --p: 0;
   position: relative;
-  height: 190vh;
-  height: 190svh;
-  /* sem fundo próprio: o fundo do site inteiro (AmbientBackground) aparece aqui */
+  height: 175vh;
+  height: 175svh;
+  /* sem fundo chapado: enquanto a abertura está na tela o canvas (opaco)
+     cobre tudo; quando ela esmaece na saída, aparece o fundo contínuo do
+     site em vez de um bloco preto — sem emenda com a História */
+  background: transparent;
 }
 
 .intro__stage {
@@ -24,19 +27,18 @@
   opacity: 0;
 }
 
-/* entrada: o fragmento se abre como um obturador de cinema, de uma fresta
-   horizontal na altura dos óculos até a tela cheia */
 .intro--3d .intro__canvas {
-  opacity: calc(1 - max(0, var(--p) - 0.8) * 2);
-  animation: intro-shutter 1.7s cubic-bezier(0.7, 0, 0.2, 1) backwards;
+  opacity: calc(1 - var(--p) * 0.85);
+  /* saída: a base do canvas se dissolve no fundo contínuo. Em --p = 0 a
+     máscara é nula: a abertura aparece exatamente como sempre */
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--p) * 55%), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - var(--p) * 55%), transparent 100%);
+  animation: intro-in 1.4s var(--ease-out) backwards;
 }
 
-@keyframes intro-shutter {
+@keyframes intro-in {
   from {
-    clip-path: inset(46% 0 52% 0);
-  }
-  to {
-    clip-path: inset(0 0 0 0);
+    opacity: 0;
   }
 }
 
@@ -44,39 +46,16 @@
   display: none;
 }
 
-/* sombras de leitura: o close ocupa a tela toda, então topo (navegação)
-   e base (assinatura) ganham um escurecimento suave */
-.intro__stage::before,
+/* Saída: um véu escuro sobe e entrega a página para a História. */
 .intro__stage::after {
   content: '';
   position: absolute;
-  left: 0;
-  right: 0;
-  z-index: 1;
+  inset: 0;
+  /* véu de saída: escurece como antes, mas sem fechar no preto total,
+     para se fundir ao fundo contínuo da próxima seção */
+  background: linear-gradient(to bottom, transparent 0%, rgba(7, 3, 4, 0.5) 55%, rgba(7, 3, 4, 0) 100%);
+  opacity: calc(var(--p) * 1.4 - 0.25);
   pointer-events: none;
-}
-
-.intro__stage::before {
-  top: 0;
-  height: 180px;
-  background: linear-gradient(180deg, rgba(5, 2, 3, 0.62), rgba(5, 2, 3, 0));
-}
-
-.intro__stage::after {
-  bottom: 0;
-  height: 42%;
-  background: linear-gradient(0deg, rgba(5, 2, 3, 0.72), rgba(5, 2, 3, 0));
-  opacity: calc(1 - var(--p) * 1.4);
-}
-
-.intro__meta,
-.intro__sign,
-.intro__cue {
-  z-index: 2;
-}
-
-.intro__sign {
-  text-shadow: 0 2px 30px rgba(5, 2, 3, 0.55);
 }
 
 /* ---------- carregamento ---------- */
@@ -109,7 +88,7 @@
 
 @keyframes intro-load {
   0% {
-    transform: scaleX(0);
+    transform: scaleX(0) translateX(0);
   }
   50% {
     transform: scaleX(1);
@@ -120,41 +99,51 @@
   }
 }
 
-/* ---------- sem WebGL: o mesmo fragmento, em 2D ---------- */
-/* O recorte da arte (54×64 px de avatar) é ampliado para que ~26 px caibam
-   no lado curto da tela, centrado na faixa dos óculos — igual à cena 3D. */
+/* ---------- fallback sem WebGL ---------- */
 
 .intro__fallback {
   position: absolute;
   inset: 0;
-  overflow: hidden;
-  opacity: calc(1 - max(0, var(--p) - 0.8) * 2);
-  animation: intro-shutter 1.7s cubic-bezier(0.7, 0, 0.2, 1) backwards;
+  display: grid;
+  place-items: center;
+  perspective: 900px;
+  background: radial-gradient(60% 55% at 50% 45%, #2a0605 0%, var(--ink) 70%);
 }
 
-/* posicionado só por medidas de layout (sem transform): assim o
-   image-rendering: pixelated vale de verdade e os pixels ficam nítidos.
-   Ponto focal: 44,5% da largura, 54% da altura (faixa dos óculos). */
-.intro__fallback-img {
-  --h: calc(100vh * 64 / 26);
+.intro__fallback-glow {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  max-width: none;
-  height: var(--h);
-  width: calc(var(--h) * 432 / 512);
-  margin-left: calc(var(--h) * 432 / 512 * -0.445);
-  margin-top: calc(var(--h) * -0.54);
-  image-rendering: pixelated;
+  width: min(70vw, 70vh);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 42, 31, 0.6);
+  box-shadow: 0 0 120px rgba(255, 42, 31, 0.25);
 }
 
-@media (max-aspect-ratio: 1/1) {
-  .intro__fallback-img {
-    --w: calc(100vw * 54 / 26);
-    width: var(--w);
-    height: calc(var(--w) * 512 / 432);
-    margin-left: calc(var(--w) * -0.445);
-    margin-top: calc(var(--w) * 512 / 432 * -0.54);
+.intro__fallback-img {
+  position: relative;
+  width: min(56vw, 46vh);
+  height: auto;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 40px 50px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 40px rgba(255, 42, 31, 0.35));
+  animation: intro-float 6s ease-in-out infinite;
+}
+
+.intro__fallback-floor {
+  position: absolute;
+  bottom: 14%;
+  width: min(40vw, 40vh);
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(0, 0, 0, 0.9), transparent);
+}
+
+@keyframes intro-float {
+  0%,
+  100% {
+    transform: translateY(-8px) rotateY(-10deg) rotateX(4deg);
+  }
+  50% {
+    transform: translateY(8px) rotateY(10deg) rotateX(-2deg);
   }
 }
 

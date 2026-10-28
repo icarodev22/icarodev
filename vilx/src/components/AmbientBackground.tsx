@@ -115,8 +115,17 @@ export function AmbientBackground() {
 
         const draw = () => renderer.render({ scene: mesh })
 
+        // Enquanto a abertura (canvas opaco) cobre a tela inteira, o fundo
+        // não aparece: não há por que desenhá-lo. Volta ao rolar.
+        const covered = () =>
+          scrollY < innerHeight * 0.5 && !!document.querySelector('.intro--3d, .intro--fallback')
+
         const frame = (now: number) => {
           raf = 0
+          if (covered()) {
+            last = 0
+            return
+          }
           const dt = last ? Math.min(0.1, (now - last) / 1000) : 0
           last = now
           const k = 1 - Math.exp(-dt * 3)

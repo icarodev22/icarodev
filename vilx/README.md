@@ -20,18 +20,15 @@ npm run build          # checagem de tipos + build de produção (dist/)
 npm run audit:images   # confere a regra "nenhuma imagem repetida"
 ```
 
-## Abertura: fragmento do rosto
+## Abertura 3D
 
-`src/components/intro/AvatarScene.ts`. O avatar é o mesmo modelo de voxels: cada pixel da arte original (`reference/vilx-avatar-original.jpg`) é uma coluna 3D com a cor original e profundidade gerada a partir da própria arte (`scripts/voxelize.py` → `src/assets/avatar-voxels.json`). A câmera começa em close:
+`src/components/intro/AvatarScene.ts`. O avatar não é uma imagem plana: cada pixel da arte original (`reference/vilx-avatar-original.jpg`) vira uma coluna 3D com profundidade própria, gerada por `scripts/voxelize.py` em `src/assets/avatar-voxels.json` (volume da cabeça pela silhueta, óculos à frente do rosto, cabelo em camada própria, cores originais). Montagem dos voxels na entrada, flutuação, rotação lenta, resposta ao cursor e ao toque, luz-chave com sombra, contraluz vermelho, lentes com reflexo, piso com reflexo e degradação automática se a taxa de quadros cair. Sem WebGL, entra uma versão 2D com o recorte da arte.
 
-- desktop: faixa horizontal do cabelo ao bigode, com os óculos encostando nas bordas;
-- celular: faixa vertical (uma lente inteira, nariz e bigode), pensada para o formato em pé.
-
-Entrada: obturador de cinema (a imagem se abre a partir de uma fresta na altura dos óculos) enquanto a câmera se aproxima e a luz acende. Depois, só movimento ambiente quase imperceptível e um brilho que cruza as lentes. Ao rolar, a câmera recua até revelar o rosto inteiro. Sem WebGL, o recorte 2D da arte (`src/assets/vilx-avatar-cutout.png`) mostra o mesmo fragmento.
+Na saída (rolagem), a abertura esmaece sobre o fundo contínuo do site: a base do canvas se dissolve só durante a saída, então não há emenda com a História.
 
 ## Fundo contínuo
 
-`src/components/AmbientBackground.tsx`. A linguagem do fundo da abertura (tinta vermelha líquida sobre preto) é uma única camada fixa atrás do site inteiro, do topo ao rodapé. A luz muda de lugar conforme a rolagem e a intensidade cai fora da abertura, para o texto continuar legível sem caixas opacas. Renderiza em baixa resolução a ~30 fps, só com a aba visível; com movimento reduzido fica parada; sem WebGL, vira um gradiente estático com a mesma atmosfera.
+`src/components/AmbientBackground.tsx`. A linguagem do fundo da abertura (tinta vermelha líquida sobre preto) é uma única camada fixa atrás do site inteiro, do fim da abertura ao rodapé. Enquanto a abertura cobre a tela, ela não é desenhada. A luz muda de lugar conforme a rolagem e a intensidade cai fora da abertura, para o texto continuar legível sem caixas opacas. Renderiza em baixa resolução a ~30 fps, só com a aba visível; com movimento reduzido fica parada; sem WebGL, vira um gradiente estático com a mesma atmosfera.
 
 ## FlexCarousel
 
