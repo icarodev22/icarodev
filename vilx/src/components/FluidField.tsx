@@ -115,7 +115,8 @@ export function FluidField({ className }: { className?: string }) {
           program.uniforms.uMouseAmt.value = mouse.amt
           renderer.render({ scene: mesh })
         }
-        const io = new IntersectionObserver(([e]) => {
+        const io = new IntersectionObserver((entries) => {
+      const e = entries[entries.length - 1]
           visible = e.isIntersecting
           if (visible && !raf) {
             last = performance.now()

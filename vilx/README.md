@@ -63,6 +63,10 @@ Originais em `reference/brand/`; versões de tela geradas por `scripts/prep_bran
 | Selo oval (`logo-selo.webp`, fundo preto removido) | Rodapé |
 | Preta (`favicon.png`, `apple-touch-icon.png`) | Ícone da aba, sobre quadrado vermelho |
 
+## Palcos (faixa de logos)
+
+`src/components/LogoMarquee/`. Os 9 logos da página "Eventos" do release (Carvalheira na Ladeira, Esbórnia, Kosmos, Sente a Ginga, Oboé, We Do, Pega Vareta, Luan City Festival, Samba do Barcha) passam em loop contínuo para a direita, sem bordas. Mesmo princípio do carrossel: sem clones; se a tela for larga demais, o espaçamento cresce em vez de repetir logos. Pausa com mouse em cima, foco, fora da tela e aba oculta; com movimento reduzido vira uma composição estática. Arquivos gerados por `scripts/prep_events.py` a partir de `reference/events/` (extraídos do PDF; Kosmos é vetorial no PDF e foi renderizado a 300 dpi). O ajuste óptico de tamanho de cada logo fica em `src/eventLogos.ts`.
+
 ## Imagens
 
 Cada imagem é usada uma única vez (`src/media.ts` é o registro; `npm run audit:images` valida).

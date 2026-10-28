@@ -1,6 +1,8 @@
-import { artist, stages, stats, story } from '../content'
+import { artist, stats, story } from '../content'
 import { media, src, srcSet, type Media } from '../media'
 import { ScrollReveal } from '../components/ScrollReveal/ScrollReveal'
+import { LogoMarquee } from '../components/LogoMarquee/LogoMarquee'
+import { eventLogos } from '../eventLogos'
 
 function Photo({ item, className, speed, sizes }: { item: Media; className: string; speed: number; sizes: string }) {
   return (
@@ -38,7 +40,6 @@ function Chapter({ n, title, text }: { n: string; title: string; text: string })
 
 export function Historia() {
   const [a, b, c, d] = story
-  const stageList = `${stages.slice(0, -1).join(', ')} e ${stages[stages.length - 1]}.`
   return (
     <section id="historia" className="section historia" aria-labelledby="historia-title">
       <p className="eyebrow">
@@ -91,9 +92,7 @@ export function Historia() {
 
       <div className="stages">
         <p className="t-meta stages__label">Palcos por onde passou</p>
-        <ScrollReveal as="p" className="stages__list" mode="scrub" splitBy="words" stagger={0.05} baseOpacity={0.14} blurStrength={2} baseOffset={6} smoothing={0.15}>
-          {stageList}
-        </ScrollReveal>
+        <LogoMarquee logos={eventLogos} label="Eventos e palcos por onde o VILX passou" speed={38} />
       </div>
 
       <div className="metrics" aria-label="Números do artista">

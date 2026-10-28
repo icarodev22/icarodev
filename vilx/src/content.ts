@@ -55,8 +55,6 @@ export const stats = [
   { value: '+100K', label: 'de criações', platform: 'TikTok' },
 ]
 
-export const stages = ['Pega Vareta', 'Luan City', 'Duma', 'Carvalheira', 'Bloco do Barcha', 'Esbórnia']
-
 export type Release = {
   title: string
   credits: string | null

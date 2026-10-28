@@ -177,30 +177,13 @@
   color: var(--text);
 }
 
-/* palcos: uma frase editorial, sem faixa rolante */
+/* palcos: faixa de logos de ponta a ponta, sem bordas */
 .stages {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: clamp(16px, 2.4vw, 40px);
-  margin-top: clamp(80px, 9vw, 144px);
-  padding-top: 28px;
-  border-top: 1px solid var(--line);
+  margin: clamp(80px, 9vw, 144px) calc(-1 * var(--gutter)) 0;
 }
 
 .stages__label {
-  grid-column: 1 / 4;
-  padding-top: 0.5em;
-}
-
-.stages__list {
-  grid-column: 4 / 13;
-  font-weight: 560;
-  font-stretch: 88%;
-  font-size: clamp(30px, 3.6vw, 58px);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  color: var(--bone);
-  text-wrap: balance;
+  margin: 0 var(--gutter) clamp(20px, 2.4vw, 32px);
 }
 
 /* métricas */
@@ -255,8 +238,7 @@
 
 @media (max-width: 860px) {
   .historia__open,
-  .historia__grid,
-  .stages {
+  .historia__grid {
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
   .historia__title,
@@ -292,13 +274,6 @@
   .p-olhar {
     grid-column: 2 / 6;
     grid-row: auto;
-  }
-  .stages__label,
-  .stages__list {
-    grid-column: 1 / -1;
-  }
-  .stages__label {
-    padding: 0 0 12px;
   }
   .metrics ul {
     grid-template-columns: repeat(2, minmax(0, 1fr));

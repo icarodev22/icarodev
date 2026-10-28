@@ -66,6 +66,14 @@ for (const f of brand) {
   if (brandUse[f].length !== 1) problems.push(`logo ${f} usado ${brandUse[f].length}x: ${brandUse[f].join(', ') || 'nenhum lugar'}`)
 }
 
+// 6. logos de eventos: cada um usado exatamente uma vez
+const events = readdirSync(join(root, 'src/assets/events'))
+const eventUse = {}
+for (const f of events) {
+  eventUse[f] = code.filter(([, txt]) => txt.includes(`events/${f}`)).map(([p]) => p)
+  if (eventUse[f].length !== 1) problems.push(`logo de evento ${f} usado ${eventUse[f].length}x`)
+}
+
 console.log('Mapa de imagens\n')
 for (const e of entries) {
   const where = usage[e.key].length ? usage[e.key][0] : '(não usada)'
@@ -73,9 +81,10 @@ for (const e of entries) {
 }
 console.log(`  ${'abertura'.padEnd(12)} ${'avatar 3D (voxels)'.padEnd(34)} <- vilx-avatar.jpg  [src/components/intro]`)
 for (const f of brand) console.log(`  ${'logo'.padEnd(12)} ${f.padEnd(34)} <- reference/brand  [${brandUse[f][0] ?? '(não usado)'}]`)
+for (const f of events) console.log(`  ${'evento'.padEnd(12)} ${f.padEnd(34)} <- release p. 5  [${eventUse[f][0] ?? '(não usado)'}]`)
 console.log(`  ${'aba'.padEnd(12)} ${'favicon.png / apple-touch-icon.png'.padEnd(34)} <- vilx-logo-preto.png  [index.html]`)
 if (problems.length) {
   console.error('\nProblemas:\n  ' + problems.join('\n  '))
   process.exit(1)
 }
-console.log(`\nOK: ${entries.length} fotos/capas e ${brand.length} logos, nenhuma imagem repetida.`)
+console.log(`\nOK: ${entries.length} fotos/capas, ${brand.length} logos do VILX e ${events.length} logos de eventos, nenhuma imagem repetida.`)

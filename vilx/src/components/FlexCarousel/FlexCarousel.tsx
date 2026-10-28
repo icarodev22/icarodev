@@ -72,7 +72,8 @@ export function FlexCarousel({
       return
     }
     const io = new IntersectionObserver(
-      ([e]) => {
+      (entries) => {
+        const e = entries[entries.length - 1]
         if (e.isIntersecting) {
           setNear(true)
           io.disconnect()
@@ -392,7 +393,8 @@ export function FlexCarousel({
       }
     }
 
-    const vio = new IntersectionObserver(([e]) => {
+    const vio = new IntersectionObserver((entries) => {
+      const e = entries[entries.length - 1]
       visible = e.isIntersecting
       if (visible) {
         dirty = true
