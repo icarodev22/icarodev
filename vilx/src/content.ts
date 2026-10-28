@@ -20,8 +20,6 @@ export const links = {
   spotifyArtist: 'https://open.spotify.com/artist/5QyuAOyK7AeuaVKsydSwjF',
   instagram: 'https://instagram.com/vilxmsc',
   instagramHandle: '@vilxmsc',
-  spotifyTrack: 'https://open.spotify.com/track/0BIrFyis1PrXGJImMs9Vbc',
-  spotifyTrackEmbed: 'https://open.spotify.com/embed/track/0BIrFyis1PrXGJImMs9Vbc?utm_source=generator&theme=0',
   // Não consta no release. Preencha quando houver um e-mail oficial e o
   // link aparece automaticamente na seção Contato.
   email: null as string | null,
@@ -58,39 +56,23 @@ export const stats: { value: string; label: string; platform: string; brand: Bra
   { value: '+100K', label: 'de criações', platform: 'TikTok', brand: 'tiktok' },
 ]
 
-export type Release = {
-  title: string
-  credits: string | null
-  stat: string | null
-  cover: string | null
-  /** link da faixa no Spotify; null até ser confirmado (o card usa o perfil do artista) */
-  spotify: string | null
-}
-
-export const releases: Release[] = [
-  { title: 'O Prédio Vai Tremer', credits: 'VILX, MC Bruninho & Maduff', stat: '+15M de plays', cover: 'capa-o-predio-vai-tremer', spotify: null },
-  { title: 'Toda Nua', credits: 'VILX, MC Bruninho & Maduff', stat: '+1M de plays', cover: 'capa-toda-nua', spotify: null },
-  // Sem capa nos materiais: tratamento tipográfico até o arquivo chegar.
-  { title: 'Sumir Com VC', credits: null, stat: null, cover: null, spotify: null },
-]
-
-// Lançamentos enviados como links oficiais do Spotify. Título, artista e capa
-// ainda não puderam ser confirmados (o ambiente de desenvolvimento não acessa
-// o Spotify), então o card mostra o player oficial do Spotify, que exibe a
-// capa e o título reais. Ao preencher `title` e `cover` (capa registrada em
-// media.ts), o card passa a ter o mesmo formato dos demais.
-export type SpotifyRelease = {
-  type: 'album' | 'track'
+// Lançamentos: um player oficial do Spotify por música. O nome, a capa e os
+// artistas exibidos vêm do próprio Spotify (dentro do player); `title` aqui é
+// só o rótulo acessível e a ordem da seção.
+// 01: link enviado especificamente para O Prédio Vai Tremer.
+// 02 e 03: os dois links já cadastrados no projeto (álbum e faixa), na ordem
+// em que foram enviados. Se estiverem trocados, basta inverter as duas linhas.
+export type Track = {
+  type: 'track' | 'album'
   id: string
-  kind: string
-  title: string | null
-  cover: string | null
+  title: string
 }
 
-export const spotifyReleases: SpotifyRelease[] = [
-  { type: 'album', id: '5JjmEbWr52rxs5oh47FJEj', kind: 'Álbum', title: null, cover: null },
-  { type: 'track', id: '40k6jQcjvctYmgmqEkPkHw', kind: 'Faixa', title: null, cover: null },
+export const tracks: Track[] = [
+  { type: 'track', id: '6qsJjjBx1fSQiwT8k9p2gz', title: 'O Prédio Vai Tremer' },
+  { type: 'album', id: '5JjmEbWr52rxs5oh47FJEj', title: 'Toda Nua' },
+  { type: 'track', id: '40k6jQcjvctYmgmqEkPkHw', title: 'Sumir Com VC' },
 ]
 
-export const spotifyUrl = (r: SpotifyRelease) => `https://open.spotify.com/${r.type}/${r.id}`
-export const spotifyEmbed = (r: SpotifyRelease) => `https://open.spotify.com/embed/${r.type}/${r.id}?utm_source=generator&theme=0`
+export const spotifyUrl = (t: Track) => `https://open.spotify.com/${t.type}/${t.id}`
+export const spotifyEmbed = (t: Track) => `https://open.spotify.com/embed/${t.type}/${t.id}?utm_source=generator&theme=0`

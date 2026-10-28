@@ -30,6 +30,10 @@ Na saída (rolagem), a abertura esmaece sobre o fundo contínuo do site: a base 
 
 `src/components/AmbientBackground.tsx`. A linguagem do fundo da abertura (tinta vermelha líquida sobre preto) é uma única camada fixa atrás do site inteiro, do fim da abertura ao rodapé. Enquanto a abertura cobre a tela, ela não é desenhada. A luz muda de lugar conforme a rolagem e a intensidade cai fora da abertura, para o texto continuar legível sem caixas opacas. Renderiza em baixa resolução a ~30 fps, só com a aba visível; com movimento reduzido fica parada; sem WebGL, vira um gradiente estático com a mesma atmosfera.
 
+## Lançamentos
+
+`src/components/ReleasePlayers/`. Três players oficiais do Spotify (O Prédio Vai Tremer, Toda Nua, Sumir Com VC), configurados em `tracks` (`src/content.ts`). Capa, nome, artistas e controles são os do próprio Spotify. Desktop: três colunas. Celular e tablet: carrossel com um player por vez, deslize nativo (funciona começando o gesto em cima do player), setas, indicadores e teclado, em ciclo contínuo (reordenação por CSS `order`, sem recriar iframes). Sem avanço automático: nunca troca de música durante uma reprodução.
+
 ## FlexCarousel
 
 `src/components/FlexCarousel/`. A faixa em DOM é a fonte da verdade (layout, legendas, teclado,
@@ -66,8 +70,6 @@ As fotos foram otimizadas para WebP por `scripts/prep_media.py` (História até 
 | História | historia-lua | PART5 VILACAPrancheta 1.jpg |
 | História | historia-vermelho | PART2 VILACAPrancheta 1.jpg |
 | História | historia-olhar | PART1 VILACAPrancheta 2.jpg |
-| Lançamentos | capa-o-predio-vai-tremer | card do Spotify no release, p. 4 |
-| Lançamentos | capa-toda-nua | card do Spotify no release, p. 4 |
 | Shows | show-esbornia-recife | Esbórnia Recife.jpg |
 | Shows | show-pre-reveillon-bp-fortaleza | Pré Réveillon BP _ Fortaleza.jpg |
 | Shows | show-aniversario-kaio-jorge | Aniversário Kaio Jorge.jpg |
@@ -80,12 +82,8 @@ PART3 Prancheta 2, PART5 Prancheta 2, PART6 Prancheta 1 e 5.
 
 ## Pendências de conteúdo
 
-- **Dois lançamentos enviados como links do Spotify** (álbum `5JjmEbWr52rxs5oh47FJEj` e faixa `40k6jQcjvctYmgmqEkPkHw`): aparecem com o player oficial do Spotify, que mostra capa e título reais. Para virarem cards no formato dos demais, preencha `title` e `cover` em `spotifyReleases` (`src/content.ts`) e registre a capa em `src/media.ts`.
 
-- **Links das faixas no Spotify e capas oficiais em alta**: o ambiente de desenvolvimento não tem acesso ao Spotify. Preencha `spotify` de cada faixa em `src/content.ts` (o card passa a abrir a própria faixa) e substitua as capas em `public/media/` mantendo os nomes. Até lá, os cards abrem o perfil do VILX e dizem isso.
 
 - **E-mail de contato**: não consta nos materiais. Preencha `links.email` em `src/content.ts` e o
   canal aparece na seção Contato.
-- **Capa de "Sumir Com VC"**: não fornecida; a faixa usa uma arte tipográfica temporária.
-- **Capas em alta resolução**: as capas atuais vêm dos cards do release (~360 px).
 - **Eventos das fotos SaveClip**: sem identificação, ficam com a legenda neutra "Ao vivo".
