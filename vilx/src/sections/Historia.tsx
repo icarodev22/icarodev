@@ -3,6 +3,7 @@ import { media, src, srcSet, type Media } from '../media'
 import { ScrollReveal } from '../components/ScrollReveal/ScrollReveal'
 import { LogoMarquee } from '../components/LogoMarquee/LogoMarquee'
 import { eventLogos } from '../eventLogos'
+import { BrandIcon } from '../components/BrandIcon'
 
 function Photo({ item, className, speed, sizes }: { item: Media; className: string; speed: number; sizes: string }) {
   return (
@@ -102,8 +103,10 @@ export function Historia() {
               <ScrollReveal as="strong" className="metrics__value" mode="once" splitBy="chars" stagger={0.04} baseOpacity={0} baseOffset={18} delay={i * 0.08} blurStrength={2}>
                 {s.value}
               </ScrollReveal>
-              <span className="metrics__label">{s.label}</span>
-              <span className="metrics__platform serif">{s.platform}</span>
+              <span className="metrics__label">
+                <BrandIcon brand={s.brand} className="metrics__brand" />
+                {s.label}
+              </span>
             </li>
           ))}
         </ul>
