@@ -6,8 +6,8 @@ import { ScrollReveal } from '../components/ScrollReveal/ScrollReveal'
 import logoVermelho from '../assets/brand/logo-vermelho.png'
 
 export function Contato() {
-  // Plataformas são identificadas pelo símbolo oficial; o nome vai no
-  // aria-label do link. Presskit e e-mail são recursos: continuam em texto.
+  // Plataformas: símbolo oficial + nome. Presskit e e-mail são recursos:
+  // só o nome.
   type Channel = { label: string; detail: string; href: string; brand?: Brand }
   const channels: Channel[] = [
     { label: 'Presskit', detail: 'Fotos, release e material de divulgação', href: links.presskit },
@@ -49,13 +49,10 @@ export function Contato() {
                 className={c.brand ? `channels__link channels__link--${c.brand}` : 'channels__link'}
                 aria-label={`${c.label}: ${c.detail} (abre em nova aba)`}
               >
-                {c.brand ? (
-                  <span className="channels__mark">
-                    <BrandIcon brand={c.brand} decorative />
-                  </span>
-                ) : (
-                  <span className="channels__label">{c.label}</span>
-                )}
+                <span className="channels__label">
+                  {c.brand && <BrandIcon brand={c.brand} decorative />}
+                  {c.label}
+                </span>
                 <span className="channels__detail">{c.detail}</span>
                 <Arrow />
               </a>

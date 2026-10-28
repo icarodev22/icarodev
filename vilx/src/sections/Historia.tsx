@@ -103,9 +103,10 @@ export function Historia() {
               <ScrollReveal as="strong" className="metrics__value" mode="once" splitBy="chars" stagger={0.04} baseOpacity={0} baseOffset={18} delay={i * 0.08} blurStrength={2}>
                 {s.value}
               </ScrollReveal>
-              <span className="metrics__label">
-                <BrandIcon brand={s.brand} className="metrics__brand" />
-                {s.label}
+              <span className="metrics__label">{s.label}</span>
+              <span className="metrics__platform">
+                <BrandIcon brand={s.brand} className="metrics__brand" decorative />
+                {s.platform}
               </span>
             </li>
           ))}

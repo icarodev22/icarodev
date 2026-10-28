@@ -221,20 +221,27 @@
 }
 
 .metrics__label {
-  display: flex;
-  align-items: center;
-  gap: 9px;
   font-size: 16px;
   color: var(--text);
 }
 
-/* símbolo oficial da plataforma, monocromático, no lugar do nome */
+/* símbolo oficial + nome da plataforma */
+.metrics__platform {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 540;
+  letter-spacing: 0.01em;
+  color: var(--mute);
+}
+
 .metrics__brand {
   flex: none;
-  width: 17px;
-  height: 17px;
+  width: 15px;
+  height: 15px;
   color: var(--bone);
-  opacity: 0.9;
 }
 
 .metrics__source {
@@ -654,6 +661,9 @@
 }
 
 .channels__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   font-weight: 600;
   font-stretch: 90%;
   font-size: 24px;
@@ -662,16 +672,11 @@
   transition: color 0.25s var(--ease-out);
 }
 
-/* logo da plataforma ocupa o lugar do nome, na mesma altura visual */
-.channels__mark {
-  display: inline-flex;
-  align-items: center;
-  height: 32px;
-}
-
-.channels__mark .brand-icon {
-  width: 28px;
-  height: 28px;
+/* logo da plataforma ao lado do nome, na altura da letra */
+.channels__label .brand-icon {
+  flex: none;
+  width: 22px;
+  height: 22px;
   transition:
     color 0.25s var(--ease-out),
     transform 0.4s var(--ease-out);
