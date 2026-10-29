@@ -1,0 +1,114 @@
+.ident {
+  --sp: 0;
+  position: relative;
+  padding: clamp(96px, 14vw, 200px) var(--gutter) clamp(80px, 10vw, 160px);
+  overflow: hidden;
+}
+
+/* Continuidade com o Hero: a luz roxa vaza para o preto. */
+.ident::before {
+  content: '';
+  position: absolute;
+  top: 18%;
+  right: -10%;
+  width: 70vw;
+  height: 70vw;
+  max-width: 1000px;
+  max-height: 1000px;
+  background: radial-gradient(closest-side, rgba(159, 38, 254, 0.32), rgba(10, 60, 242, 0.1) 60%, transparent);
+  transform: translate3d(0, calc(var(--sp) * -8vh), 0);
+  pointer-events: none;
+}
+
+.ident__stage {
+  position: relative;
+  margin-top: clamp(40px, 6vw, 80px);
+}
+
+.ident__words {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.ident__word {
+  position: relative;
+  font-size: clamp(76px, 15.5vw, 250px);
+  font-weight: 820;
+  font-stretch: 62%;
+  line-height: 0.84;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Cada linha desliza num sentido conforme a rolagem. */
+.ident__word span {
+  display: inline-block;
+  transform: translate3d(calc(var(--sp) * var(--dir) * 7vw), 0, 0);
+  will-change: transform;
+}
+
+.ident__word--1 {
+  --dir: -1;
+  z-index: 1;
+}
+
+.ident__word--2 {
+  --dir: 1;
+  z-index: 3;
+  align-self: flex-end;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--white);
+}
+
+/* As duas últimas linhas passam à frente da foto: profundidade, como no
+   Hero, sem esconder nenhum estilo. */
+.ident__word--3 {
+  --dir: -1;
+  z-index: 3;
+  padding-left: 6vw;
+}
+
+.ident__photo {
+  position: absolute;
+  z-index: 2;
+  top: 10%;
+  right: 18%;
+  width: clamp(240px, 27vw, 440px);
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 40px 120px -30px rgba(159, 38, 254, 0.7);
+}
+
+.ident__photo img {
+  width: 100%;
+  height: 112%;
+  object-fit: cover;
+  transform: translate3d(0, calc(var(--sp) * -5%), 0);
+}
+
+@media (max-width: 719px) {
+  .ident__word {
+    font-size: 17vw;
+  }
+
+  .ident__word--1 {
+    margin-bottom: 62vw;
+  }
+
+  .ident__word--2 {
+    -webkit-text-stroke-width: 1.5px;
+  }
+
+  .ident__word--3 {
+    padding-left: 0;
+  }
+
+  .ident__photo {
+    top: 15vw;
+    right: 0;
+    width: 64vw;
+  }
+}
