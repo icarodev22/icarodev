@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#07070c" />
+    <title>BAYMA — DJ</title>
+    <meta name="description" content="Site oficial do DJ BAYMA. Funk, brega funk e mega funk. Contratação pelo WhatsApp (81) 9 8957-5353." />
+    <meta property="og:title" content="BAYMA — DJ" />
+    <meta property="og:description" content="Funk, brega funk e mega funk. Contratação: (81) 9 8957-5353." />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/png" href="assets/icons/favicon.png" />
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+    <link rel="preload" as="image" href="assets/img/logo/logo-bayma-branco.png" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script>document.documentElement.classList.add('js')</script>
+  </head>
+  <body>
+    <!-- Ícones usados no site (referenciados com <use href="#i-...">) -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17L17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="1.8" /></symbol>
+      <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" /></symbol>
+      <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" /></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.6-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" fill="currentColor" /></symbol>
+      <symbol id="i-instagram" viewBox="0 0 24 24">
+        <rect x="3" y="3" width="18" height="18" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8" />
+        <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8" />
+        <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" />
+      </symbol>
+      <symbol id="i-whatsapp" viewBox="0 0 24 24">
+        <path d="M3.6 20.4l1.25-4.1A8.6 8.6 0 1 1 8 19.4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+        <path d="M9.1 8.2c.2-.4.5-.4.8-.4h.5c.2 0 .4.1.5.4l.7 1.6c.1.2 0 .5-.1.7l-.5.6c.6 1.1 1.5 2 2.7 2.6l.6-.6c.2-.2.4-.2.7-.1l1.6.7c.3.1.4.3.4.6v.5c0 .4-.1.7-.5.9-.6.4-1.5.6-2.6.2-2.1-.8-3.9-2.6-4.7-4.6-.4-1.1-.3-2.2.1-2.7z" fill="currentColor" />
+      </symbol>
+    </svg>
+
+    <a class="skip" href="#historia">Pular para o conteúdo</a>
+
+    <!-- ===================== NAVEGAÇÃO ===================== -->
+    <header class="nav" data-nav>
+      <a href="#top" class="nav__mark" aria-label="BAYMA, voltar ao início" tabindex="-1">
+        <img src="assets/img/logo/logo-bayma-branco.png" width="1748" height="506" alt="" />
+      </a>
+
+      <nav class="nav__links" aria-label="Principal">
+        <a href="#historia">História</a>
+        <a href="#shows">Shows</a>
+        <a href="#contato">Contato</a>
+        <a class="btn btn--light nav__cta" href="https://wa.me/5581989575353" target="_blank" rel="noopener noreferrer">
+          Contratar
+          <svg aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
+        </a>
+      </nav>
+
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-menu" data-menu-toggle>
+        <span data-menu-label>Menu</span>
+        <i aria-hidden="true"></i>
+      </button>
+    </header>
+
+    <div id="nav-menu" class="nav__menu" hidden>
+      <nav aria-label="Menu">
+        <a href="#historia" style="--i: 0">História</a>
+        <a href="#shows" style="--i: 1">Shows</a>
+        <a href="#contato" style="--i: 2">Contato</a>
+        <a href="https://wa.me/5581989575353" target="_blank" rel="noopener noreferrer" style="--i: 3">
+          Contratar
+          <svg aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
+        </a>
+      </nav>
+      <a class="nav__menu-ig" href="https://www.instagram.com/bayma11/" target="_blank" rel="noopener noreferrer">
+        <svg aria-hidden="true"><use href="#i-instagram" /></svg>
+        @bayma11
+      </a>
+    </div>
+
+    <main>
+      <!-- ===================== HERO ===================== -->
+      <section id="top" class="hero" aria-label="Abertura" data-hero>
+        <div class="hero__frame">
+          <div class="crt hero__bg" style="--crt-base: #0a3cf2; --crt-emit: #8a2cff" aria-hidden="true" data-crt>
+            <canvas></canvas>
+          </div>
+          <div class="hero__glow" aria-hidden="true"></div>
+
+          <h1 class="hero__logo">
+            <img src="assets/img/logo/logo-bayma-branco.png" width="1748" height="506" alt="BAYMA" fetchpriority="high" />
+          </h1>
+
+          <div class="hero__photo">
+            <img
+              src="assets/img/fotos-do-bayma/hero-recorte-estudio-azul.png"
+              width="1300"
+              height="1720"
+              alt="BAYMA sorrindo, de óculos escuros, jaqueta preta e camiseta branca"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </div>
+
+          <div class="hero__side hero__side--left">
+            <p class="hero__kicker">DJ</p>
+            <ul class="hero__styles" aria-label="Estilos musicais">
+              <li>Funk</li>
+              <li>Brega Funk</li>
+              <li>Mega Funk</li>
+            </ul>
+            <a class="btn btn--caps" href="https://wa.me/5581989575353" target="_blank" rel="noopener noreferrer">
+              CONTRATE AQUI
+              <svg aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
+            </a>
+          </div>
+
+          <div class="hero__side hero__side--right">
+            <p class="hero__kicker">Contratação</p>
+            <a class="hero__phone" href="https://wa.me/5581989575353" target="_blank" rel="noopener noreferrer">
+              <span class="sr-only">WhatsApp </span>(81) 9 8957-5353
+            </a>
+            <a class="hero__ig" href="https://www.instagram.com/bayma11/" target="_blank" rel="noopener noreferrer">
+              <svg aria-hidden="true"><use href="#i-instagram" /></svg>
+              @BAYMA11
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== HISTÓRIA ===================== -->
+      <section id="historia" class="hist" aria-labelledby="hist-title" data-scroll-progress>
+        <figure class="hist__photo" data-reveal="image">
+          <img
+            src="assets/img/fotos-do-bayma/estudio-roxo.jpg"
+            width="1365"
+            height="2048"
+            alt="Retrato de Vitor Bayma em fundo roxo, sorrindo, com jaqueta preta bordada"
+            loading="lazy"
+            decoding="async"
+            style="object-position: 50% 22%"
+          />
+        </figure>
+
+        <div class="hist__body">
+          <h2 id="hist-title" class="title hist__title" data-reveal>Quem é <span>Vitor Bayma?</span></h2>
+
+          <!-- TEXTO PROVISÓRIO: substituir pelo texto do presskit oficial (um <p> por parágrafo). -->
+          <div class="hist__text">
+            <p data-reveal style="--d: 120">Vitor Bayma é o DJ BAYMA.</p>
+            <p data-reveal style="--d: 200">Texto provisório: a história completa entra aqui com o presskit oficial.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== SHOWS ===================== -->
+      <section id="shows" class="shows" aria-labelledby="shows-title">
+        <header class="shows__head">
+          <h2 id="shows-title" class="title shows__title" data-reveal>Shows</h2>
+        </header>
+
+        <!--
+          Carrossel: cada <li> é uma foto. data-tint = duas cores tiradas da própria foto,
+          usadas no fundo da seção quando ela está ativa.
+        -->
+        <div class="gcar" data-carousel>
+          <div class="gcar__bg" aria-hidden="true"></div>
+
+          <div class="gcar__stage" role="region" aria-roledescription="carrossel" aria-label="Fotos de shows do BAYMA" tabindex="0">
+            <ul class="gcar__track">
+              <li class="gcar__slide" data-tint="#670205 #2f040d">
+                <img src="assets/img/fotos-do-bayma/show-palco-telao.jpg" width="1440" height="1154" alt="BAYMA no palco, com o nome BAYMA no telão e o público em primeiro plano" decoding="async" draggable="false" style="object-position: 50% 50%" />
+              </li>
+              <li class="gcar__slide" data-tint="#0309c6 #040d81">
+                <img src="assets/img/fotos-do-bayma/show-luz-azul.jpg" width="2731" height="1820" alt="BAYMA tocando com fones no pescoço, braço erguido, sob luzes azuis e roxas" decoding="async" draggable="false" style="object-position: 48% 40%" />
+              </li>
+              <li class="gcar__slide" data-tint="#b83931 #e2714e">
+                <img src="assets/img/fotos-do-bayma/show-luz-vermelha.jpg" width="1365" height="1820" alt="BAYMA nas pick-ups sob luz vermelha" loading="lazy" decoding="async" draggable="false" style="object-position: 58% 45%" />
+              </li>
+              <li class="gcar__slide" data-tint="#e3c66a #69542c">
+                <img src="assets/img/fotos-do-bayma/show-camisa-brasil.jpg" width="2730" height="1820" alt="BAYMA com camisa da seleção brasileira, vibrando atrás das pick-ups" loading="lazy" decoding="async" draggable="false" style="object-position: 62% 35%" />
+              </li>
+              <li class="gcar__slide" data-tint="#e9281c #e40506">
+                <img src="assets/img/fotos-do-bayma/show-cabine.jpg" width="1344" height="1792" alt="BAYMA na cabine de DJ, de camisa azul e fones" decoding="async" draggable="false" style="object-position: 55% 40%" />
+              </li>
+            </ul>
+          </div>
+
+          <div class="gcar__controls">
+            <button type="button" class="gcar__btn" aria-label="Foto anterior" data-prev>
+              <svg aria-hidden="true"><use href="#i-arrow-left" /></svg>
+            </button>
+            <p class="gcar__count" aria-live="polite">
+              <span class="sr-only">Foto </span><strong data-current>01</strong><span aria-hidden="true"> / </span><span class="sr-only"> de </span><span data-total>05</span>
+            </p>
+            <button type="button" class="gcar__btn" aria-label="Próxima foto" data-next>
+              <svg aria-hidden="true"><use href="#i-arrow-right" /></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="shows__cta">
+          <a class="btn btn--light btn--caps shows__videos" href="videos.html">
+            <svg aria-hidden="true"><use href="#i-play" /></svg>
+            CONFIRA OS VÍDEOS
+          </a>
+        </div>
+      </section>
+
+      <!-- ===================== GALERIA ===================== -->
+      <section class="gal" aria-label="Galeria de fotos">
+        <figure class="gal__item gal__item--1" data-reveal="image" style="--d: 0">
+          <img src="assets/img/fotos-do-bayma/estudio-perfil-azul.jpg" width="1365" height="2048" alt="BAYMA de perfil em fundo azul, sorrindo" loading="lazy" decoding="async" data-speed="0.05" style="object-position: 42% 20%" />
+        </figure>
+        <figure class="gal__item gal__item--2" data-reveal="image" style="--d: 120">
+          <img src="assets/img/fotos-do-bayma/show-bone.jpg" width="1440" height="1922" alt="BAYMA de boné nas pick-ups, sorrindo durante o set" loading="lazy" decoding="async" data-speed="0.05" style="object-position: 60% 40%" />
+        </figure>
+        <figure class="gal__item gal__item--3" data-reveal="image" style="--d: 240">
+          <img src="assets/img/fotos-do-bayma/estudio-cinza.jpg" width="1365" height="2048" alt="BAYMA em fundo cinza, segurando os fones, sorrindo" loading="lazy" decoding="async" data-speed="0.05" style="object-position: 50% 15%" />
+        </figure>
+      </section>
+
+      <!-- ===================== CONTRATAÇÃO ===================== -->
+      <section id="contato" class="contato" aria-labelledby="contato-title">
+        <h2 id="contato-title" class="title contato__title" data-reveal>Contratação</h2>
+
+        <ul class="contato__list">
+          <li data-reveal style="--d: 120">
+            <a class="contato__row" href="https://wa.me/5581989575353" target="_blank" rel="noopener noreferrer">
+              <span class="contato__label"><svg aria-hidden="true"><use href="#i-whatsapp" /></svg>WhatsApp</span>
+              <span class="contato__value">(81) 9 8957-5353</span>
+              <svg class="contato__arrow" aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
+            </a>
+          </li>
+          <li data-reveal style="--d: 220">
+            <a class="contato__row" href="https://www.instagram.com/bayma11/" target="_blank" rel="noopener noreferrer">
+              <span class="contato__label"><svg aria-hidden="true"><use href="#i-instagram" /></svg>Instagram</span>
+              <span class="contato__value">@bayma11</span>
+              <svg class="contato__arrow" aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
+            </a>
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <!-- ===================== RODAPÉ ===================== -->
+    <footer class="footer">
+      <a href="#top" class="footer__logo" aria-label="BAYMA, voltar ao início">
+        <img src="assets/img/logo/logo-bayma-roxo.png" width="1748" height="506" alt="" loading="lazy" />
+      </a>
+
+      <nav class="footer__nav" aria-label="Rodapé">
+        <a href="#historia">História</a>
+        <a href="#shows">Shows</a>
+        <a href="#contato">Contato</a>
+      </nav>
+
+      <ul class="footer__social">
+        <li>
+          <a href="https://www.instagram.com/bayma11/" target="_blank" rel="noopener noreferrer">
+            <svg aria-hidden="true"><use href="#i-instagram" /></svg><span>@bayma11</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://wa.me/5581989575353" target="_blank" rel="noopener noreferrer">
+            <svg aria-hidden="true"><use href="#i-whatsapp" /></svg><span><span class="sr-only">WhatsApp, contratação: </span>(81) 9 8957-5353</span>
+          </a>
+        </li>
+      </ul>
+
+      <p class="footer__copy">© <span data-year>2026</span> BAYMA. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>

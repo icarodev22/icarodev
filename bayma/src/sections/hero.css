@@ -339,3 +339,42 @@
     display: none;
   }
 }
+
+/* Identificador @BAYMA11 no Hero */
+.hero__ig {
+  font-family: var(--display);
+  font-size: clamp(20px, 1.8vw, 28px);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--white);
+}
+
+.hero__ig svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Celular e tablet em retrato: o telefone sai do Hero, mas o @BAYMA11 fica. */
+@media (max-width: 719px), (min-width: 720px) and (max-width: 1099px) and (orientation: portrait) {
+  .hero__side--right {
+    display: flex;
+  }
+
+  .hero__side--right > :not(.hero__ig) {
+    display: none;
+  }
+}
+
+@media (max-width: 719px) {
+  .hero__side--right {
+    top: auto;
+    right: var(--pad);
+    bottom: calc(var(--pad) + 56px + 14px);
+    z-index: 4;
+    transform: none;
+  }
+
+  .hero__ig {
+    font-size: 22px;
+  }
+}

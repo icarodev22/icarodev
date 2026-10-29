@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#07070c" />
+    <title>Vídeos de shows — BAYMA</title>
+    <meta name="description" content="Vídeos de shows do DJ BAYMA." />
+    <link rel="icon" type="image/png" href="assets/icons/favicon.png" />
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script>document.documentElement.classList.add('js')</script>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.6-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" fill="currentColor" /></symbol>
+      <symbol id="i-instagram" viewBox="0 0 24 24">
+        <rect x="3" y="3" width="18" height="18" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8" />
+        <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8" />
+        <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" />
+      </symbol>
+      <symbol id="i-whatsapp" viewBox="0 0 24 24">
+        <path d="M3.6 20.4l1.25-4.1A8.6 8.6 0 1 1 8 19.4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+        <path d="M9.1 8.2c.2-.4.5-.4.8-.4h.5c.2 0 .4.1.5.4l.7 1.6c.1.2 0 .5-.1.7l-.5.6c.6 1.1 1.5 2 2.7 2.6l.6-.6c.2-.2.4-.2.7-.1l1.6.7c.3.1.4.3.4.6v.5c0 .4-.1.7-.5.9-.6.4-1.5.6-2.6.2-2.1-.8-3.9-2.6-4.7-4.6-.4-1.1-.3-2.2.1-2.7z" fill="currentColor" />
+      </symbol>
+    </svg>
+
+    <header class="vhead">
+      <a href="index.html" class="vhead__logo" aria-label="BAYMA, página inicial">
+        <img src="assets/img/logo/logo-bayma-branco.png" width="1748" height="506" alt="" />
+      </a>
+      <a href="index.html" class="btn btn--light btn--caps vhead__back">VOLTAR AO INÍCIO</a>
+    </header>
+
+    <main class="videos">
+      <h1 class="title videos__title">Vídeos <span>de shows</span></h1>
+
+      <!-- A lista é montada por js/script.js a partir de BAYMA_VIDEOS (abaixo). -->
+      <ul class="videos__list" data-video-list hidden></ul>
+
+      <div class="videos__empty" data-video-empty>
+        <p>Nenhum vídeo publicado ainda.</p>
+        <a class="btn btn--ghost" href="https://www.instagram.com/bayma11/" target="_blank" rel="noopener noreferrer">
+          <svg aria-hidden="true"><use href="#i-instagram" /></svg>
+          @bayma11
+        </a>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <a href="index.html#top" class="footer__logo" aria-label="BAYMA, voltar ao início">
+        <img src="assets/img/logo/logo-bayma-roxo.png" width="1748" height="506" alt="" loading="lazy" />
+      </a>
+
+      <nav class="footer__nav" aria-label="Rodapé">
+        <a href="index.html#historia">História</a>
+        <a href="index.html#shows">Shows</a>
+        <a href="index.html#contato">Contato</a>
+      </nav>
+
+      <ul class="footer__social">
+        <li>
+          <a href="https://www.instagram.com/bayma11/" target="_blank" rel="noopener noreferrer">
+            <svg aria-hidden="true"><use href="#i-instagram" /></svg><span>@bayma11</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://wa.me/5581989575353" target="_blank" rel="noopener noreferrer">
+            <svg aria-hidden="true"><use href="#i-whatsapp" /></svg><span><span class="sr-only">WhatsApp, contratação: </span>(81) 9 8957-5353</span>
+          </a>
+        </li>
+      </ul>
+
+      <p class="footer__copy">© <span data-year>2026</span> BAYMA. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+      /*
+        VÍDEOS DE SHOWS — só vídeos reais de apresentações do BAYMA.
+        Para adicionar, inclua itens nesta lista:
+
+        Arquivo próprio (coloque o .mp4 em assets/videos/):
+          { titulo: 'Nome do show', tipo: 'arquivo', src: 'assets/videos/show.mp4',
+            poster: 'assets/videos/show.jpg', largura: 1920, altura: 1080 }
+
+        YouTube:
+          { titulo: 'Nome do show', tipo: 'youtube', id: 'ID_DO_VIDEO', largura: 1920, altura: 1080 }
+
+        largura/altura = proporção real do vídeo (vertical: 1080 x 1920).
+      */
+      window.BAYMA_VIDEOS = []
+    </script>
+    <script src="js/script.js"></script>
+  </body>
+</html>

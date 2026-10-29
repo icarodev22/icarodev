@@ -1,0 +1,2 @@
+Coloque aqui os vídeos de shows do BAYMA (.mp4) e, se quiser, as imagens de capa.
+Depois, liste cada vídeo em videos.html (window.BAYMA_VIDEOS). Instruções no README.txt.

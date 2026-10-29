@@ -112,8 +112,8 @@ export function Hero() {
               <li key={s}>{s}</li>
             ))}
           </ul>
-          <a className="btn" href={contacts.whatsapp.href} target="_blank" rel="noopener noreferrer">
-            Contratar
+          <a className="btn btn--caps" href={contacts.whatsapp.href} target="_blank" rel="noopener noreferrer">
+            CONTRATE AQUI
             <ArrowUpRight />
           </a>
         </div>
@@ -126,7 +126,7 @@ export function Hero() {
           </a>
           <a className="hero__ig" href={contacts.instagram.href} target="_blank" rel="noopener noreferrer">
             <InstagramIcon />
-            {contacts.instagram.display}
+            {contacts.instagram.display.toUpperCase()}
           </a>
         </div>
       </div>
