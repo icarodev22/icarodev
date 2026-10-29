@@ -9,12 +9,14 @@ export const artist = {
 }
 
 /**
- * Biografia da seção "Quem é Vitor Bayma?".
- * Deve vir do presskit oficial (pasta do Google Drive informada). Enquanto o
- * material não for extraído, fica vazia e a seção mostra só os fatos
- * confirmados acima. Cada item é um parágrafo.
+ * Texto da seção "Quem é Vitor Bayma?", um parágrafo por item.
+ * PROVISÓRIO: substituir pelo texto do presskit oficial (pasta do Google
+ * Drive enviada pelo artista) quando ele estiver disponível.
  */
-export const story: string[] = []
+export const story: string[] = [
+  'Vitor Bayma é o DJ BAYMA.',
+  'Texto provisório: a história completa entra aqui com o presskit oficial.',
+]
 
 export const contacts = {
   whatsapp: {

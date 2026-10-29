@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { contacts, sections } from '../content'
 import { logo } from '../media'
-import { ArrowUpRight, InstagramIcon, WhatsAppIcon } from './icons'
+import { ArrowUpRight, InstagramIcon } from './icons'
 import './nav.css'
 
 export function Nav() {
@@ -115,22 +115,10 @@ export function Nav() {
             <ArrowUpRight />
           </a>
         </nav>
-        <div className="nav__menu-contacts">
-          <a href={contacts.whatsapp.href} target="_blank" rel="noopener noreferrer">
-            <WhatsAppIcon />
-            <span>
-              <small>{contacts.whatsapp.purpose}</small>
-              {contacts.whatsapp.display}
-            </span>
-          </a>
-          <a href={contacts.instagram.href} target="_blank" rel="noopener noreferrer">
-            <InstagramIcon />
-            <span>
-              <small>{contacts.instagram.label}</small>
-              {contacts.instagram.display}
-            </span>
-          </a>
-        </div>
+        <a className="nav__menu-ig" href={contacts.instagram.href} target="_blank" rel="noopener noreferrer">
+          <InstagramIcon />
+          {contacts.instagram.display}
+        </a>
       </div>
     </>
   )

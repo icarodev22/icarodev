@@ -1,14 +1,10 @@
 import { useRef } from 'react'
-import { artist, story } from '../content'
+import { story } from '../content'
 import { historia } from '../media'
 import { useScrollProgress } from '../hooks/useScrollProgress'
 import './historia.css'
 
-/**
- * "Quem é Vitor Bayma?". O texto vem de content.ts (story), que deve ser
- * preenchido com o presskit oficial. Sem ele, a seção mostra apenas os fatos
- * confirmados: nome, função e estilos.
- */
+/** "Quem é Vitor Bayma?". O texto vem de `story` em content.ts. */
 export function Historia() {
   const ref = useRef<HTMLElement>(null)
   useScrollProgress(ref)
@@ -30,37 +26,17 @@ export function Historia() {
       </figure>
 
       <div className="hist__body">
-        <p className="eyebrow" data-reveal>
-          História
-        </p>
-        <h2 id="hist-title" className="title hist__title" data-reveal style={{ ['--d' as string]: 80 }}>
+        <h2 id="hist-title" className="title hist__title" data-reveal>
           Quem é <span>Vitor Bayma?</span>
         </h2>
 
         <div className="hist__text">
-          {story.length > 0 ? (
-            story.map((p, i) => (
-              <p key={i} data-reveal style={{ ['--d' as string]: 160 + i * 80 }}>
-                {p}
-              </p>
-            ))
-          ) : (
-            <p data-reveal style={{ ['--d' as string]: 160 }}>
-              {artist.realName} é o {artist.name}, DJ de funk, brega funk e mega funk.
+          {story.map((p, i) => (
+            <p key={i} data-reveal style={{ ['--d' as string]: 120 + i * 80 }}>
+              {p}
             </p>
-          )}
-          {story.length === 0 && import.meta.env.DEV && (
-            <p className="hist__pending" role="note">
-              Biografia pendente: depende do presskit oficial (preencher <code>story</code> em src/content.ts).
-            </p>
-          )}
-        </div>
-
-        <ul className="hist__styles" aria-label="Estilos musicais" data-reveal style={{ ['--d' as string]: 240 }}>
-          {artist.styles.map((s) => (
-            <li key={s}>{s}</li>
           ))}
-        </ul>
+        </div>
       </div>
     </section>
   )

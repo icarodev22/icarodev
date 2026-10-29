@@ -9,22 +9,6 @@
   padding: clamp(96px, 12vw, 180px) var(--gutter) clamp(80px, 10vw, 150px);
 }
 
-/* Luz roxa controlada: só atrás do retrato, vindo do canto. */
-.hist::before {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  top: 6%;
-  left: -12%;
-  width: 60vw;
-  height: 60vw;
-  max-width: 900px;
-  max-height: 900px;
-  background: radial-gradient(closest-side, rgba(159, 38, 254, 0.28), transparent);
-  transform: translate3d(0, calc(var(--sp) * -6vh), 0);
-  pointer-events: none;
-}
-
 .hist__photo {
   position: relative;
   grid-column: 1 / 7;
@@ -66,6 +50,12 @@
   color: var(--blue-hi);
 }
 
+.hist__text p:first-child {
+  font-size: 1.25em;
+  font-weight: 600;
+  color: var(--white);
+}
+
 .hist__text {
   display: flex;
   flex-direction: column;
@@ -74,30 +64,6 @@
   font-size: clamp(18px, 1.35vw, 21px);
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.86);
-}
-
-.hist__pending {
-  padding: 14px 16px;
-  border: 1px dashed var(--purple-glow);
-  border-radius: 12px;
-  font-size: 15px;
-  color: var(--purple-glow);
-}
-
-.hist__styles {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 0;
-  font-family: var(--display);
-  font-size: clamp(26px, 2.6vw, 40px);
-  line-height: 1.1;
-  text-transform: uppercase;
-}
-
-.hist__styles li + li::before {
-  content: '·';
-  margin: 0 0.4em;
-  color: var(--purple-glow);
 }
 
 @media (max-width: 819px) {
@@ -123,13 +89,9 @@
     grid-column: 1;
   }
 
-  .hist__body > .eyebrow {
-    grid-row: 1;
-    margin-bottom: 20px;
-  }
-
   .hist__title {
     grid-row: 2;
+    margin-top: 0;
     align-self: end;
     z-index: 2;
     margin: 0 0 -0.08em;
@@ -140,14 +102,14 @@
     margin-left: 0;
   }
 
+  .hist__text p:first-child {
+    font-size: 1.25em;
+    font-weight: 600;
+    color: var(--white);
+  }
+
   .hist__text {
     grid-row: 3;
     margin-top: 32px;
-  }
-
-  .hist__styles {
-    grid-row: 4;
-    margin-top: 28px;
-    font-size: 26px;
   }
 }

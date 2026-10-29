@@ -1,173 +1,123 @@
 .contato {
   position: relative;
   margin: 0 var(--frame-gap);
+  padding: clamp(40px, 6vw, 88px) clamp(20px, 4vw, 64px) clamp(28px, 4vw, 56px);
   overflow: hidden;
-  isolation: isolate;
   border-radius: var(--frame-radius);
+  background: var(--blue);
 }
 
-.contato__bg {
-  z-index: -1;
-}
-
-.contato__inner {
-  display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  align-items: end;
-  gap: clamp(32px, 5vw, 80px);
-  min-height: min(72svh, 720px);
-  padding: clamp(40px, 6vw, 96px) clamp(20px, 4vw, 72px);
-}
-
-.contato__intro {
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 32px;
-}
-
-.contato__title {
-  font-size: clamp(60px, 7vw, 128px);
-}
-
-.contato__methods {
-  display: grid;
-  gap: 14px;
-}
-
-.method {
-  position: relative;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: clamp(16px, 2vw, 28px);
-  padding: clamp(20px, 2.6vw, 34px) clamp(20px, 2.6vw, 36px);
-  overflow: hidden;
-  isolation: isolate;
-  border-radius: 22px;
-  background: rgba(7, 7, 12, 0.82);
-  transition: box-shadow 0.4s var(--ease-out);
-}
-
-/* Preenchimento que sobe no hover/foco: azul para o WhatsApp, roxo para o Instagram. */
-.method::before {
+/* A mesma textura horizontal do Hero, estática. */
+.contato::before {
   content: '';
   position: absolute;
   inset: 0;
-  z-index: -1;
-  background: var(--tone);
-  transform: translateY(101%);
-  transition: transform 0.6s var(--ease-io);
+  background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.14) 0 1px, transparent 1px 3px);
+  pointer-events: none;
 }
 
-.method--blue {
-  --tone: var(--blue);
+.contato > * {
+  position: relative;
 }
 
-.method--purple {
-  --tone: var(--purple);
-}
-
-.method:hover::before,
-.method:focus-visible::before {
-  transform: none;
-}
-
-.method:focus-visible {
-  outline-offset: 4px;
-  border-radius: 22px;
-}
-
-.method__icon {
-  display: grid;
-  place-items: center;
-  width: clamp(48px, 5vw, 64px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--tone);
-  transition: background 0.4s;
-}
-
-.method:hover .method__icon,
-.method:focus-visible .method__icon {
-  background: var(--black);
-}
-
-.method__icon svg {
-  width: 55%;
-  height: 55%;
-}
-
-.method__text {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  min-width: 0;
-}
-
-.method__label {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--grey);
-  transition: color 0.3s;
-}
-
-.method:hover .method__label,
-.method:focus-visible .method__label {
-  color: var(--white);
-}
-
-.method__value {
-  font-size: clamp(26px, 3.2vw, 48px);
-  font-weight: 600;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+/* O título ocupa a largura do painel, como a logo no Hero. */
+.contato__title {
+  font-size: clamp(64px, 16vw, 280px);
+  line-height: 0.82;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-.method__arrow {
-  width: clamp(24px, 2.4vw, 36px);
-  height: clamp(24px, 2.4vw, 36px);
-  transition: transform 0.5s var(--ease-out);
+.contato__list {
+  margin-top: clamp(32px, 5vw, 72px);
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
 }
 
-.method:hover .method__arrow,
-.method:focus-visible .method__arrow {
+.contato__list li {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.contato__row {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) auto auto;
+  align-items: center;
+  gap: clamp(16px, 3vw, 48px);
+  padding: clamp(18px, 2.4vw, 30px) 0;
+  transition: color 0.35s var(--ease-out);
+}
+
+.contato__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--grey-on-blue);
+  transition: color 0.35s var(--ease-out);
+}
+
+.contato__label svg {
+  width: 22px;
+  height: 22px;
+}
+
+.contato__value {
+  font-size: clamp(30px, 4.6vw, 72px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+}
+
+.contato__arrow {
+  width: clamp(28px, 3vw, 44px);
+  height: clamp(28px, 3vw, 44px);
+  transition: transform 0.45s var(--ease-out);
+}
+
+.contato__row:hover,
+.contato__row:focus-visible {
+  color: var(--black);
+}
+
+.contato__row:hover .contato__label,
+.contato__row:focus-visible .contato__label {
+  color: var(--black);
+}
+
+.contato__row:hover .contato__arrow,
+.contato__row:focus-visible .contato__arrow {
   transform: translate(4px, -4px);
 }
 
-@media (max-width: 899px) {
-  .contato__inner {
-    grid-template-columns: minmax(0, 1fr);
-    align-items: start;
-    min-height: 0;
-  }
-
-  .contato__intro {
-    gap: 20px;
-  }
-}
-
 @media (max-width: 719px) {
-  .contato__inner {
-    padding: 48px 16px 16px;
-    gap: 40px;
+  .contato {
+    padding: 36px 16px 8px;
   }
 
   .contato__title {
-    font-size: 16vw;
+    font-size: 16.4vw;
   }
 
-  .method {
-    padding: 18px 16px;
-    gap: 14px;
-    border-radius: 18px;
+  .contato__row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'label arrow'
+      'value arrow';
+    row-gap: 8px;
+    padding: 20px 0;
   }
 
-  .method__value {
-    font-size: clamp(20px, 5.8vw, 28px);
+  .contato__label {
+    grid-area: label;
+    font-size: 16px;
+  }
+
+  .contato__value {
+    grid-area: value;
+    font-size: clamp(26px, 8.2vw, 36px);
+  }
+
+  .contato__arrow {
+    grid-area: arrow;
   }
 }

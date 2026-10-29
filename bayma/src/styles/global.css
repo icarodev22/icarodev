@@ -143,24 +143,6 @@ ul {
   text-transform: uppercase;
 }
 
-/* Sobretítulo: pequeno, mas legível, em caixa normal. */
-.eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--grey);
-}
-
-.eyebrow::before {
-  content: '';
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--purple-glow);
-}
-
 /*
  * Botão da marca: sólido, de cantos generosos, texto em DM Sans sem
  * espaçamento exagerado. Variações: --light (sobre fundo escuro) e

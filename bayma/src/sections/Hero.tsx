@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { CrtField, crtPresets } from '../components/CrtField'
-import { ArrowDown, ArrowUpRight, InstagramIcon } from '../components/icons'
+import { ArrowUpRight, InstagramIcon } from '../components/icons'
 import { artist, contacts } from '../content'
 import { hero, logo } from '../media'
 import { clamp, isCoarsePointer, prefersReducedMotion } from '../lib/env'
@@ -129,11 +129,6 @@ export function Hero() {
             {contacts.instagram.display}
           </a>
         </div>
-
-        <a className="hero__cue" href="#historia">
-          <ArrowDown />
-          Conheça a história
-        </a>
       </div>
     </section>
   )

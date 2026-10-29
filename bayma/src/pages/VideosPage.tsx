@@ -38,10 +38,10 @@ export function VideosPage() {
           </ul>
         ) : (
           <div className="videos__empty">
-            <p>Os vídeos das apresentações do BAYMA serão publicados aqui em breve.</p>
+            <p>Nenhum vídeo publicado ainda.</p>
             <a className="btn btn--ghost" href={contacts.instagram.href} target="_blank" rel="noopener noreferrer">
               <InstagramIcon />
-              Acompanhe no Instagram
+              {contacts.instagram.display}
             </a>
           </div>
         )}

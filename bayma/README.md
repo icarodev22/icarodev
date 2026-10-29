@@ -22,7 +22,7 @@ O site tem duas páginas e deve ser publicado na **raiz do domínio**:
 | História | `src/sections/Historia.tsx` | "Quem é Vitor Bayma?" com o retrato roxo (@gabriellrec-44) |
 | Shows | `src/sections/Shows.tsx` + `src/components/GradientCarousel.tsx` | Carrossel 3D de 5 fotos ao vivo; o fundo assume a cor da foto ativa; botão "CONFIRA OS VÍDEOS" |
 | Galeria | `src/sections/Galeria.tsx` | 3 fotos grandes em composição assimétrica |
-| Contato | `src/sections/Contato.tsx` | Contratação: WhatsApp e Instagram |
+| Contato | `src/sections/Contato.tsx` | Painel azul de contratação (espelha o Hero): WhatsApp e Instagram |
 | Rodapé | `src/components/Footer.tsx` | Logo roxa, História/Shows/Contato, Instagram, WhatsApp, ano automático |
 | Vídeos | `videos/index.html` + `src/pages/VideosPage.tsx` | Página só com os vídeos e o rodapé, botão "VOLTAR AO INÍCIO" |
 
@@ -32,13 +32,11 @@ cores em tokens CSS no topo de `src/styles/global.css`.
 ## Conteúdo que ainda depende de material
 
 - **Biografia (História):** o presskit no Google Drive não pôde ser acessado pelo ambiente de
-  desenvolvimento. A seção mostra apenas os fatos confirmados (nome, DJ, estilos). Para
-  publicar a biografia, preencha `story` em `src/content.ts` (um parágrafo por item) com o
-  texto do presskit. Em `npm run dev` aparece um aviso enquanto ela estiver vazia; no build
-  final o aviso não aparece.
+  desenvolvimento. A seção tem um texto provisório curto e marcado como tal. Para publicar a
+  biografia, troque `story` em `src/content.ts` (um parágrafo por item) pelo texto do presskit.
 - **Vídeos:** adicione em `src/videos.ts` (instruções no arquivo). Arquivos próprios usam
-  `preload="none"`; YouTube só carrega depois do clique. Sem vídeos, a página mostra uma
-  mensagem e o link do Instagram, sem players vazios.
+  `preload="none"`; YouTube só carrega depois do clique. Sem vídeos, a página diz apenas que
+  nenhum vídeo foi publicado e leva ao Instagram, sem players vazios.
 
 ## Fotos
 
@@ -58,7 +56,7 @@ Não instalado. O ambiente não tinha `REACTBITS_LICENSE_KEY` e a rede bloqueava
   (perspectiva 3D, vizinhas parcialmente visíveis, fundo na tonalidade da foto ativa, botões,
   teclado, arrastar). A variante `-tw` do React Bits exige Tailwind, que o projeto não usa.
 - **Contact 3 / Footer 8** → contato e rodapé feitos à mão seguindo a estrutura dos blocos.
-- **CRTWarp** → shader próprio em `src/components/CrtField.tsx`.
+- **CRTWarp** → shader próprio em `src/components/CrtField.tsx`, usado só no fundo do Hero.
 
 Com a licença e o acesso liberados, a instalação oficial é feita em `bayma/` com
 `npx shadcn@latest add @reactbits-starter/gradient-carousel-tw` (e os blocos Pro) seguindo

@@ -9,10 +9,7 @@ export function Shows() {
   return (
     <section id="shows" className="shows" aria-labelledby="shows-title">
       <header className="shows__head">
-        <p className="eyebrow" data-reveal>
-          Ao vivo
-        </p>
-        <h2 id="shows-title" className="title shows__title" data-reveal style={{ ['--d' as string]: 80 }}>
+        <h2 id="shows-title" className="title shows__title" data-reveal>
           Shows
         </h2>
       </header>
