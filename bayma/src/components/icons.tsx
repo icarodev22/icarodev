@@ -30,6 +30,44 @@ export function ArrowDown({ className }: Props) {
   )
 }
 
+export function ArrowLeft({ className }: Props) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+    >
+      <path d="M19 12H5M11 6l-6 6 6 6" />
+    </svg>
+  )
+}
+
+export function ArrowRight({ className }: Props) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+    >
+      <path d="M5 12h14M13 6l6 6-6 6" />
+    </svg>
+  )
+}
+
+export function PlayIcon({ className }: Props) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+      <path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.6-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" />
+    </svg>
+  )
+}
+
 export function InstagramIcon({ className }: Props) {
   return (
     <svg

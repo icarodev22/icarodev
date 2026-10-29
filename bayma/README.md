@@ -1,7 +1,8 @@
 # BAYMA — site oficial
 
 Vite + React 18 + TypeScript (mesma stack do projeto `vilx/`, que segue intacto).
-WebGL com [OGL](https://github.com/oframe/ogl).
+WebGL com [OGL](https://github.com/oframe/ogl). Fontes: Anton (títulos) e DM Sans (texto,
+navegação, botões), via Fontsource.
 
 ```bash
 npm install
@@ -10,40 +11,61 @@ npm run build     # gera dist/ (enviar o conteúdo para a hospedagem)
 npm run preview   # serve o build localmente
 ```
 
+O site tem duas páginas e deve ser publicado na **raiz do domínio**:
+`/` (principal) e `/videos/` (vídeos de shows).
+
 ## Estrutura
 
-| Seção | Arquivo | Conteúdo |
+| Área | Arquivo | Conteúdo |
 | --- | --- | --- |
-| Hero | `src/sections/Hero.tsx` | Azul elétrico + efeito CRT, logo original monumental, recorte da foto @gabriellrec-27 sobreposto às letras, estilos, contratação |
-| 01 Identidade | `src/sections/Identidade.tsx` | FUNK · BREGA FUNK · MEGA FUNK cruzando o retrato em fundo roxo (@gabriellrec-44) |
-| 02 Galeria | `src/sections/Galeria.tsx` | 7 fotos em composição editorial assimétrica |
-| 03 Contato | `src/sections/Contato.tsx` | WhatsApp e Instagram, sobre o efeito CRT roxo |
-| Rodapé | `src/components/Footer.tsx` | Logo roxa original, navegação, ícones sociais, direitos autorais |
+| Hero | `src/sections/Hero.tsx` | Azul elétrico + textura CRT, logo original monumental, recorte da foto @gabriellrec-27 com o rosto livre das letras |
+| História | `src/sections/Historia.tsx` | "Quem é Vitor Bayma?" com o retrato roxo (@gabriellrec-44) |
+| Shows | `src/sections/Shows.tsx` + `src/components/GradientCarousel.tsx` | Carrossel 3D de 5 fotos ao vivo; o fundo assume a cor da foto ativa; botão "CONFIRA OS VÍDEOS" |
+| Galeria | `src/sections/Galeria.tsx` | 3 fotos grandes em composição assimétrica |
+| Contato | `src/sections/Contato.tsx` | Contratação: WhatsApp e Instagram |
+| Rodapé | `src/components/Footer.tsx` | Logo roxa, História/Shows/Contato, Instagram, WhatsApp, ano automático |
+| Vídeos | `videos/index.html` + `src/pages/VideosPage.tsx` | Página só com os vídeos e o rodapé, botão "VOLTAR AO INÍCIO" |
 
 Dados oficiais em `src/content.ts`; fotos e textos alternativos em `src/media.ts`;
 cores em tokens CSS no topo de `src/styles/global.css`.
 
+## Conteúdo que ainda depende de material
+
+- **Biografia (História):** o presskit no Google Drive não pôde ser acessado pelo ambiente de
+  desenvolvimento. A seção mostra apenas os fatos confirmados (nome, DJ, estilos). Para
+  publicar a biografia, preencha `story` em `src/content.ts` (um parágrafo por item) com o
+  texto do presskit. Em `npm run dev` aparece um aviso enquanto ela estiver vazia; no build
+  final o aviso não aparece.
+- **Vídeos:** adicione em `src/videos.ts` (instruções no arquivo). Arquivos próprios usam
+  `preload="none"`; YouTube só carrega depois do clique. Sem vídeos, a página mostra uma
+  mensagem e o link do Instagram, sem players vazios.
+
 ## Fotos
 
-- `scripts/prep_media.py <pasta-dos-originais>` gera `public/media/` (WebP em várias larguras).
+- `scripts/prep_media.py <pasta-dos-originais>` gera `public/media/` (WebP em várias larguras)
+  e `src/tints.json` (duas cores de cada foto de show, usadas no fundo do carrossel).
 - O recorte do Hero (`reference/hero-recorte-27.webp`) foi feito com segmentação de pessoa
   (rembg, `isnet-general-use`) sobre a foto original: só a máscara, nenhum pixel gerado.
 - A logo branca é a logo original com a cor trocada (mesmo canal alfa, mesmo desenho).
-- Não usadas: a versão P&B de um clique que entrou colorido (evita repetição) e a foto com a
-  marca de um patrocinador em primeiro plano. A `BAYMA - PRETO.png` está em `reference/`
-  para usos em fundo claro.
+- Cada foto aparece uma vez. A versão P&B de um clique que entrou colorido ficou de fora.
 
-## Pendências e limitações
+## React Bits Pro
 
-- **React Bits Pro (Contact 3, Footer 8, CRTWarp): não instalados.** O ambiente não tinha
-  `REACTBITS_LICENSE_KEY` e a rede bloqueava `pro.reactbits.dev`. Contato e rodapé foram
-  construídos à mão seguindo a estrutura desses blocos (dois canais reais, sem inventar um
-  terceiro). O fundo CRT é um shader próprio (`src/components/CrtField.tsx`) com os
-  parâmetros pedidos (emissão `#c755f7`, fundo `#120f17`, curvatura, scanlines,
-  persistência, distorção, cursor). Com a licença, rode no diretório `bayma/`
-  `npx shadcn@latest add @reactbits-pro/contact-3` (e `footer-8`) seguindo
-  https://pro.reactbits.dev/docs/installation; o projeto ainda não tem `components.json`.
-- **Links externos:** `https://wa.me/5581989575353` e `https://www.instagram.com/bayma11/`
-  estão no código, mas não puderam ser abertos a partir do ambiente de desenvolvimento
-  (rede bloqueada). Confira os dois num navegador antes de publicar.
-- Sem músicas, sets ou agenda: nenhuma seção foi criada para isso.
+Não instalado. O ambiente não tinha `REACTBITS_LICENSE_KEY` e a rede bloqueava
+`pro.reactbits.dev`. Por isso:
+
+- **Gradient Carousel** → `GradientCarousel.tsx`, implementação própria com a mesma ideia
+  (perspectiva 3D, vizinhas parcialmente visíveis, fundo na tonalidade da foto ativa, botões,
+  teclado, arrastar). A variante `-tw` do React Bits exige Tailwind, que o projeto não usa.
+- **Contact 3 / Footer 8** → contato e rodapé feitos à mão seguindo a estrutura dos blocos.
+- **CRTWarp** → shader próprio em `src/components/CrtField.tsx`.
+
+Com a licença e o acesso liberados, a instalação oficial é feita em `bayma/` com
+`npx shadcn@latest add @reactbits-starter/gradient-carousel-tw` (e os blocos Pro) seguindo
+https://pro.reactbits.dev/docs/installation. O projeto ainda não tem `components.json`.
+
+## Links externos
+
+`https://wa.me/5581989575353` e `https://www.instagram.com/bayma11/` estão no código, mas não
+puderam ser abertos a partir do ambiente de desenvolvimento (rede bloqueada). Confira os dois
+num navegador antes de publicar.

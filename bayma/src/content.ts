@@ -1,11 +1,20 @@
 /**
  * Dados oficiais do BAYMA. Só entra aqui o que foi confirmado pelo artista:
- * nada de biografia, cidade, eventos, músicas ou números inventados.
+ * nada de cidade, datas, eventos, músicas ou números inventados.
  */
 export const artist = {
   name: 'BAYMA',
+  realName: 'Vitor Bayma',
   styles: ['Funk', 'Brega Funk', 'Mega Funk'],
 }
+
+/**
+ * Biografia da seção "Quem é Vitor Bayma?".
+ * Deve vir do presskit oficial (pasta do Google Drive informada). Enquanto o
+ * material não for extraído, fica vazia e a seção mostra só os fatos
+ * confirmados acima. Cada item é um parágrafo.
+ */
+export const story: string[] = []
 
 export const contacts = {
   whatsapp: {
@@ -22,9 +31,12 @@ export const contacts = {
   },
 } as const
 
-/** Seções reais do site, na ordem da página. A navegação só aponta para elas. */
+/** Seções da página principal, na ordem da navegação. */
 export const sections = [
-  { id: 'identidade', label: 'Identidade' },
-  { id: 'galeria', label: 'Galeria' },
+  { id: 'historia', label: 'História' },
+  { id: 'shows', label: 'Shows' },
   { id: 'contato', label: 'Contato' },
 ] as const
+
+/** Endereço da página de vídeos (videos/index.html). */
+export const videosHref = '/videos/'

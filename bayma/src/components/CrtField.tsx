@@ -103,7 +103,7 @@ export const crtPresets = {
   /** Hero: o azul elétrico é a base; o roxo é a luz que passa por ele. */
   hero: { base: '#0a3cf2', emit: '#8a2cff', emit2: '#c755f7', glow: 0.62, curve: 0.04, warp: 1, noise: 0.035 },
   /** Contato: a configuração de partida do CRT (roxo sobre quase-preto). */
-  contato: { base: '#120f17', emit: '#c755f7', emit2: '#3d6bff', glow: 0.5, curve: 0.06, warp: 0.8, noise: 0.05 },
+  contato: { base: '#120f17', emit: '#c755f7', emit2: '#3d6bff', glow: 0.4, curve: 0.06, warp: 0.8, noise: 0.05 },
 } satisfies Record<string, CrtPreset>
 
 /**

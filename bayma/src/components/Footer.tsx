@@ -6,17 +6,18 @@ import './footer.css'
 /**
  * Rodapé centralizado (estrutura do Footer 8 do React Bits Pro): logo
  * original, navegação essencial, ícones sociais reais e direitos autorais.
+ * `home` é o endereço da página principal ('' nela mesma, '/' nas outras).
  */
-export function Footer() {
+export function Footer({ home = '' }: { home?: string }) {
   return (
     <footer className="footer">
-      <a href="#top" className="footer__logo" aria-label="BAYMA, voltar ao início">
+      <a href={`${home}#top`} className="footer__logo" aria-label="BAYMA, voltar ao início">
         <img src={logo.purple} width={logo.width} height={logo.height} alt="" loading="lazy" />
       </a>
 
       <nav className="footer__nav" aria-label="Rodapé">
         {sections.map((s) => (
-          <a key={s.id} href={`#${s.id}`} className="mono">
+          <a key={s.id} href={`${home}#${s.id}`}>
             {s.label}
           </a>
         ))}
@@ -24,28 +25,23 @@ export function Footer() {
 
       <ul className="footer__social">
         <li>
-          <a
-            href={contacts.instagram.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Instagram ${contacts.instagram.display}`}
-          >
+          <a href={contacts.instagram.href} target="_blank" rel="noopener noreferrer">
             <InstagramIcon />
+            <span>{contacts.instagram.display}</span>
           </a>
         </li>
         <li>
-          <a
-            href={contacts.whatsapp.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`WhatsApp ${contacts.whatsapp.display}`}
-          >
+          <a href={contacts.whatsapp.href} target="_blank" rel="noopener noreferrer">
             <WhatsAppIcon />
+            <span>
+              <span className="sr-only">WhatsApp, contratação: </span>
+              {contacts.whatsapp.display}
+            </span>
           </a>
         </li>
       </ul>
 
-      <p className="footer__copy mono">© {new Date().getFullYear()} BAYMA · Todos os direitos reservados</p>
+      <p className="footer__copy">© {new Date().getFullYear()} BAYMA. Todos os direitos reservados.</p>
     </footer>
   )
 }

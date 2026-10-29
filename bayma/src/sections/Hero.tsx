@@ -96,7 +96,7 @@ export function Hero() {
           <img
             src={hero.src}
             srcSet={hero.srcSet}
-            sizes="(max-width: 719px) 92vw, (max-width: 1099px) 62vw, 46vh"
+            sizes="(max-width: 719px) 92vw, (max-width: 1099px) 56vw, 40vh"
             width={hero.width}
             height={hero.height}
             alt={hero.alt}
@@ -106,33 +106,33 @@ export function Hero() {
         </div>
 
         <div className="hero__side hero__side--left">
-          <p className="mono hero__kicker">DJ</p>
+          <p className="hero__kicker">DJ</p>
           <ul className="hero__styles" aria-label="Estilos musicais">
             {artist.styles.map((s) => (
               <li key={s}>{s}</li>
             ))}
           </ul>
-          <a className="pill" href={contacts.whatsapp.href} target="_blank" rel="noopener noreferrer">
+          <a className="btn" href={contacts.whatsapp.href} target="_blank" rel="noopener noreferrer">
             Contratar
             <ArrowUpRight />
           </a>
         </div>
 
         <div className="hero__side hero__side--right">
-          <p className="mono hero__kicker">{contacts.whatsapp.purpose}</p>
+          <p className="hero__kicker">{contacts.whatsapp.purpose}</p>
           <a className="hero__phone" href={contacts.whatsapp.href} target="_blank" rel="noopener noreferrer">
             <span className="sr-only">WhatsApp </span>
             {contacts.whatsapp.display}
           </a>
-          <a className="hero__ig mono" href={contacts.instagram.href} target="_blank" rel="noopener noreferrer">
+          <a className="hero__ig" href={contacts.instagram.href} target="_blank" rel="noopener noreferrer">
             <InstagramIcon />
             {contacts.instagram.display}
           </a>
         </div>
 
-        <a className="hero__cue mono" href="#identidade">
+        <a className="hero__cue" href="#historia">
           <ArrowDown />
-          Conheça
+          Conheça a história
         </a>
       </div>
     </section>

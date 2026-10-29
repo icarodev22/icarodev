@@ -20,10 +20,10 @@ export function Contato() {
 
       <div className="contato__inner">
         <div className="contato__intro">
-          <p className="label mono" data-reveal>
-            03 · Contato
+          <p className="eyebrow" data-reveal>
+            Contato
           </p>
-          <h2 id="contato-title" className="contato__title" data-reveal style={{ ['--d' as string]: 100 }}>
+          <h2 id="contato-title" className="title contato__title" data-reveal style={{ ['--d' as string]: 100 }}>
             Contratação
           </h2>
         </div>
@@ -42,7 +42,7 @@ export function Contato() {
                   <Icon />
                 </span>
                 <span className="method__text">
-                  <span className="mono method__label">
+                  <span className="method__label">
                     {label} · {purpose}
                   </span>
                   <span className="method__value">{display}</span>

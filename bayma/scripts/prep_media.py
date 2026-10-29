@@ -12,6 +12,7 @@ retoque ou pixel gerado: só a máscara de recorte.
 
 Saída: public/media/*.webp em várias larguras + logos em PNG/WebP.
 """
+import json
 import sys
 from pathlib import Path
 
@@ -31,7 +32,28 @@ PHOTOS = {
     'ao-vivo-bone': ('SaveClip.App_523905652_18517570459025135_3427014171278845961_n.jpg', [720, 1200]),
     'ao-vivo-vermelho': ('SaveClip.App_671186325_18581112523025135_3431649863310107845_n.jpg', [720, 1200]),
     'ao-vivo-brasil': ('SaveClip.App_723562034_18597388516025135_8381335863490312335_n.jpg', [900, 1500]),
+    'ao-vivo-cabine': ('SaveClip.App_617281599_18552321682025135_4570109415228575156_n.jpg', [720, 1200]),
 }
+
+# Fotos do carrossel de shows: o fundo da seção assume a tonalidade de cada uma.
+SHOWS = ['palco-telao', 'ao-vivo-azul', 'ao-vivo-vermelho', 'ao-vivo-brasil', 'ao-vivo-cabine']
+
+
+def tints(im: Image.Image):
+    """Duas cores da própria foto: a mais vibrante e frequente, e uma segunda."""
+    small = im.resize((96, round(96 * im.height / im.width)))
+    pal = small.quantize(colors=10, method=Image.Quantize.MEDIANCUT)
+    counts = sorted(pal.getcolors(), reverse=True)
+    colors = pal.getpalette()
+    scored = []
+    for count, idx in counts:
+        r, g, b = colors[idx * 3 : idx * 3 + 3]
+        mx, mn = max(r, g, b), min(r, g, b)
+        sat = (mx - mn) / mx if mx else 0
+        scored.append((count * (sat**1.5) * (mx / 255), (r, g, b)))
+    scored.sort(reverse=True)
+    pick = [c for _, c in scored[:2]]
+    return ['#%02x%02x%02x' % c for c in pick]
 
 
 def save_widths(im: Image.Image, name: str, widths, quality=80):
@@ -45,9 +67,14 @@ def save_widths(im: Image.Image, name: str, widths, quality=80):
 def main(src: Path):
     OUT.mkdir(parents=True, exist_ok=True)
 
+    tint_map = {}
     for name, (file, widths) in PHOTOS.items():
         im = ImageOps.exif_transpose(Image.open(src / file)).convert('RGB')
         save_widths(im, name, widths)
+        if name in SHOWS:
+            tint_map[name] = tints(im)
+    (ROOT / 'src' / 'tints.json').write_text(json.dumps(tint_map, indent=2) + '\n')
+    print('tints', tint_map)
 
     # Recorte do Hero: corta a área transparente e mantém o canal alfa.
     cut = Image.open(ROOT / 'reference' / 'hero-recorte-27.webp').convert('RGBA')

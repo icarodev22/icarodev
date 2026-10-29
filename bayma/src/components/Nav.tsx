@@ -10,7 +10,12 @@ export function Nav() {
   const [active, setActive] = useState<string | null>(null)
 
   useEffect(() => {
-    const onScroll = () => setSolid(window.scrollY > window.innerHeight * 0.82)
+    const onScroll = () => {
+      setSolid(window.scrollY > window.innerHeight * 0.82)
+      // Acima da primeira seção nenhuma aba está ativa.
+      const first = document.getElementById(sections[0].id)
+      if (first && first.getBoundingClientRect().top > window.innerHeight * 0.5) setActive(null)
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     const io = new IntersectionObserver(
@@ -32,7 +37,7 @@ export function Nav() {
   useEffect(() => {
     if (!open) return
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false)
-    const onResize = () => window.innerWidth >= 720 && setOpen(false)
+    const onResize = () => window.innerWidth >= 820 && setOpen(false)
     document.addEventListener('keydown', onKey)
     window.addEventListener('resize', onResize)
     document.body.style.overflow = 'hidden'
@@ -58,20 +63,25 @@ export function Nav() {
           <img src={logo.white} width={logo.width} height={logo.height} alt="" />
         </a>
 
-        <nav className="nav__links" aria-label="Seções">
+        <nav className="nav__links" aria-label="Principal">
           {sections.map((s) => (
-            <a key={s.id} href={`#${s.id}`} className="mono" aria-current={active === s.id ? 'true' : undefined}>
+            <a key={s.id} href={`#${s.id}`} aria-current={active === s.id ? 'location' : undefined}>
               {s.label}
             </a>
           ))}
-          <a className="mono nav__cta" href={contacts.whatsapp.href} target="_blank" rel="noopener noreferrer">
+          <a
+            className="btn btn--light nav__cta"
+            href={contacts.whatsapp.href}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Contratar
             <ArrowUpRight />
           </a>
         </nav>
 
         <button
-          className="nav__toggle mono"
+          className="nav__toggle"
           aria-expanded={open}
           aria-controls="nav-menu"
           onClick={() => setOpen((o) => !o)}
@@ -84,24 +94,39 @@ export function Nav() {
       <div id="nav-menu" className="nav__menu" hidden={!open}>
         <nav aria-label="Menu">
           {sections.map((s, i) => (
-            <a key={s.id} href={`#${s.id}`} onClick={close} style={{ ['--i' as string]: i }}>
-              <span className="mono">0{i + 1}</span>
+            <a
+              key={s.id}
+              href={`#${s.id}`}
+              onClick={close}
+              aria-current={active === s.id ? 'location' : undefined}
+              style={{ ['--i' as string]: i }}
+            >
               {s.label}
             </a>
           ))}
+          <a
+            href={contacts.whatsapp.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={close}
+            style={{ ['--i' as string]: sections.length }}
+          >
+            Contratar
+            <ArrowUpRight />
+          </a>
         </nav>
         <div className="nav__menu-contacts">
           <a href={contacts.whatsapp.href} target="_blank" rel="noopener noreferrer">
             <WhatsAppIcon />
             <span>
-              <span className="mono">{contacts.whatsapp.purpose}</span>
+              <small>{contacts.whatsapp.purpose}</small>
               {contacts.whatsapp.display}
             </span>
           </a>
           <a href={contacts.instagram.href} target="_blank" rel="noopener noreferrer">
             <InstagramIcon />
             <span>
-              <span className="mono">{contacts.instagram.label}</span>
+              <small>{contacts.instagram.label}</small>
               {contacts.instagram.display}
             </span>
           </a>

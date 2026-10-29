@@ -1,0 +1,138 @@
+.vhead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px var(--gutter);
+  background: rgba(7, 7, 12, 0.86);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.vhead__logo {
+  width: clamp(92px, 10vw, 128px);
+}
+
+.vhead__back {
+  min-height: 48px;
+  padding: 0 22px;
+  font-size: 15px;
+}
+
+.videos {
+  min-height: 70svh;
+  padding: clamp(48px, 8vw, 120px) var(--gutter) clamp(40px, 6vw, 80px);
+  animation: videos-in 0.5s var(--ease-out) both;
+}
+
+.videos__title {
+  font-size: clamp(64px, 11vw, 190px);
+}
+
+.videos__title span {
+  display: block;
+  color: var(--blue-hi);
+}
+
+.videos__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr));
+  gap: clamp(24px, 3vw, 40px);
+  margin-top: clamp(40px, 6vw, 80px);
+}
+
+.videos__list li.is-vertical .vplayer {
+  max-height: 80svh;
+  margin-inline: auto;
+}
+
+.videos__name {
+  margin-top: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--grey);
+}
+
+.vplayer {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 0;
+  border-radius: 18px;
+  background: var(--black-2);
+}
+
+.vplayer--poster {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  cursor: pointer;
+}
+
+.vplayer--poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease-out);
+}
+
+.vplayer--poster:hover img {
+  transform: scale(1.03);
+}
+
+.vplayer__play {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--black);
+}
+
+.vplayer__play svg {
+  width: 28px;
+  height: 28px;
+  margin-left: 4px;
+}
+
+.videos__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  max-width: 32em;
+  margin-top: clamp(32px, 4vw, 56px);
+  font-size: clamp(18px, 1.5vw, 22px);
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.videos__empty .btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.videos__empty .btn:hover svg {
+  transform: none;
+}
+
+@keyframes videos-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@media (max-width: 719px) {
+  .vhead__back {
+    min-height: 44px;
+    padding: 0 16px;
+    font-size: 14px;
+  }
+}
