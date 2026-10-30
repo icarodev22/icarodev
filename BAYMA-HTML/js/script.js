@@ -510,46 +510,106 @@
   })()
 
   // ---------------------------------------------------------------------------
-  // Carrossel de Shows: perspectiva 3D, fundo na cor da foto ativa.
-  // Botões, setas do teclado, arrastar e clique nas fotos vizinhas.
+  // Carrossel de Shows (conceito do Gradient Carousel): composição 3D com a foto
+  // ativa no centro e as vizinhas girando em perspectiva para os lados. A foto
+  // ativa tinge a luz do fundo da seção. Setas (desktop), teclado, clique nas
+  // vizinhas e arraste contínuo para os dois lados (mouse e dedo).
   // ---------------------------------------------------------------------------
 
   document.querySelectorAll('[data-carousel]').forEach(function (root) {
+    var section = root.closest('.shows') || root
     var stage = root.querySelector('.gcar__stage')
-    var track = root.querySelector('.gcar__track')
     var slides = Array.prototype.slice.call(root.querySelectorAll('.gcar__slide'))
     var current = root.querySelector('[data-current]')
     var total = root.querySelector('[data-total]')
+    var ambient = section.querySelectorAll('.shows__ambient img')
     var n = slides.length
-    var index = 0
+    var index = 0 // pode crescer sem limite; a foto ativa é index mod n
+    var lastOffset = []
     var suppressClick = false
+    var mobile = window.matchMedia('(max-width: 719px)')
     var pad = function (v) {
       return String(v).padStart(2, '0')
     }
+    var mod = function (v) {
+      return ((v % n) + n) % n
+    }
     total.textContent = pad(n)
 
-    var render = function () {
+    // Geometria da composição: desktop mostra a ativa e duas de cada lado;
+    // no celular, a ativa maior e só as vizinhas imediatas espiando nas bordas.
+    var geometry = function () {
+      return mobile.matches
+        ? { step: 0.9, far: 0.45, depth: 210, farDepth: 160, turn: 30, farTurn: 10, fade: 2.6 }
+        : { step: 0.84, far: 0.56, depth: 280, farDepth: 220, turn: 38, farTurn: 12, fade: 1.1 }
+    }
+
+    // Posiciona as fotos para uma posição (fracionária durante o arraste).
+    var layout = function (pos) {
+      var w = slides[0].offsetWidth || 1
+      var g = geometry()
       slides.forEach(function (li, i) {
-        // Posição relativa circular em torno da foto ativa.
-        var o = i - index
-        if (o > n / 2) o -= n
-        if (o < -n / 2) o += n
-        li.style.setProperty('--o', o)
-        li.style.setProperty('--a', Math.abs(o))
-        li.classList.toggle('is-active', o === 0)
-        li.setAttribute('aria-hidden', o === 0 ? 'false' : 'true')
+        var f = mod(i - pos + n / 2) - n / 2 // distância circular até a ativa
+        var a = Math.abs(f)
+        var sign = f < 0 ? -1 : 1
+        var near = Math.min(a, 1)
+        var beyond = Math.max(0, a - 1)
+        // Ao dar a volta (de um lado para o outro), a foto troca de lado sem animar.
+        if (lastOffset[i] !== undefined && Math.abs(f - lastOffset[i]) > n / 2) {
+          li.classList.add('no-anim')
+          void li.offsetWidth
+        } else li.classList.remove('no-anim')
+        lastOffset[i] = f
+        li.style.setProperty('--tx', (sign * w * (g.step * near + g.far * beyond)).toFixed(1) + 'px')
+        li.style.setProperty('--tz', (-(g.depth * near + g.farDepth * beyond)).toFixed(1) + 'px')
+        li.style.setProperty('--ry', (-sign * (g.turn * near + g.farTurn * beyond)).toFixed(2) + 'deg')
+        li.style.setProperty('--s', (1 - 0.04 * near).toFixed(3))
+        li.style.setProperty('--op', a <= 1.4 ? '1' : Math.max(0, 1 - (a - 1.4) * g.fade).toFixed(3))
+        li.style.setProperty('--br', (1 - 0.3 * Math.min(a, 2)).toFixed(3))
+        li.style.setProperty('--sat', (1 - 0.25 * near).toFixed(3))
+        li.style.zIndex = String(10 - Math.round(a * 2))
+      })
+    }
+
+    // Luz do fundo: troca suave para a foto ativa (duas camadas em revezamento).
+    var ambientOn = 0
+    var setAmbient = function (img) {
+      if (!ambient.length) return
+      var src = img.currentSrc || img.src
+      var next = ambient[1 - ambientOn]
+      if (ambient[ambientOn].getAttribute('src') === src) return
+      var done = false
+      var show = function () {
+        if (done) return // carregada do cache: "complete" e "onload" chamariam duas vezes
+        done = true
+        next.onload = null
+        next.classList.add('is-on')
+        ambient[ambientOn].classList.remove('is-on')
+        ambientOn = 1 - ambientOn
+      }
+      next.onload = show
+      next.setAttribute('src', src)
+      if (next.complete && next.naturalWidth) show()
+    }
+
+    var render = function () {
+      var active = mod(index)
+      layout(index)
+      slides.forEach(function (li, i) {
+        var on = i === active
+        li.classList.toggle('is-active', on)
+        li.setAttribute('aria-hidden', on ? 'false' : 'true')
         li.setAttribute('aria-roledescription', 'slide')
         li.setAttribute('aria-label', i + 1 + ' de ' + n)
-        // Fotos próximas carregam já; as distantes esperam.
-        if (Math.abs(o) <= 1) li.querySelector('img').loading = 'eager'
       })
-      var tint = slides[index].dataset.tint.split(' ')
-      root.style.setProperty('--c1', tint[0])
-      root.style.setProperty('--c2', tint[1])
-      current.textContent = pad(index + 1)
+      var tint = slides[active].dataset.tint.split(' ')
+      section.style.setProperty('--c1', tint[0])
+      section.style.setProperty('--c2', tint[1])
+      current.textContent = pad(active + 1)
+      setAmbient(slides[active].querySelector('img'))
     }
     var go = function (to) {
-      index = ((to % n) + n) % n
+      index = to
       render()
     }
 
@@ -561,53 +621,64 @@
     })
     slides.forEach(function (li, i) {
       li.addEventListener('click', function () {
-        if (!li.classList.contains('is-active') && !suppressClick) go(i)
+        if (suppressClick || li.classList.contains('is-active')) return
+        var f = mod(i - index + n / 2) - n / 2
+        go(index + Math.round(f))
       })
     })
     stage.addEventListener('keydown', function (e) {
-      var keys = { ArrowRight: index + 1, ArrowLeft: index - 1, Home: 0, End: n - 1 }
+      var keys = { ArrowRight: index + 1, ArrowLeft: index - 1, Home: index - mod(index), End: index - mod(index) + n - 1 }
       if (e.key in keys) {
         e.preventDefault()
         go(keys[e.key])
       }
     })
 
-    // Arrastar: o trilho acompanha o dedo e decide no fim do gesto.
+    // Arraste contínuo: as fotos acompanham o dedo/mouse em 3D e, ao soltar,
+    // assentam na foto mais próxima (ou na seguinte, se o gesto foi rápido).
     var drag = null
-    var setDrag = function (v) {
-      track.style.setProperty('--drag', v)
-      root.classList.toggle('is-dragging', v !== 0)
-    }
     stage.addEventListener('pointerdown', function (e) {
       if (e.button !== 0) return
-      drag = { x: e.clientX, id: e.pointerId, moved: false }
+      drag = { x: e.clientX, y: e.clientY, id: e.pointerId, moved: false, t: performance.now(), lastX: e.clientX, v: 0 }
     })
     stage.addEventListener('pointermove', function (e) {
       if (!drag || drag.id !== e.pointerId) return
       var dx = e.clientX - drag.x
-      if (!drag.moved && Math.abs(dx) > 6) {
+      if (!drag.moved) {
+        if (Math.abs(dx) < 6 || Math.abs(dx) < Math.abs(e.clientY - drag.y)) return
         drag.moved = true
+        root.classList.add('is-dragging')
         stage.setPointerCapture(e.pointerId)
       }
-      if (drag.moved) setDrag(dx / (stage.clientWidth || 1))
+      var now = performance.now()
+      drag.v = (e.clientX - drag.lastX) / Math.max(1, now - drag.t)
+      drag.lastX = e.clientX
+      drag.t = now
+      var unit = (slides[0].offsetWidth || 1) * geometry().step
+      layout(index - dx / unit)
     })
     var end = function (e) {
       if (!drag || drag.id !== e.pointerId) return
-      var dx = (e.clientX - drag.x) / (stage.clientWidth || 1)
       var moved = drag.moved
+      var unit = (slides[0].offsetWidth || 1) * geometry().step
+      var pos = index - (e.clientX - drag.x) / unit
+      var flick = Math.abs(drag.v) > 0.45 ? (drag.v < 0 ? 0.5 : -0.5) : 0
       drag = null
-      setDrag(0)
-      if (moved) {
-        // O click disparado ao soltar não deve trocar a foto.
-        suppressClick = true
-        setTimeout(function () {
-          suppressClick = false
-        }, 0)
-        if (Math.abs(dx) > 0.08) go(index + (dx < 0 ? 1 : -1))
-      }
+      root.classList.remove('is-dragging')
+      if (!moved) return
+      // O click disparado ao soltar não deve trocar a foto.
+      suppressClick = true
+      setTimeout(function () {
+        suppressClick = false
+      }, 0)
+      go(Math.round(pos + flick))
     }
     stage.addEventListener('pointerup', end)
     stage.addEventListener('pointercancel', end)
+    mobile.addEventListener('change', render)
+    window.addEventListener('resize', function () {
+      layout(index)
+    })
 
     render()
   })

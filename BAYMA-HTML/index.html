@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#07070c" />
     <title>BAYMA — DJ</title>
-    <meta name="description" content="Site oficial do DJ BAYMA. Funk, brega funk e mega funk. Contratação pelo WhatsApp (81) 9 8957-5353." />
+    <meta name="description" content="Site oficial do DJ BAYMA. Contratação pelo WhatsApp (81) 9 8957-5353." />
     <meta property="og:title" content="BAYMA — DJ" />
-    <meta property="og:description" content="Funk, brega funk e mega funk. Contratação: (81) 9 8957-5353." />
+    <meta property="og:description" content="Site oficial do DJ BAYMA. Contratação: (81) 9 8957-5353." />
     <meta property="og:type" content="website" />
     <link rel="icon" type="image/png" href="assets/icons/favicon.png" />
     <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
@@ -28,6 +28,8 @@
     </script>
   </head>
   <body>
+    <!-- Fundo contínuo do site: base escura, luz azul e roxa lenta e textura horizontal. -->
+    <div class="ambient" aria-hidden="true"></div>
     <!-- Ícones usados no site (referenciados com <use href="#i-...">) -->
     <svg width="0" height="0" style="position: absolute" aria-hidden="true">
       <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17L17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="1.8" /></symbol>
@@ -102,12 +104,6 @@
           </div>
 
           <div class="hero__side hero__side--left">
-            <p class="hero__kicker">DJ</p>
-            <ul class="hero__styles" aria-label="Estilos musicais">
-              <li>Funk</li>
-              <li>Brega Funk</li>
-              <li>Mega Funk</li>
-            </ul>
             <a class="btn btn--caps" href="https://wa.me/5581989575353" target="_blank" rel="noopener noreferrer">
               CONTRATE AQUI
               <svg aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
@@ -155,35 +151,34 @@
               e criando momentos de intensidade em cada show.
             </p>
           </div>
-
-          <ul class="hist__styles" aria-label="Estilos musicais" data-reveal style="--d: 280">
-            <li>Funk</li>
-            <li>Brega Funk</li>
-            <li>Mega Funk</li>
-          </ul>
         </div>
       </section>
 
       <!-- ===================== SHOWS ===================== -->
       <section id="shows" class="shows" aria-labelledby="shows-title">
+        <!-- Luz da seção: a foto ativa, muito desfocada, tinge o fundo (troca com a foto). -->
+        <div class="shows__ambient" aria-hidden="true">
+          <img class="is-on" src="assets/img/fotos-do-bayma/show-palco-telao.jpg" alt="" decoding="async" />
+          <img src="assets/img/fotos-do-bayma/show-palco-telao.jpg" alt="" decoding="async" />
+        </div>
+
         <header class="shows__head">
           <h2 id="shows-title" class="title shows__title" data-reveal>Shows</h2>
         </header>
 
         <!--
-          Carrossel: cada <li> é uma foto. data-tint = duas cores tiradas da própria foto,
-          usadas no fundo da seção quando ela está ativa.
+          Carrossel 3D: cada <li> é uma foto. data-tint = duas cores tiradas da própria
+          foto, usadas na luz do fundo quando ela está ativa.
         -->
         <div class="gcar" data-carousel>
-          <div class="gcar__bg" aria-hidden="true"></div>
 
           <div class="gcar__stage" role="region" aria-roledescription="carrossel" aria-label="Fotos de shows do BAYMA" tabindex="0">
             <ul class="gcar__track">
               <li class="gcar__slide" data-tint="#670205 #2f040d">
-                <img src="assets/img/fotos-do-bayma/show-palco-telao.jpg" width="1440" height="1154" alt="BAYMA no palco, com o nome BAYMA no telão e o público em primeiro plano" decoding="async" draggable="false" style="object-position: 50% 50%" />
+                <img src="assets/img/fotos-do-bayma/show-palco-telao.jpg" width="1440" height="1154" alt="BAYMA no palco, com o nome BAYMA no telão e o público em primeiro plano" loading="lazy" decoding="async" draggable="false" style="object-position: 50% 50%" />
               </li>
               <li class="gcar__slide" data-tint="#0309c6 #040d81">
-                <img src="assets/img/fotos-do-bayma/show-luz-azul.jpg" width="2731" height="1820" alt="BAYMA tocando com fones no pescoço, braço erguido, sob luzes azuis e roxas" decoding="async" draggable="false" style="object-position: 48% 40%" />
+                <img src="assets/img/fotos-do-bayma/show-luz-azul.jpg" width="2731" height="1820" alt="BAYMA tocando com fones no pescoço, braço erguido, sob luzes azuis e roxas" loading="lazy" decoding="async" draggable="false" style="object-position: 48% 40%" />
               </li>
               <li class="gcar__slide" data-tint="#b83931 #e2714e">
                 <img src="assets/img/fotos-do-bayma/show-luz-vermelha.jpg" width="1365" height="1820" alt="BAYMA nas pick-ups sob luz vermelha" loading="lazy" decoding="async" draggable="false" style="object-position: 58% 45%" />
@@ -192,7 +187,7 @@
                 <img src="assets/img/fotos-do-bayma/show-camisa-brasil.jpg" width="2730" height="1820" alt="BAYMA com camisa da seleção brasileira, vibrando atrás das pick-ups" loading="lazy" decoding="async" draggable="false" style="object-position: 62% 35%" />
               </li>
               <li class="gcar__slide" data-tint="#e9281c #e40506">
-                <img src="assets/img/fotos-do-bayma/show-cabine.jpg" width="1344" height="1792" alt="BAYMA na cabine de DJ, de camisa azul e fones" decoding="async" draggable="false" style="object-position: 55% 40%" />
+                <img src="assets/img/fotos-do-bayma/show-cabine.jpg" width="1344" height="1792" alt="BAYMA na cabine de DJ, de camisa azul e fones" loading="lazy" decoding="async" draggable="false" style="object-position: 55% 40%" />
               </li>
             </ul>
           </div>
@@ -243,13 +238,13 @@
 
             <form class="contato__form" novalidate data-booking data-reveal style="--d: 160">
               <div class="field">
-                <label for="f-local">LOCAL</label>
+                <label for="f-local">Local</label>
                 <input id="f-local" name="local" type="text" placeholder="Cidade, espaço ou endereço do evento" maxlength="160" required autocomplete="off" aria-describedby="err-local" />
                 <p id="err-local" class="field__error" hidden></p>
               </div>
 
               <div class="field">
-                <label id="f-tipo-label" for="f-tipo">TIPO DO EVENTO</label>
+                <label id="f-tipo-label" for="f-tipo">Tipo do evento</label>
                 <!-- Seleção própria (a lista nativa do navegador não segue o visual do site).
                      O valor escolhido vai para o campo oculto "tipo". -->
                 <div class="select" data-select>
@@ -270,13 +265,13 @@
               </div>
 
               <div class="field" data-outro hidden>
-                <label for="f-tipo-outro">QUAL TIPO DE EVENTO?</label>
+                <label for="f-tipo-outro">Qual tipo de evento?</label>
                 <input id="f-tipo-outro" name="tipoOutro" type="text" maxlength="80" autocomplete="off" aria-describedby="err-tipoOutro" />
                 <p id="err-tipoOutro" class="field__error" hidden></p>
               </div>
 
               <div class="field">
-                <label for="f-info">MAIS INFORMAÇÕES</label>
+                <label for="f-info">Mais informações</label>
                 <textarea id="f-info" name="info" placeholder="Conte um pouco sobre o evento..." maxlength="1200" rows="3"></textarea>
               </div>
 

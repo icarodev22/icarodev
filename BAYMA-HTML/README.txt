@@ -21,7 +21,7 @@ js/script.js      Menu, carrossel, animações, efeito do Hero e vídeos.
 assets/
   img/fotos-do-bayma/   Fotografias do artista (arquivos originais).
   img/logo/             Logos do BAYMA.
-  fonts/                Fontes Anton e DM Sans (locais, com licenças).
+  fonts/                Fontes Anton e Instrument Sans (locais, com licenças).
   icons/                Favicon e ícone para celular.
   videos/               Pasta para os vídeos de shows (vazia por enquanto).
 
@@ -43,7 +43,11 @@ Abra os arquivos em qualquer editor de texto (VS Code, Bloco de Notas...).
   aba nova. Ela fica no bloco <!-- ABERTURA --> do index.html; os tempos estão
   no fim do css/style.css (seção ABERTURA).
 - Cores: no início do css/style.css, em :root (--blue, --purple, --black...).
-- Fotos do carrossel de Shows: cada foto é um <li class="gcar__slide"> no
+- Fundo do site: o bloco "AMBIENTE" no fim do css/style.css (luz azul e roxa
+  lenta e textura horizontal). Fica igual em todas as seções e páginas.
+- Carrossel de Shows: composição 3D (foto ativa no centro, vizinhas em
+  perspectiva). Setas no computador; no celular, deslize o dedo. A foto ativa
+  também ilumina o fundo da seção. Cada foto é um <li class="gcar__slide"> no
   index.html. O atributo data-tint traz as duas cores usadas no fundo
   quando a foto está ativa. Para trocar uma foto, mude o src, o width/height
   (tamanho real do arquivo) e o alt (descrição).
@@ -151,4 +155,5 @@ O efeito animado do fundo azul do Hero usa WebGL do próprio navegador. Em
 aparelhos sem WebGL, ou com "reduzir movimento" ativado, o fundo fica
 estático, sem perder o conteúdo.
 
-Fontes: Anton e DM Sans (SIL Open Font License, licenças em assets/fonts).
+Fontes: Anton (títulos) e Instrument Sans (textos, navegação e botões) — SIL
+Open Font License, licenças em assets/fonts.
