@@ -245,15 +245,23 @@
               </div>
 
               <div class="field">
-                <label for="f-tipo">TIPO DO EVENTO</label>
-                <select id="f-tipo" name="tipo" required aria-describedby="err-tipo">
-                  <option value="" selected disabled>Selecione</option>
-                  <option>Festa particular</option>
-                  <option>Aniversário</option>
-                  <option>Evento universitário</option>
-                  <option>Evento corporativo</option>
-                  <option>Outro</option>
-                </select>
+                <label id="f-tipo-label" for="f-tipo">TIPO DO EVENTO</label>
+                <!-- Seleção própria (a lista nativa do navegador não segue o visual do site).
+                     O valor escolhido vai para o campo oculto "tipo". -->
+                <div class="select" data-select>
+                  <button type="button" id="f-tipo" class="select__button" aria-haspopup="listbox" aria-expanded="false" aria-controls="f-tipo-list" aria-labelledby="f-tipo-label f-tipo-value" aria-describedby="err-tipo">
+                    <span id="f-tipo-value" class="select__value is-placeholder">Selecione</span>
+                    <svg class="select__chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" /></svg>
+                  </button>
+                  <ul id="f-tipo-list" class="select__list" role="listbox" aria-labelledby="f-tipo-label" tabindex="-1" hidden>
+                    <li role="option" id="f-tipo-op1" data-value="Festa particular" aria-selected="false">Festa particular</li>
+                    <li role="option" id="f-tipo-op2" data-value="Aniversário" aria-selected="false">Aniversário</li>
+                    <li role="option" id="f-tipo-op3" data-value="Evento universitário" aria-selected="false">Evento universitário</li>
+                    <li role="option" id="f-tipo-op4" data-value="Evento corporativo" aria-selected="false">Evento corporativo</li>
+                    <li role="option" id="f-tipo-op5" data-value="Outro" aria-selected="false">Outro</li>
+                  </ul>
+                  <input type="hidden" name="tipo" value="" />
+                </div>
                 <p id="err-tipo" class="field__error" hidden></p>
               </div>
 

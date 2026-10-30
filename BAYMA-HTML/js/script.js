@@ -692,6 +692,119 @@
     })
   })()
   // ---------------------------------------------------------------------------
+  // Seleção própria ([data-select]): botão + lista, com o visual do site.
+  // Teclado: setas, Home/End, Enter/Espaço, Esc, Tab e a inicial da opção.
+  // O valor vai para o campo oculto da seleção, que dispara "change".
+  // ---------------------------------------------------------------------------
+
+  document.querySelectorAll('[data-select]').forEach(function (root) {
+    var button = root.querySelector('.select__button')
+    var valueEl = root.querySelector('.select__value')
+    var list = root.querySelector('.select__list')
+    var input = root.querySelector('input[type="hidden"]')
+    var options = Array.prototype.slice.call(list.querySelectorAll('[role="option"]'))
+    var placeholder = valueEl.textContent
+    var active = -1
+
+    var setActive = function (i) {
+      active = Math.max(0, Math.min(options.length - 1, i))
+      options.forEach(function (o, k) {
+        o.classList.toggle('is-active', k === active)
+      })
+      list.setAttribute('aria-activedescendant', options[active].id)
+      options[active].scrollIntoView({ block: 'nearest' })
+    }
+    var isOpen = function () {
+      return !list.hidden
+    }
+    var open = function () {
+      if (isOpen()) return
+      list.hidden = false
+      button.setAttribute('aria-expanded', 'true')
+      var current = options.findIndex(function (o) {
+        return o.getAttribute('aria-selected') === 'true'
+      })
+      setActive(current >= 0 ? current : 0)
+      list.focus({ preventScroll: true })
+    }
+    var close = function (focusButton) {
+      if (!isOpen()) return
+      list.hidden = true
+      button.setAttribute('aria-expanded', 'false')
+      list.removeAttribute('aria-activedescendant')
+      if (focusButton) button.focus({ preventScroll: true })
+    }
+    var choose = function (i) {
+      var o = options[i]
+      options.forEach(function (x) {
+        x.setAttribute('aria-selected', x === o ? 'true' : 'false')
+      })
+      valueEl.textContent = o.textContent
+      valueEl.classList.remove('is-placeholder')
+      var changed = input.value !== o.dataset.value
+      input.value = o.dataset.value
+      close(true)
+      if (changed) input.dispatchEvent(new Event('change', { bubbles: true }))
+    }
+    // Permite limpar a seleção (usado se o formulário for reiniciado).
+    root.reset = function () {
+      options.forEach(function (x) {
+        x.setAttribute('aria-selected', 'false')
+      })
+      valueEl.textContent = placeholder
+      valueEl.classList.add('is-placeholder')
+      input.value = ''
+    }
+
+    button.addEventListener('click', function () {
+      if (isOpen()) close(true)
+      else open()
+    })
+    button.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault()
+        open()
+      }
+    })
+    options.forEach(function (o, i) {
+      o.addEventListener('mousemove', function () {
+        if (active !== i) setActive(i)
+      })
+      o.addEventListener('click', function () {
+        choose(i)
+      })
+    })
+    list.addEventListener('keydown', function (e) {
+      var k = e.key
+      if (k === 'ArrowDown') setActive(active + 1)
+      else if (k === 'ArrowUp') setActive(active - 1)
+      else if (k === 'Home') setActive(0)
+      else if (k === 'End') setActive(options.length - 1)
+      else if (k === 'Enter' || k === ' ') choose(active)
+      else if (k === 'Escape') close(true)
+      else if (k === 'Tab') {
+        close(false)
+        return
+      } else if (k.length === 1) {
+        // Pula para a próxima opção que começa com a letra digitada.
+        var letter = k.toLowerCase()
+        for (var n = 1; n <= options.length; n++) {
+          var idx = (active + n) % options.length
+          if (options[idx].textContent.trim().toLowerCase().indexOf(letter) === 0) {
+            setActive(idx)
+            break
+          }
+        }
+      } else return
+      e.preventDefault()
+    })
+    // Fecha ao clicar/tocar fora.
+    document.addEventListener('pointerdown', function (e) {
+      if (isOpen() && !root.contains(e.target)) close(false)
+    })
+  })
+
+  // ---------------------------------------------------------------------------
   // Contratação: formulário → mensagem organizada no WhatsApp oficial.
   // Mesma lógica de bayma/src/lib/booking.ts (versão React).
   // A mensagem só é enviada quando o visitante confirma no próprio WhatsApp.
@@ -754,11 +867,12 @@
   window.BAYMA_BOOKING = { validate: validateBooking, message: buildBookingMessage, url: bookingUrl }
 
   document.querySelectorAll('[data-booking]').forEach(function (form) {
-    var tipo = form.elements.tipo
+    var tipo = form.elements.tipo // campo oculto da seleção própria
+    var tipoButton = form.querySelector('#f-tipo') // o que o visitante vê e foca
     var outroField = form.querySelector('[data-outro]')
     var outro = form.elements.tipoOutro
     var status = form.querySelector('[data-booking-status]')
-    var fields = { tipo: tipo, tipoOutro: outro, local: form.elements.local }
+    var fields = { tipo: tipoButton, tipoOutro: outro, local: form.elements.local }
 
     var showError = function (key, msg) {
       var el = fields[key]

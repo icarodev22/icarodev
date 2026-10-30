@@ -1367,7 +1367,7 @@ ul {
 }
 
 .field input,
-.field select,
+.field .select__button,
 .field textarea {
   width: 100%;
   min-height: 50px;
@@ -1394,35 +1394,14 @@ ul {
   color: rgba(255, 255, 255, 0.62);
 }
 
-.field select {
-  appearance: none;
-  -webkit-appearance: none;
-  padding-right: 44px;
-  cursor: pointer;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  background-size: 18px;
-}
-
-/* Sem tipo escolhido, o select parece um placeholder. */
-.field select:has(option[value='']:checked) {
-  color: rgba(255, 255, 255, 0.62);
-}
-
-.field option {
-  background: var(--black-2);
-  color: var(--white);
-}
-
 .field input:hover,
-.field select:hover,
+.field .select__button:hover,
 .field textarea:hover {
   border-color: rgba(255, 255, 255, 0.6);
 }
 
 .field input:focus-visible,
-.field select:focus-visible,
+.field .select__button:focus-visible,
 .field textarea:focus-visible {
   outline: none;
   border-color: var(--white);
@@ -1457,6 +1436,106 @@ ul {
 
 .field__error[hidden] {
   display: none;
+}
+
+/* ---------- Seleção do tipo de evento ---------- */
+
+.select {
+  position: relative;
+}
+
+.field .select__button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.select__value.is-placeholder {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.select__chevron {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.select__button[aria-expanded='true'] .select__chevron {
+  transform: rotate(180deg);
+}
+
+.select__list {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 6px;
+  border-radius: 16px;
+  background: var(--black-2);
+  box-shadow:
+    0 24px 48px -16px rgba(0, 0, 0, 0.75),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  transform-origin: top center;
+  animation: select-open 0.22s var(--ease-out);
+}
+
+.select__list[hidden] {
+  display: none;
+}
+
+.select__list:focus {
+  outline: none;
+}
+
+.select__list [role='option'] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 46px;
+  padding: 0 14px;
+  border-radius: 10px;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.86);
+  cursor: pointer;
+  transition:
+    background-color 0.18s var(--ease-out),
+    color 0.18s var(--ease-out);
+}
+
+/* Opção em destaque (mouse ou setas do teclado): o azul elétrico do site. */
+.select__list [role='option'].is-active {
+  background: var(--blue);
+  color: var(--white);
+}
+
+/* Opção escolhida: mais peso e a marca de seleção. */
+.select__list [role='option'][aria-selected='true'] {
+  font-weight: 600;
+  color: var(--white);
+}
+
+.select__list [role='option'][aria-selected='true']::after {
+  content: '';
+  width: 16px;
+  height: 16px;
+  flex: none;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+@keyframes select-open {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
 }
 
 /* O botão é o mesmo de "CONFIRA OS VÍDEOS", na largura do formulário. */
@@ -1560,7 +1639,7 @@ ul {
   }
 
   .field input,
-  .field select,
+  .field .select__button,
   .field textarea {
     padding-left: 14px;
   }
