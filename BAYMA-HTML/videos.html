@@ -76,19 +76,27 @@
 
     <script>
       /*
-        VÍDEOS DE SHOWS — só vídeos reais de apresentações do BAYMA.
-        Para adicionar, inclua itens nesta lista:
+        VÍDEOS DE SHOWS — vídeos reais de apresentações do BAYMA.
 
-        Arquivo próprio (coloque o .mp4 em assets/videos/):
-          { titulo: 'Nome do show', tipo: 'arquivo', src: 'assets/videos/show.mp4',
-            poster: 'assets/videos/show.jpg', largura: 1920, altura: 1080 }
+        Coloque os arquivos de vídeo na pasta assets/videos/ com exatamente os
+        nomes abaixo (os mesmos da pasta do Google Drive). Os vídeos tocam como
+        foram enviados, sem conversão. Se um arquivo não estiver na pasta, ele
+        simplesmente não aparece na página.
 
-        YouTube:
-          { titulo: 'Nome do show', tipo: 'youtube', id: 'ID_DO_VIDEO', largura: 1920, altura: 1080 }
+        "arquivos" aceita mais de um nome: vale o primeiro que existir.
+        "titulo" é o texto mostrado embaixo do vídeo.
 
-        largura/altura = proporção real do vídeo (vertical: 1080 x 1920).
+        Para adicionar outro vídeo, copie uma linha e troque o título e o nome.
+        Vídeo do YouTube: { titulo: 'Nome', tipo: 'youtube', id: 'ID_DO_VIDEO', largura: 1920, altura: 1080 }
       */
-      window.BAYMA_VIDEOS = []
+      window.BAYMA_VIDEOS = [
+        { titulo: 'Bololô', arquivos: ['BAYMA - Bololô.mp4', 'BAYMA - Bololo.mp4'] },
+        { titulo: 'Cabedelo-PB', arquivos: ['BAYMA - Cabedelo-PB.mp4'] },
+        { titulo: 'Ginga', arquivos: ['BAYMA - GINGA.mp4'] },
+        { titulo: 'Pega Vareta', arquivos: ['BAYMA - Pega Vareta.mp4'] },
+        { titulo: 'GGE', arquivos: ['BAYMA GGE-.mp4'] },
+        { titulo: 'Kosmus', arquivos: ['BAYNA - KOSMUS.mp4', 'BAYMA - KOSMUS.mp4'] },
+      ]
     </script>
     <script src="js/script.js"></script>
   </body>

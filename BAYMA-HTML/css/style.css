@@ -1764,13 +1764,31 @@ ul {
 
 .videos__list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr));
-  gap: clamp(24px, 3vw, 40px);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: clamp(28px, 3vw, 44px) clamp(16px, 2vw, 28px);
+  grid-auto-flow: row dense;
+  align-items: start;
   margin-top: clamp(40px, 6vw, 80px);
 }
 
+.videos__list[hidden],
+.videos__empty[hidden],
+.videos__list li[hidden] {
+  display: none;
+}
+
+/* Vídeo horizontal ocupa duas colunas quando há espaço. */
+@media (min-width: 720px) {
+  .videos__list li:not(.is-vertical) {
+    grid-column: span 2;
+  }
+}
+
+/* Vídeo vertical: nunca mais alto que a tela, centralizado na coluna. */
 .videos__list li.is-vertical .vplayer {
   max-height: 80svh;
+  width: auto;
+  max-width: 100%;
   margin-inline: auto;
 }
 
@@ -1785,6 +1803,7 @@ ul {
   display: block;
   width: 100%;
   height: auto;
+  object-fit: contain;
   border: 0;
   border-radius: 18px;
   background: var(--black-2);

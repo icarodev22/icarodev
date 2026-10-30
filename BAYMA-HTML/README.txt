@@ -73,28 +73,36 @@ Nada é enviado automaticamente: o visitante confirma o envio no WhatsApp.
 
 COMO ADICIONAR VÍDEOS DE SHOWS
 ------------------------------
-Nenhum vídeo foi fornecido até agora, por isso a página de vídeos mostra
-"Nenhum vídeo publicado ainda." Para publicar:
+Os 6 vídeos da pasta "claude acesso" do Google Drive já estão cadastrados.
+Basta copiar os arquivos para a pasta assets/videos/ com exatamente estes nomes:
 
-1. Arquivo de vídeo próprio (.mp4):
-   - Coloque o arquivo em assets/videos/ (e, se quiser, uma imagem de capa).
-   - No videos.html, procure "window.BAYMA_VIDEOS = []" e preencha, por exemplo:
+  BAYMA - Bololô.mp4
+  BAYMA - Cabedelo-PB.mp4
+  BAYMA - GINGA.mp4
+  BAYMA - Pega Vareta.mp4
+  BAYMA GGE-.mp4
+  BAYNA - KOSMUS.mp4
 
-     window.BAYMA_VIDEOS = [
-       { titulo: 'Nome do show', tipo: 'arquivo', src: 'assets/videos/show.mp4',
-         poster: 'assets/videos/show.jpg', largura: 1920, altura: 1080 }
-     ]
+ATENÇÃO: no Drive, os nomes de "Bololô" e "Pega Vareta" aparecem cortados.
+Se o arquivo baixado tiver um nome mais longo, renomeie para o nome da lista
+acima (ou troque o nome em videos.html, na lista window.BAYMA_VIDEOS).
 
-2. Vídeo do YouTube:
-     { titulo: 'Nome do show', tipo: 'youtube', id: 'ID_DO_VIDEO', largura: 1920, altura: 1080 }
+Depois de copiar, abra videos.html:
+- Os vídeos tocam como foram enviados, sem conversão nem perda de qualidade,
+  com play, pausa, volume e tela cheia.
+- A proporção vem do próprio arquivo (vertical continua vertical).
+- Um quadro do próprio vídeo aparece como prévia antes do play.
+- Só um vídeo toca por vez.
+- Vídeo que não estiver na pasta não aparece (a página nunca mostra player
+  vazio). Sem nenhum vídeo, aparece "Nenhum vídeo publicado ainda."
 
-   largura/altura = proporção real do vídeo (vertical: largura 1080, altura 1920).
-   Os vídeos não tocam sozinhos e só carregam quando o visitante clica.
+Para adicionar outro vídeo depois, copie uma linha de window.BAYMA_VIDEOS em
+videos.html e troque o título e o nome do arquivo. YouTube também funciona:
+  { titulo: 'Nome do show', tipo: 'youtube', id: 'ID_DO_VIDEO', largura: 1920, altura: 1080 }
 
-Vídeos muito grandes: se o .mp4 for pesado demais para a hospedagem, publique
-no YouTube e use a opção 2, ou hospede o arquivo em outro serviço e coloque o
-endereço completo em src (ex.: src: 'https://.../show.mp4').
-
+Hospedagem: vídeos de show costumam ser grandes. Verifique se a sua hospedagem
+aceita o tamanho dos arquivos; se não aceitar, publique no YouTube e use a
+opção acima.
 
 FOTOGRAFIAS
 -----------

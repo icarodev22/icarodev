@@ -512,28 +512,66 @@
 
   // ---------------------------------------------------------------------------
   // Página de vídeos: monta os players a partir de window.BAYMA_VIDEOS.
-  // Nada toca sozinho e nenhum vídeo é baixado antes do clique.
+  //
+  // Arquivos próprios (assets/videos/):
+  // - Os vídeos tocam como foram enviados, sem conversão, no player do navegador
+  //   (play, pausa, volume, tela cheia).
+  // - Só os metadados são lidos ao abrir a página (preload="metadata"); o vídeo
+  //   em si só é baixado quando o visitante dá play.
+  // - A proporção vem do próprio arquivo: verticais continuam verticais.
+  // - Cada item aceita mais de um nome de arquivo ("arquivos"); vale o primeiro
+  //   que existir. Se nenhum existir, o item não aparece (nada de player vazio).
   // ---------------------------------------------------------------------------
 
   ;(function videos() {
     var list = document.querySelector('[data-video-list]')
     if (!list) return
+    var empty = document.querySelector('[data-video-empty]')
     var items = (window.BAYMA_VIDEOS || []).filter(function (v) {
-      return v && (v.src || v.id)
+      return v && (v.src || v.id || (v.arquivos && v.arquivos.length))
     })
     if (!items.length) return
-    document.querySelector('[data-video-empty]').hidden = true
-    list.hidden = false
+
+    var shown = 0
+    var reveal = function (li) {
+      li.hidden = false
+      shown += 1
+      list.hidden = false
+      empty.hidden = true
+    }
+
+    // Caminho de cada nome possível, nas duas formas de acento (NFC/NFD), porque
+    // macOS e Windows podem gravar "ô" de jeitos diferentes no nome do arquivo.
+    var candidates = function (v) {
+      var names = v.src ? [v.src] : v.arquivos.map(function (n) {
+        return 'assets/videos/' + n
+      })
+      var out = []
+      names.forEach(function (n) {
+        ;[n.normalize('NFC'), n.normalize('NFD')].forEach(function (form) {
+          var url = form
+            .split('/')
+            .map(function (part) {
+              return encodeURIComponent(part)
+            })
+            .join('/')
+          if (out.indexOf(url) < 0) out.push(url)
+        })
+      })
+      return out
+    }
+
+    var players = []
+    var missing = []
 
     items.forEach(function (v) {
       var li = document.createElement('li')
-      var w = v.largura || 16
-      var h = v.altura || 9
-      if (h > w) li.className = 'is-vertical'
-      var ratio = w + ' / ' + h
+      var title = v.titulo || 'Vídeo de show do BAYMA'
       var player
 
       if (v.tipo === 'youtube') {
+        var ratio = (v.largura || 16) + ' / ' + (v.altura || 9)
+        if ((v.altura || 9) > (v.largura || 16)) li.className = 'is-vertical'
         // Pôster leve até o clique; depois o player oficial, sem cookies.
         player = document.createElement('button')
         player.type = 'button'
@@ -546,7 +584,7 @@
         var play = document.createElement('span')
         play.className = 'vplayer__play'
         play.innerHTML = '<svg aria-hidden="true"><use href="#i-play"/></svg><span class="sr-only"></span>'
-        play.querySelector('.sr-only').textContent = 'Assistir: ' + (v.titulo || 'vídeo')
+        play.querySelector('.sr-only').textContent = 'Assistir: ' + title
         player.appendChild(thumb)
         player.appendChild(play)
         player.addEventListener('click', function () {
@@ -554,21 +592,55 @@
           frame.className = 'vplayer'
           frame.style.aspectRatio = ratio
           frame.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(v.id) + '?autoplay=1&rel=0&playsinline=1'
-          frame.title = v.titulo || 'Vídeo de show do BAYMA'
+          frame.title = title
           frame.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen'
           frame.allowFullscreen = true
           player.replaceWith(frame)
         })
+        li.hidden = true
+        reveal(li)
       } else {
+        var urls = candidates(v)
+        var attempt = 0
         player = document.createElement('video')
         player.className = 'vplayer'
-        player.style.aspectRatio = ratio
-        player.src = v.src
-        if (v.poster) player.poster = v.poster
         player.controls = true
         player.playsInline = true
-        player.preload = 'none'
-        player.setAttribute('aria-label', v.titulo || 'Vídeo de show do BAYMA')
+        player.preload = 'metadata'
+        player.setAttribute('aria-label', title)
+        if (v.poster) player.poster = v.poster
+        li.hidden = true
+
+        player.addEventListener('loadedmetadata', function () {
+          var w = player.videoWidth
+          var h = player.videoHeight
+          if (w && h) {
+            player.style.aspectRatio = w + ' / ' + h
+            li.classList.toggle('is-vertical', h > w)
+          }
+          if (li.hidden) reveal(li)
+        })
+        // Arquivo não encontrado ou ilegível: tenta o próximo nome; sem nenhum, some.
+        player.addEventListener('error', function () {
+          if (!li.hidden) return
+          attempt += 1
+          if (attempt < urls.length) {
+            player.src = urls[attempt] + '#t=0.1'
+          } else {
+            missing.push((v.arquivos || [v.src]).join(' ou '))
+            li.remove()
+            if (window.console) console.info('BAYMA vídeos: arquivo não encontrado em assets/videos/: ' + missing.join('; '))
+          }
+        })
+        // Um vídeo por vez: dar play em um pausa os outros.
+        player.addEventListener('play', function () {
+          players.forEach(function (other) {
+            if (other !== player && !other.paused) other.pause()
+          })
+        })
+        players.push(player)
+        // "#t=0.1" faz o navegador mostrar um quadro do vídeo como prévia.
+        player.src = urls[0] + '#t=0.1'
       }
 
       li.appendChild(player)

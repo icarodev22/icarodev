@@ -1,2 +1,17 @@
-Coloque aqui os vídeos de shows do BAYMA (.mp4) e, se quiser, as imagens de capa.
-Depois, liste cada vídeo em videos.html (window.BAYMA_VIDEOS). Instruções no README.txt.
+VÍDEOS DE SHOWS — coloque nesta pasta os arquivos de vídeo, com exatamente estes nomes:
+
+  BAYMA - Bololô.mp4
+  BAYMA - Cabedelo-PB.mp4
+  BAYMA - GINGA.mp4
+  BAYMA - Pega Vareta.mp4
+  BAYMA GGE-.mp4
+  BAYNA - KOSMUS.mp4
+
+São os nomes da pasta do Google Drive. ATENÇÃO: no Drive, os nomes de
+"Bololô" e "Pega Vareta" aparecem cortados. Se o arquivo baixado tiver um nome
+mais longo (por exemplo "BAYMA - Bololô Recife.mp4"), renomeie para o nome da
+lista acima, ou troque o nome dentro de videos.html (window.BAYMA_VIDEOS).
+
+Não precisa converter nem comprimir: os vídeos tocam como foram enviados.
+Depois de copiar, abra videos.html para conferir. Vídeo que não estiver aqui
+simplesmente não aparece na página.
