@@ -7,7 +7,8 @@ import tints from './tints.json'
  * - História: retrato em fundo roxo (@gabriellrec-44).
  * - Shows (carrossel): cinco momentos reais ao vivo.
  * - Galeria: os retratos de estúdio restantes e um clique ao vivo.
- * O par P&B/colorido do mesmo momento ao vivo entrou só na versão colorida.
+ * - Contratação: o clique em P&B do set (a versão colorida está no carrossel,
+ *   longe dali, com a galeria entre as duas).
  */
 export type Photo = {
   src: string
@@ -99,3 +100,12 @@ export const gallery: Photo[] = [
   photo('ao-vivo-bone', [720, 1200], [1440, 1922], 'BAYMA de boné nas pick-ups, sorrindo durante o set', '60% 40%'),
   photo('estudio-cinza', [720, 1100], [1365, 2048], 'BAYMA em fundo cinza, segurando os fones, sorrindo', '50% 15%'),
 ]
+
+/** Contratação: o clique em P&B do set, que não aparece em nenhuma outra seção. */
+export const contratacao = photo(
+  'ao-vivo-pb',
+  [900, 1400],
+  [2490, 1660],
+  'BAYMA tocando de fones no pescoço, sorrindo e apontando para cima, em foto preto e branco',
+  '50% 45%',
+)

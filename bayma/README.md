@@ -22,7 +22,7 @@ O site tem duas páginas e deve ser publicado na **raiz do domínio**:
 | História | `src/sections/Historia.tsx` | "Quem é Vitor Bayma?" com o retrato roxo (@gabriellrec-44) |
 | Shows | `src/sections/Shows.tsx` + `src/components/GradientCarousel.tsx` | Carrossel 3D de 5 fotos ao vivo; o fundo assume a cor da foto ativa; botão "CONFIRA OS VÍDEOS" |
 | Galeria | `src/sections/Galeria.tsx` | 3 fotos grandes em composição assimétrica |
-| Contratação | `src/sections/Contato.tsx` + `src/lib/booking.ts` | Formulário (composição do Contact 7) que abre o WhatsApp com a mensagem organizada: LOCAL, TIPO DO EVENTO, MAIS INFORMAÇÕES |
+| Contratação | `src/sections/Contato.tsx` + `src/lib/booking.ts` | "Vamos fazer acontecer?": formulário compacto (composição do Contact 7) + foto P&B; abre o WhatsApp com a mensagem organizada: LOCAL, TIPO DO EVENTO, MAIS INFORMAÇÕES |
 | Rodapé | `src/components/Footer.tsx` | Logo roxa, História/Shows/Contato, Instagram, WhatsApp, ano automático |
 | Vídeos | `videos/index.html` + `src/pages/VideosPage.tsx` | Página só com os vídeos e o rodapé, botão "VOLTAR AO INÍCIO" |
 
@@ -45,7 +45,8 @@ cores em tokens CSS no topo de `src/styles/global.css`.
 - O recorte do Hero (`reference/hero-recorte-27.webp`) foi feito com segmentação de pessoa
   (rembg, `isnet-general-use`) sobre a foto original: só a máscara, nenhum pixel gerado.
 - A logo branca é a logo original com a cor trocada (mesmo canal alfa, mesmo desenho).
-- Cada foto aparece uma vez. A versão P&B de um clique que entrou colorido ficou de fora.
+- Cada arquivo aparece uma vez. O clique em P&B da Contratação é do mesmo momento de uma
+  foto colorida do carrossel; as duas ficam separadas pela galeria.
 
 ## React Bits Pro
 
@@ -55,8 +56,8 @@ Não instalado. O ambiente não tinha `REACTBITS_LICENSE_KEY` e a rede bloqueava
 - **Gradient Carousel** → `GradientCarousel.tsx`, implementação própria com a mesma ideia
   (perspectiva 3D, vizinhas parcialmente visíveis, fundo na tonalidade da foto ativa, botões,
   teclado, arrastar). A variante `-tw` do React Bits exige Tailwind, que o projeto não usa.
-- **Contact 7** → formulário de contratação feito à mão seguindo a composição do bloco
-  (coluna estreita, título serifado em itálico com Instrument Serif).
+- **Contact 7** → formulário de contratação feito à mão seguindo a composição do bloco,
+  em duas colunas (formulário e foto) e com a tipografia do resto do site.
 - **Footer 8** → rodapé feito à mão seguindo a estrutura do bloco.
 - **CRTWarp** → shader próprio em `src/components/CrtField.tsx`, usado só no fundo do Hero.
 

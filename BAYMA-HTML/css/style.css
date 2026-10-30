@@ -1,7 +1,6 @@
 /* ============================================================
    BAYMA — folha de estilo única
-   Fontes locais em ../assets/fonts (Anton: títulos; DM Sans: texto;
-   Instrument Serif itálico: título da Contratação)
+   Fontes locais em ../assets/fonts (Anton: títulos; DM Sans: texto)
    ============================================================ */
 
 @font-face {
@@ -37,22 +36,6 @@
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
-@font-face {
-  font-family: 'Instrument Serif';
-  font-style: italic;
-  font-weight: 400;
-  font-display: swap;
-  src: url('../assets/fonts/instrument-serif-latin-400-italic.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: 'Instrument Serif';
-  font-style: italic;
-  font-weight: 400;
-  font-display: swap;
-  src: url('../assets/fonts/instrument-serif-latin-ext-400-italic.woff2') format('woff2');
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
 
 /* ============================================================
    GLOBAL
@@ -80,8 +63,6 @@
   /* Títulos: Anton. Todo o resto (texto, navegação, botões): DM Sans. */
   --display: 'Anton', 'Oswald', Impact, sans-serif;
   --sans: 'DM Sans Variable', 'DM Sans', system-ui, sans-serif;
-  /* Título da Contratação: serifada em itálico. */
-  --serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
 
   --frame-gap: 12px;
   --frame-radius: 28px;
@@ -1389,13 +1370,15 @@ ul {
    ============================================================ */
 
 /*
- * Contratação: formulário em coluna estreita (composição do Contact 7 do
- * React Bits Pro) dentro do painel azul que fecha a página espelhando o Hero.
+ * Contratação: formulário compacto à esquerda (composição do Contact 7 do
+ * React Bits Pro) e fotografia à direita, dentro do painel azul que fecha a
+ * página espelhando o Hero. Tipografia: os mesmos padrões do resto do site
+ * (.title em Anton, texto e campos em DM Sans, botão .btn--light .btn--caps).
  */
 .contato {
   position: relative;
   margin: 0 var(--frame-gap);
-  padding: clamp(56px, 8vw, 120px) 20px clamp(48px, 7vw, 96px);
+  padding: clamp(40px, 5vw, 72px) clamp(20px, 4vw, 64px);
   overflow: hidden;
   border-radius: var(--frame-radius);
   background: var(--blue);
@@ -1412,59 +1395,60 @@ ul {
 
 .contato__inner {
   position: relative;
-  width: 100%;
-  max-width: 540px;
+  display: grid;
+  grid-template-columns: minmax(0, 440px) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 80px);
+  align-items: stretch;
+  max-width: 1120px;
   margin: 0 auto;
 }
 
 .contato__title {
-  font-family: var(--serif);
-  font-style: italic;
-  font-weight: 400;
-  font-size: clamp(64px, 9vw, 118px);
-  line-height: 0.92;
-  letter-spacing: -0.02em;
-  text-align: center;
+  font-size: clamp(44px, 4.6vw, 72px);
 }
 
 .contato__lead {
-  margin-top: 16px;
+  margin-top: 12px;
   font-size: 17px;
-  text-align: center;
   color: var(--grey-on-blue);
 }
 
 .contato__form {
   display: flex;
   flex-direction: column;
-  gap: 22px;
-  margin-top: clamp(32px, 4vw, 48px);
+  gap: 16px;
+  margin-top: 28px;
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
+.field[hidden] {
+  display: none;
+}
+
+/* Mesmo peso e espaçamento dos rótulos em caixa alta do site (.btn--caps). */
 .field label {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
 }
 
 .field input,
 .field select,
 .field textarea {
   width: 100%;
-  min-height: 56px;
-  padding: 15px 18px;
+  min-height: 50px;
+  padding: 12px 16px;
   border: 1px solid rgba(255, 255, 255, 0.38);
   border-radius: 14px;
   background-color: rgba(7, 7, 12, 0.22);
   color: var(--white);
   font: inherit;
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.4;
   transition:
     border-color 0.25s var(--ease-out),
@@ -1472,12 +1456,8 @@ ul {
     box-shadow 0.25s var(--ease-out);
 }
 
-.field[hidden] {
-  display: none;
-}
-
 .field textarea {
-  min-height: 140px;
+  min-height: 104px;
   resize: vertical;
 }
 
@@ -1488,12 +1468,12 @@ ul {
 .field select {
   appearance: none;
   -webkit-appearance: none;
-  padding-right: 48px;
+  padding-right: 44px;
   cursor: pointer;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: right 16px center;
-  background-size: 20px;
+  background-position: right 14px center;
+  background-size: 18px;
 }
 
 /* Sem tipo escolhido, o select parece um placeholder. */
@@ -1550,23 +1530,10 @@ ul {
   display: none;
 }
 
+/* O botão é o mesmo de "CONFIRA OS VÍDEOS", na largura do formulário. */
 .contato__submit {
   width: 100%;
-  min-height: 60px;
-  margin-top: 6px;
-  font-size: 16px;
-  letter-spacing: 0.06em;
-  background: var(--white);
-  color: var(--black);
-  transition:
-    background 0.3s var(--ease-out),
-    color 0.3s var(--ease-out),
-    transform 0.15s var(--ease-out);
-}
-
-.contato__submit:hover {
-  background: var(--black);
-  color: var(--white);
+  margin-top: 4px;
 }
 
 .contato__submit:active {
@@ -1575,15 +1542,8 @@ ul {
   color: var(--white);
 }
 
-.contato__submit:focus-visible {
-  outline: 3px solid var(--white);
-  outline-offset: 3px;
-  border-radius: 999px;
-}
-
 .contato__status {
   font-size: 15px;
-  text-align: center;
   color: var(--white);
 }
 
@@ -1595,11 +1555,8 @@ ul {
 .contato__direct {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 4px 24px;
-  margin-top: clamp(32px, 4vw, 44px);
-  padding-top: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  gap: 0 24px;
+  margin-top: 18px;
 }
 
 .contato__direct a {
@@ -1621,33 +1578,68 @@ ul {
   height: 20px;
 }
 
+/* Fotografia: enquadramento vertical, luz azul e roxa sutil por cima. */
+.contato__photo {
+  position: relative;
+  min-height: 420px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--black-2);
+}
+
+.contato__photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.contato__photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(10, 60, 242, 0.55), rgba(159, 38, 254, 0.4) 70%);
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+/* Tablet: colunas mais próximas. */
+@media (max-width: 1023px) {
+  .contato__inner {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  }
+}
+
+/* Celular: formulário primeiro; a foto vem depois, em faixa baixa. */
 @media (max-width: 719px) {
   .contato {
-    padding: 48px 16px 36px;
+    padding: 36px 16px 16px;
+  }
+
+  .contato__inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
   }
 
   .contato__title {
-    font-size: clamp(54px, 17vw, 80px);
+    font-size: clamp(40px, 12vw, 52px);
   }
 
   .contato__lead {
     font-size: 16px;
   }
 
-  .contato__form {
-    gap: 20px;
-  }
-
   .field input,
   .field select,
   .field textarea {
     padding-left: 14px;
-    font-size: 16px;
   }
 
-  .field select {
-    padding-right: 44px;
-    background-position: right 12px center;
+  .contato__photo {
+    min-height: 0;
+    aspect-ratio: 16 / 10;
+    border-radius: 16px;
   }
 }
 

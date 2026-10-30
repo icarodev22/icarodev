@@ -33,6 +33,7 @@ PHOTOS = {
     'ao-vivo-vermelho': ('SaveClip.App_671186325_18581112523025135_3431649863310107845_n.jpg', [720, 1200]),
     'ao-vivo-brasil': ('SaveClip.App_723562034_18597388516025135_8381335863490312335_n.jpg', [900, 1500]),
     'ao-vivo-cabine': ('SaveClip.App_617281599_18552321682025135_4570109415228575156_n.jpg', [720, 1200]),
+    'ao-vivo-pb': ('SaveClip.App_809209129_18628596601025135_5080136895080051635_n.jpg', [900, 1400]),
 }
 
 # Fotos do carrossel de shows: o fundo da seção assume a tonalidade de cada uma.

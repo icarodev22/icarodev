@@ -684,7 +684,8 @@
       var data = { tipo: tipo.value, tipoOutro: outro.value, local: form.elements.local.value, info: form.elements.info.value }
       var errors = validateBooking(data)
       var first = null
-      ;['tipo', 'tipoOutro', 'local'].forEach(function (key) {
+      // Ordem dos campos na tela: o foco vai para o primeiro com erro.
+      ;['local', 'tipo', 'tipoOutro'].forEach(function (key) {
         showError(key, errors[key])
         if (errors[key] && !first) first = fields[key]
       })

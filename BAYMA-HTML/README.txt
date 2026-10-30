@@ -21,7 +21,7 @@ js/script.js      Menu, carrossel, animações, efeito do Hero e vídeos.
 assets/
   img/fotos-do-bayma/   Fotografias do artista (arquivos originais).
   img/logo/             Logos do BAYMA.
-  fonts/                Fontes Anton, DM Sans e Instrument Serif (locais).
+  fonts/                Fontes Anton e DM Sans (locais, com licenças).
   icons/                Favicon e ícone para celular.
   videos/               Pasta para os vídeos de shows (vazia por enquanto).
 
@@ -48,9 +48,10 @@ Abra os arquivos em qualquer editor de texto (VS Code, Bloco de Notas...).
 
 FORMULÁRIO DE CONTRATAÇÃO
 -------------------------
-A seção Contratação tem um formulário com TIPO DO EVENTO, LOCAL e MAIS
-INFORMAÇÕES. Ao clicar em SOLICITAR CONTRATAÇÃO, o site confere se o tipo e o
-local foram preenchidos e abre o WhatsApp oficial com a mensagem pronta:
+A seção Contratação ("VAMOS FAZER ACONTECER?") tem um formulário com LOCAL,
+TIPO DO EVENTO e MAIS INFORMAÇÕES, ao lado de uma foto. Ao clicar em
+SOLICITAR CONTRATAÇÃO, o site confere se o local e o tipo foram preenchidos e
+abre o WhatsApp oficial com a mensagem pronta:
 
   Olá, BAYMA! Gostaria de solicitar uma contratação.
 
@@ -104,6 +105,7 @@ para facilitar a edição:
   estudio-perfil-azul.jpg   = @gabriellrec-38.jpg            (Galeria)
   estudio-cinza.jpg         = @gabriellrec-22.jpg            (Galeria)
   show-bone.jpg             = SaveClip.App_523905652_...jpg  (Galeria)
+  show-preto-e-branco.jpg   = SaveClip.App_809209129_...jpg  (Contratação)
   show-palco-telao.jpg      = SaveClip.App_590403485_...jpg  (Shows)
   show-luz-azul.jpg         = SaveClip.App_814229713_...jpg  (Shows)
   show-luz-vermelha.jpg     = SaveClip.App_671186325_...jpg  (Shows)
@@ -134,5 +136,4 @@ O efeito animado do fundo azul do Hero usa WebGL do próprio navegador. Em
 aparelhos sem WebGL, ou com "reduzir movimento" ativado, o fundo fica
 estático, sem perder o conteúdo.
 
-Fontes: Anton, DM Sans e Instrument Serif (SIL Open Font License, licenças em
-assets/fonts).
+Fontes: Anton e DM Sans (SIL Open Font License, licenças em assets/fonts).

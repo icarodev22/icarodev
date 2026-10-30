@@ -1,6 +1,5 @@
 @import '@fontsource/anton/400.css';
 @import '@fontsource-variable/dm-sans/wght.css';
-@import '@fontsource/instrument-serif/400-italic.css';
 
 /*
  * Tokens do BAYMA.
@@ -24,8 +23,6 @@
   /* Títulos: Anton. Todo o resto (texto, navegação, botões): DM Sans. */
   --display: 'Anton', 'Oswald', Impact, sans-serif;
   --sans: 'DM Sans Variable', 'DM Sans', system-ui, sans-serif;
-  /* Título da Contratação: serifada em itálico. */
-  --serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
 
   --frame-gap: 12px;
   --frame-radius: 28px;
