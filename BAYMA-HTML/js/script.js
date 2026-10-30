@@ -581,4 +581,124 @@
       list.appendChild(li)
     })
   })()
+  // ---------------------------------------------------------------------------
+  // Contratação: formulário → mensagem organizada no WhatsApp oficial.
+  // Mesma lógica de bayma/src/lib/booking.ts (versão React).
+  // A mensagem só é enviada quando o visitante confirma no próprio WhatsApp.
+  // ---------------------------------------------------------------------------
+
+  var WHATSAPP_NUMBER = '5581989575353'
+  var LIMITS = { tipo: 80, local: 160, info: 1200 }
+
+  // Campos de uma linha: qualquer quebra vira espaço, para não desmontar a mensagem.
+  function oneLine(s, max) {
+    return String(s || '').replace(/\s+/g, ' ').trim().slice(0, max)
+  }
+
+  // Texto livre: mantém as quebras do visitante, mas sem linhas em branco,
+  // que se confundiriam com o separador entre os campos da mensagem.
+  function multiLine(s, max) {
+    return String(s || '')
+      .replace(/\r\n?/g, '\n')
+      .split('\n')
+      .map(function (l) {
+        return l.replace(/[ \t]+/g, ' ').trim()
+      })
+      .join('\n')
+      .replace(/\n{2,}/g, '\n')
+      .trim()
+      .slice(0, max)
+  }
+
+  function validateBooking(d) {
+    var errors = {}
+    if (!d.tipo) errors.tipo = 'Escolha o tipo do evento.'
+    else if (d.tipo === 'Outro' && !oneLine(d.tipoOutro, LIMITS.tipo)) errors.tipoOutro = 'Escreva qual é o tipo do evento.'
+    if (!oneLine(d.local, LIMITS.local)) errors.local = 'Informe o local do evento.'
+    return errors
+  }
+
+  // Ordem obrigatória: LOCAL, TIPO DO EVENTO, MAIS INFORMAÇÕES.
+  function buildBookingMessage(d) {
+    var tipo = d.tipo === 'Outro' ? oneLine(d.tipoOutro, LIMITS.tipo) : oneLine(d.tipo, LIMITS.tipo)
+    var info = multiLine(d.info, LIMITS.info) || 'Não informado.'
+    return [
+      'Olá, BAYMA! Gostaria de solicitar uma contratação.',
+      '',
+      'LOCAL:',
+      oneLine(d.local, LIMITS.local),
+      '',
+      'TIPO DO EVENTO:',
+      tipo,
+      '',
+      'MAIS INFORMAÇÕES:',
+      info,
+    ].join('\n')
+  }
+
+  function bookingUrl(message) {
+    return 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message)
+  }
+
+  // Exposto só para testes e manutenção (não envia nada).
+  window.BAYMA_BOOKING = { validate: validateBooking, message: buildBookingMessage, url: bookingUrl }
+
+  document.querySelectorAll('[data-booking]').forEach(function (form) {
+    var tipo = form.elements.tipo
+    var outroField = form.querySelector('[data-outro]')
+    var outro = form.elements.tipoOutro
+    var status = form.querySelector('[data-booking-status]')
+    var fields = { tipo: tipo, tipoOutro: outro, local: form.elements.local }
+
+    var showError = function (key, msg) {
+      var el = fields[key]
+      var box = document.getElementById('err-' + key)
+      if (msg) {
+        el.setAttribute('aria-invalid', 'true')
+        box.textContent = msg
+        box.hidden = false
+      } else {
+        el.removeAttribute('aria-invalid')
+        box.textContent = ''
+        box.hidden = true
+      }
+    }
+
+    // "Outro": mostra o campo para escrever o tipo de evento.
+    tipo.addEventListener('change', function () {
+      var isOutro = tipo.value === 'Outro'
+      outroField.hidden = !isOutro
+      outro.required = isOutro
+      showError('tipo', '')
+      if (!isOutro) showError('tipoOutro', '')
+    })
+    ;['tipoOutro', 'local'].forEach(function (key) {
+      fields[key].addEventListener('input', function () {
+        showError(key, '')
+        status.textContent = ''
+      })
+    })
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault()
+      var data = { tipo: tipo.value, tipoOutro: outro.value, local: form.elements.local.value, info: form.elements.info.value }
+      var errors = validateBooking(data)
+      var first = null
+      ;['tipo', 'tipoOutro', 'local'].forEach(function (key) {
+        showError(key, errors[key])
+        if (errors[key] && !first) first = fields[key]
+      })
+      if (first) {
+        status.textContent = ''
+        first.focus()
+        return
+      }
+      var url = bookingUrl(buildBookingMessage(data))
+      // Nova aba no computador; no celular o link abre o aplicativo.
+      var win = window.open(url, '_blank')
+      if (win) win.opener = null
+      else window.location.href = url
+      status.textContent = 'A mensagem abriu no WhatsApp. Ela só é enviada quando você confirmar lá.'
+    })
+  })
 })()

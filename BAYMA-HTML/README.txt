@@ -21,7 +21,7 @@ js/script.js      Menu, carrossel, animações, efeito do Hero e vídeos.
 assets/
   img/fotos-do-bayma/   Fotografias do artista (arquivos originais).
   img/logo/             Logos do BAYMA.
-  fonts/                Fontes Anton e DM Sans (locais, com licenças).
+  fonts/                Fontes Anton, DM Sans e Instrument Serif (locais).
   icons/                Favicon e ícone para celular.
   videos/               Pasta para os vídeos de shows (vazia por enquanto).
 
@@ -44,6 +44,30 @@ Abra os arquivos em qualquer editor de texto (VS Code, Bloco de Notas...).
   própria <img>.
 - Telefone e Instagram aparecem em vários lugares; use "Localizar e
   substituir" do editor para trocar todos de uma vez.
+
+
+FORMULÁRIO DE CONTRATAÇÃO
+-------------------------
+A seção Contratação tem um formulário com TIPO DO EVENTO, LOCAL e MAIS
+INFORMAÇÕES. Ao clicar em SOLICITAR CONTRATAÇÃO, o site confere se o tipo e o
+local foram preenchidos e abre o WhatsApp oficial com a mensagem pronta:
+
+  Olá, BAYMA! Gostaria de solicitar uma contratação.
+
+  LOCAL:
+  ...
+
+  TIPO DO EVENTO:
+  ...
+
+  MAIS INFORMAÇÕES:
+  ...
+
+Nada é enviado automaticamente: o visitante confirma o envio no WhatsApp.
+- Opções de tipo de evento: no index.html, dentro de <select id="f-tipo">.
+  Mantenha a opção "Outro" (ela abre um campo para escrever o tipo).
+- Número e texto da mensagem: no js/script.js, bloco "Contratação"
+  (WHATSAPP_NUMBER e buildBookingMessage).
 
 
 COMO ADICIONAR VÍDEOS DE SHOWS
@@ -102,11 +126,13 @@ abaixo da primeira tela carregam só quando o visitante chega perto delas.
 DEPENDÊNCIAS EXTERNAS
 ---------------------
 O site funciona offline. Só dependem de internet:
-- Links para WhatsApp (wa.me) e Instagram.
+- Links para WhatsApp (wa.me) e Instagram, inclusive o formulário de
+  contratação, que abre o WhatsApp.
 - Vídeos do YouTube, se forem usados na página de vídeos.
 
 O efeito animado do fundo azul do Hero usa WebGL do próprio navegador. Em
 aparelhos sem WebGL, ou com "reduzir movimento" ativado, o fundo fica
 estático, sem perder o conteúdo.
 
-Fontes: Anton e DM Sans (SIL Open Font License, licenças em assets/fonts).
+Fontes: Anton, DM Sans e Instrument Serif (SIL Open Font License, licenças em
+assets/fonts).

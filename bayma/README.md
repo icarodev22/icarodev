@@ -22,7 +22,7 @@ O site tem duas páginas e deve ser publicado na **raiz do domínio**:
 | História | `src/sections/Historia.tsx` | "Quem é Vitor Bayma?" com o retrato roxo (@gabriellrec-44) |
 | Shows | `src/sections/Shows.tsx` + `src/components/GradientCarousel.tsx` | Carrossel 3D de 5 fotos ao vivo; o fundo assume a cor da foto ativa; botão "CONFIRA OS VÍDEOS" |
 | Galeria | `src/sections/Galeria.tsx` | 3 fotos grandes em composição assimétrica |
-| Contato | `src/sections/Contato.tsx` | Painel azul de contratação (espelha o Hero): WhatsApp e Instagram |
+| Contratação | `src/sections/Contato.tsx` + `src/lib/booking.ts` | Formulário (composição do Contact 7) que abre o WhatsApp com a mensagem organizada: LOCAL, TIPO DO EVENTO, MAIS INFORMAÇÕES |
 | Rodapé | `src/components/Footer.tsx` | Logo roxa, História/Shows/Contato, Instagram, WhatsApp, ano automático |
 | Vídeos | `videos/index.html` + `src/pages/VideosPage.tsx` | Página só com os vídeos e o rodapé, botão "VOLTAR AO INÍCIO" |
 
@@ -55,11 +55,14 @@ Não instalado. O ambiente não tinha `REACTBITS_LICENSE_KEY` e a rede bloqueava
 - **Gradient Carousel** → `GradientCarousel.tsx`, implementação própria com a mesma ideia
   (perspectiva 3D, vizinhas parcialmente visíveis, fundo na tonalidade da foto ativa, botões,
   teclado, arrastar). A variante `-tw` do React Bits exige Tailwind, que o projeto não usa.
-- **Contact 3 / Footer 8** → contato e rodapé feitos à mão seguindo a estrutura dos blocos.
+- **Contact 7** → formulário de contratação feito à mão seguindo a composição do bloco
+  (coluna estreita, título serifado em itálico com Instrument Serif).
+- **Footer 8** → rodapé feito à mão seguindo a estrutura do bloco.
 - **CRTWarp** → shader próprio em `src/components/CrtField.tsx`, usado só no fundo do Hero.
 
 Com a licença e o acesso liberados, a instalação oficial é feita em `bayma/` com
-`npx shadcn@latest add @reactbits-starter/gradient-carousel-tw` (e os blocos Pro) seguindo
+`npx shadcn@latest add @reactbits-starter/gradient-carousel-tw` e
+`npx shadcn@latest add @reactbits-pro/contact-7` seguindo
 https://pro.reactbits.dev/docs/installation. O projeto ainda não tem `components.json`.
 
 ## Links externos

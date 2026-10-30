@@ -1,7 +1,11 @@
+/*
+ * Contratação: formulário em coluna estreita (composição do Contact 7 do
+ * React Bits Pro) dentro do painel azul que fecha a página espelhando o Hero.
+ */
 .contato {
   position: relative;
   margin: 0 var(--frame-gap);
-  padding: clamp(40px, 6vw, 88px) clamp(20px, 4vw, 64px) clamp(28px, 4vw, 56px);
+  padding: clamp(56px, 8vw, 120px) 20px clamp(48px, 7vw, 96px);
   overflow: hidden;
   border-radius: var(--frame-radius);
   background: var(--blue);
@@ -16,108 +20,243 @@
   pointer-events: none;
 }
 
-.contato > * {
+.contato__inner {
   position: relative;
+  width: 100%;
+  max-width: 540px;
+  margin: 0 auto;
 }
 
-/* O título ocupa a largura do painel, como a logo no Hero. */
 .contato__title {
-  font-size: clamp(64px, 16vw, 280px);
-  line-height: 0.82;
-  white-space: nowrap;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(64px, 9vw, 118px);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  text-align: center;
 }
 
-.contato__list {
-  margin-top: clamp(32px, 5vw, 72px);
-  border-top: 1px solid rgba(255, 255, 255, 0.4);
+.contato__lead {
+  margin-top: 16px;
+  font-size: 17px;
+  text-align: center;
+  color: var(--grey-on-blue);
 }
 
-.contato__list li {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+.contato__form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin-top: clamp(32px, 4vw, 48px);
 }
 
-.contato__row {
-  display: grid;
-  grid-template-columns: minmax(150px, 1fr) auto auto;
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-height: 56px;
+  padding: 15px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  border-radius: 14px;
+  background-color: rgba(7, 7, 12, 0.22);
+  color: var(--white);
+  font: inherit;
+  font-size: 17px;
+  line-height: 1.4;
+  transition:
+    border-color 0.25s var(--ease-out),
+    background-color 0.25s var(--ease-out),
+    box-shadow 0.25s var(--ease-out);
+}
+
+.field[hidden] {
+  display: none;
+}
+
+.field textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.field ::placeholder {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.field select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 48px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 20px;
+}
+
+/* Sem tipo escolhido, o select parece um placeholder. */
+.field select:has(option[value='']:checked) {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.field option {
+  background: var(--black-2);
+  color: var(--white);
+}
+
+.field input:hover,
+.field select:hover,
+.field textarea:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.field input:focus-visible,
+.field select:focus-visible,
+.field textarea:focus-visible {
+  outline: none;
+  border-color: var(--white);
+  background-color: rgba(7, 7, 12, 0.32);
+  box-shadow: 0 0 0 3px rgba(199, 85, 247, 0.75);
+}
+
+.field [aria-invalid='true'] {
+  border-color: #ffd0f3;
+  box-shadow: 0 0 0 2px #ffd0f3;
+}
+
+.field__error {
+  display: flex;
   align-items: center;
-  gap: clamp(16px, 3vw, 48px);
-  padding: clamp(18px, 2.4vw, 30px) 0;
-  transition: color 0.35s var(--ease-out);
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 600;
 }
 
-.contato__label {
+.field__error::before {
+  content: '!';
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--black);
+  font-size: 13px;
+}
+
+.field__error[hidden] {
+  display: none;
+}
+
+.contato__submit {
+  width: 100%;
+  min-height: 60px;
+  margin-top: 6px;
+  font-size: 16px;
+  letter-spacing: 0.06em;
+  background: var(--white);
+  color: var(--black);
+  transition:
+    background 0.3s var(--ease-out),
+    color 0.3s var(--ease-out),
+    transform 0.15s var(--ease-out);
+}
+
+.contato__submit:hover {
+  background: var(--black);
+  color: var(--white);
+}
+
+.contato__submit:active {
+  transform: scale(0.98);
+  background: var(--purple);
+  color: var(--white);
+}
+
+.contato__submit:focus-visible {
+  outline: 3px solid var(--white);
+  outline-offset: 3px;
+  border-radius: 999px;
+}
+
+.contato__status {
+  font-size: 15px;
+  text-align: center;
+  color: var(--white);
+}
+
+.contato__status:empty {
+  display: none;
+}
+
+/* Contato direto, para quem prefere não usar o formulário. */
+.contato__direct {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 24px;
+  margin-top: clamp(32px, 4vw, 44px);
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.contato__direct a {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  font-size: 18px;
-  font-weight: 500;
-  color: var(--grey-on-blue);
-  transition: color 0.35s var(--ease-out);
-}
-
-.contato__label svg {
-  width: 22px;
-  height: 22px;
-}
-
-.contato__value {
-  font-size: clamp(30px, 4.6vw, 72px);
+  gap: 8px;
+  min-height: 44px;
+  font-size: 16px;
   font-weight: 600;
-  line-height: 1;
-  letter-spacing: -0.03em;
-  white-space: nowrap;
+  transition: color 0.3s;
 }
 
-.contato__arrow {
-  width: clamp(28px, 3vw, 44px);
-  height: clamp(28px, 3vw, 44px);
-  transition: transform 0.45s var(--ease-out);
-}
-
-.contato__row:hover,
-.contato__row:focus-visible {
+.contato__direct a:hover {
   color: var(--black);
 }
 
-.contato__row:hover .contato__label,
-.contato__row:focus-visible .contato__label {
-  color: var(--black);
-}
-
-.contato__row:hover .contato__arrow,
-.contato__row:focus-visible .contato__arrow {
-  transform: translate(4px, -4px);
+.contato__direct svg {
+  width: 20px;
+  height: 20px;
 }
 
 @media (max-width: 719px) {
   .contato {
-    padding: 36px 16px 8px;
+    padding: 48px 16px 36px;
   }
 
   .contato__title {
-    font-size: 16.4vw;
+    font-size: clamp(54px, 17vw, 80px);
   }
 
-  .contato__row {
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas:
-      'label arrow'
-      'value arrow';
-    row-gap: 8px;
-    padding: 20px 0;
-  }
-
-  .contato__label {
-    grid-area: label;
+  .contato__lead {
     font-size: 16px;
   }
 
-  .contato__value {
-    grid-area: value;
-    font-size: clamp(26px, 8.2vw, 36px);
+  .contato__form {
+    gap: 20px;
   }
 
-  .contato__arrow {
-    grid-area: arrow;
+  .field input,
+  .field select,
+  .field textarea {
+    padding-left: 14px;
+    font-size: 16px;
+  }
+
+  .field select {
+    padding-right: 44px;
+    background-position: right 12px center;
   }
 }
