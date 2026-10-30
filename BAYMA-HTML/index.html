@@ -16,9 +16,13 @@
     <link rel="stylesheet" href="css/style.css" />
     <script>
       document.documentElement.classList.add('js')
-      // Abertura: uma vez por visita, e nunca com "reduzir movimento" ativado.
+      // Recarregar (F5) começa no topo: o navegador não restaura a rolagem antiga.
+      // Links com seção (index.html#shows) continuam indo para a seção.
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
+      // Abertura: uma vez por visita, nunca com "reduzir movimento" e nunca
+      // quando o link já aponta para uma seção específica.
       try {
-        if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !sessionStorage.getItem('bayma-intro'))
+        if (!location.hash && !matchMedia('(prefers-reduced-motion: reduce)').matches && !sessionStorage.getItem('bayma-intro'))
           document.documentElement.classList.add('has-intro')
       } catch (e) {}
     </script>

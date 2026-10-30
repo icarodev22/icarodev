@@ -29,6 +29,30 @@
   })
 
   // ---------------------------------------------------------------------------
+  // Âncoras da página (#historia, #shows, #contato, #top): rolam até a seção sem
+  // gravar o "#" no endereço. Assim, recarregar ou reabrir o site começa no
+  // topo, e não na última seção clicada. Links vindos de fora com seção
+  // (index.html#shows) continuam funcionando normalmente.
+  // ---------------------------------------------------------------------------
+
+  document.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+    var link = e.target.closest && e.target.closest('a[href^="#"]')
+    if (!link) return
+    var id = link.getAttribute('href').slice(1)
+    var target = id && document.getElementById(id)
+    if (!target) return
+    e.preventDefault()
+    var behavior = reducedMotion ? 'auto' : 'smooth'
+    if (id === 'top') window.scrollTo({ top: 0, behavior: behavior })
+    else target.scrollIntoView({ behavior: behavior, block: 'start' })
+    // Leva o foco para a seção (teclado e leitores de tela), sem pular a rolagem.
+    if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1')
+    target.focus({ preventScroll: true })
+    if (location.hash) history.replaceState(null, '', location.pathname + location.search)
+  })
+
+  // ---------------------------------------------------------------------------
   // Revelação ao rolar: [data-reveal] ganha .is-in ao entrar na tela.
   // ---------------------------------------------------------------------------
 
@@ -153,9 +177,49 @@
     } catch (e) {}
 
     var out = false
+    // Enquanto a abertura está na tela, rolagem não move a página por baixo
+    // dela (antes, o gesto que pulava a abertura levava a página para a História).
+    // O bloqueio dura até o gesto em curso terminar: um dedo que ainda desliza
+    // ou o "embalo" da rolagem do trackpad não podem rolar a página depois.
+    var SCROLL_KEYS = [' ', 'PageDown', 'PageUp', 'ArrowDown', 'ArrowUp', 'Home', 'End']
+    var touching = false
+    var lastWheel = 0
+    var block = function (e) {
+      if (e.type === 'keydown' && SCROLL_KEYS.indexOf(e.key) < 0) return
+      if (e.type === 'wheel') lastWheel = Date.now()
+      if (e.cancelable) e.preventDefault()
+    }
+    var onTouch = function (e) {
+      touching = e.type === 'touchstart' || (e.touches && e.touches.length > 0)
+    }
+    ;['wheel', 'touchmove', 'keydown'].forEach(function (t) {
+      window.addEventListener(t, block, { passive: false })
+    })
+    ;['touchstart', 'touchend', 'touchcancel'].forEach(function (t) {
+      window.addEventListener(t, onTouch, { passive: true })
+    })
+    var release = function () {
+      if (touching || Date.now() - lastWheel < 250) {
+        setTimeout(release, 120)
+        return
+      }
+      ;['wheel', 'touchmove', 'keydown'].forEach(function (t) {
+        window.removeEventListener(t, block)
+      })
+      ;['touchstart', 'touchend', 'touchcancel'].forEach(function (t) {
+        window.removeEventListener(t, onTouch)
+      })
+    }
+    // A camada só é escondida, não removida: se o dedo começou o gesto sobre
+    // ela, os eventos de toque continuam indo para ela e precisam continuar
+    // chegando ao bloqueio acima (um elemento removido não os repassa).
+    var finished = false
     var finish = function () {
+      if (finished) return
+      finished = true
       document.documentElement.classList.remove('has-intro')
-      if (el.parentNode) el.parentNode.removeChild(el)
+      el.hidden = true
+      release()
     }
     var leave = function (skip) {
       if (out) return

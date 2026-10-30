@@ -144,6 +144,12 @@ ul {
   border-radius: 6px;
 }
 
+/* Seções recebem foco ao navegar pelas abas (acessibilidade), sem contorno. */
+section[tabindex='-1']:focus,
+section[tabindex='-1']:focus-visible {
+  outline: none;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
