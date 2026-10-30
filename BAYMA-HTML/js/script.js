@@ -133,16 +133,71 @@
   // Hero: entrada, cursor (--mx, --my) e rolagem (--p).
   // ---------------------------------------------------------------------------
 
+  // ---------------------------------------------------------------------------
+  // Abertura com a logo (index.html). Toca uma vez por visita; o <head> decide
+  // antes da primeira pintura (classe .has-intro). Ao terminar, avisa o Hero
+  // com o evento "bayma:intro-out". Clique, toque, rolagem ou tecla pulam.
+  // ---------------------------------------------------------------------------
+
+  var INTRO_HOLD = 1600 // ms até a abertura começar a sair (igual ao CSS)
+  var introDone = !document.documentElement.classList.contains('has-intro')
+
+  ;(function intro() {
+    var el = document.querySelector('[data-intro]')
+    if (introDone || !el) {
+      introDone = true
+      return
+    }
+    try {
+      sessionStorage.setItem('bayma-intro', '1')
+    } catch (e) {}
+
+    var out = false
+    var finish = function () {
+      document.documentElement.classList.remove('has-intro')
+      if (el.parentNode) el.parentNode.removeChild(el)
+    }
+    var leave = function (skip) {
+      if (out) return
+      out = true
+      introDone = true
+      if (skip) el.classList.add('is-skipping')
+      document.dispatchEvent(new CustomEvent('bayma:intro-out'))
+      ;['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(function (t) {
+        window.removeEventListener(t, skipNow)
+      })
+      // Remove a camada quando a saída termina (com folga, caso a animação não dispare).
+      el.addEventListener('animationend', function (e) {
+        if (e.target === el) finish()
+      })
+      setTimeout(finish, skip ? 450 : 700)
+    }
+    var skipNow = function () {
+      leave(true)
+    }
+    ;['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(function (t) {
+      window.addEventListener(t, skipNow, { passive: true })
+    })
+    setTimeout(function () {
+      leave(false)
+    }, INTRO_HOLD)
+  })()
+
   ;(function hero() {
     var el = document.querySelector('[data-hero]')
     if (!el) return
 
     // Dois quadros garantem que o estado inicial foi pintado antes da entrada.
-    requestAnimationFrame(function () {
+    // Com a abertura, a entrada do Hero começa quando ela sai.
+    var enter = function () {
       requestAnimationFrame(function () {
-        el.classList.add('is-ready')
+        requestAnimationFrame(function () {
+          el.classList.add('is-ready')
+        })
       })
-    })
+    }
+    if (introDone) enter()
+    else document.addEventListener('bayma:intro-out', enter, { once: true })
 
     if (reducedMotion) return
     var pointer = { x: 0, y: 0, tx: 0, ty: 0 }
@@ -329,36 +384,52 @@
   })
 
   // ---------------------------------------------------------------------------
-  // Navegação: fundo sólido após o Hero, aba ativa e menu mobile.
+  // Navegação: cápsula com a aba ativa marcada por um destaque que desliza.
+  // A logo entra na cápsula depois do Hero.
   // ---------------------------------------------------------------------------
 
   ;(function nav() {
     var header = document.querySelector('[data-nav]')
     if (!header) return
     var mark = header.querySelector('.nav__mark')
-    var toggle = header.querySelector('[data-menu-toggle]')
-    var label = header.querySelector('[data-menu-label]')
-    var menu = document.getElementById('nav-menu')
-    var ids = ['historia', 'shows', 'contato']
-    var links = Array.prototype.slice.call(document.querySelectorAll('.nav__links a[href^="#"], #nav-menu nav a[href^="#"]'))
+    var tabsBox = header.querySelector('.nav__tabs')
+    var indicator = header.querySelector('.nav__indicator')
+    var tabs = Array.prototype.slice.call(header.querySelectorAll('.nav__tab'))
+    var ids = tabs.map(function (a) {
+      return a.getAttribute('href').slice(1)
+    })
+    var active = null
 
+    var place = function () {
+      var tab = active && header.querySelector('.nav__tab[href="#' + active + '"]')
+      tabsBox.classList.toggle('has-active', !!tab)
+      if (!tab) return
+      indicator.style.setProperty('--ind-x', tab.offsetLeft + 'px')
+      indicator.style.setProperty('--ind-w', tab.offsetWidth + 'px')
+    }
     var setActive = function (id) {
-      links.forEach(function (a) {
+      if (id === active) return
+      active = id
+      tabs.forEach(function (a) {
         if (a.getAttribute('href') === '#' + id) a.setAttribute('aria-current', 'location')
         else a.removeAttribute('aria-current')
       })
+      place()
     }
 
     var onScroll = function () {
       var solid = window.scrollY > window.innerHeight * 0.82
       header.classList.toggle('nav--solid', solid)
-      mark.tabIndex = solid || header.classList.contains('nav--open') ? 0 : -1
+      mark.tabIndex = solid ? 0 : -1
       // Acima da primeira seção nenhuma aba fica ativa.
       var first = document.getElementById(ids[0])
       if (first && first.getBoundingClientRect().top > window.innerHeight * 0.5) setActive(null)
     }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', place)
+    // A largura das abas depende da fonte: reposiciona quando ela carregar.
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(place)
 
     var io = new IntersectionObserver(
       function (entries) {
@@ -371,39 +442,6 @@
     ids.forEach(function (id) {
       var el = document.getElementById(id)
       if (el) io.observe(el)
-    })
-
-    var onKey = function (e) {
-      if (e.key === 'Escape') setOpen(false)
-    }
-    var onResize = function () {
-      if (window.innerWidth >= 820) setOpen(false)
-    }
-    var setOpen = function (open) {
-      header.classList.toggle('nav--open', open)
-      menu.hidden = !open
-      toggle.setAttribute('aria-expanded', String(open))
-      label.textContent = open ? 'Fechar' : 'Menu'
-      document.body.style.overflow = open ? 'hidden' : ''
-      mark.tabIndex = open || header.classList.contains('nav--solid') ? 0 : -1
-      if (open) {
-        document.addEventListener('keydown', onKey)
-        window.addEventListener('resize', onResize)
-      } else {
-        document.removeEventListener('keydown', onKey)
-        window.removeEventListener('resize', onResize)
-      }
-    }
-    toggle.addEventListener('click', function () {
-      setOpen(menu.hidden)
-    })
-    menu.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', function () {
-        setOpen(false)
-      })
-    })
-    mark.addEventListener('click', function () {
-      setOpen(false)
     })
   })()
 

@@ -32,9 +32,16 @@ Abra os arquivos em qualquer editor de texto (VS Code, Bloco de Notas...).
 
 - Textos: direto no index.html. Cada seção começa com um comentário
   (<!-- HERO -->, <!-- HISTÓRIA -->, <!-- SHOWS --> ...).
-- História: o texto de "QUEM É VITOR BAYMA?" é PROVISÓRIO. Procure por
-  "TEXTO PROVISÓRIO" no index.html e troque os parágrafos <p> pelo texto do
-  presskit oficial (um <p> por parágrafo).
+- História: o texto de "QUEM É VITOR BAYMA?" fica no index.html, dentro de
+  <div class="hist__text"> (um <p> por parágrafo). A linha FUNK · BREGA FUNK ·
+  MEGA FUNK logo abaixo é a lista <ul class="hist__styles">.
+- Navegação: as abas ficam no index.html, dentro de <nav class="nav__tabs">.
+  O destaque azul acompanha sozinho a seção que está na tela.
+- Abertura: toca uma vez por visita (ao recarregar na mesma aba, não repete)
+  e não aparece para quem ativou "reduzir movimento". Clique, toque, rolagem
+  ou qualquer tecla pulam a abertura. Para ver de novo, abra o site em uma
+  aba nova. Ela fica no bloco <!-- ABERTURA --> do index.html; os tempos estão
+  no fim do css/style.css (seção ABERTURA).
 - Cores: no início do css/style.css, em :root (--blue, --purple, --black...).
 - Fotos do carrossel de Shows: cada foto é um <li class="gcar__slide"> no
   index.html. O atributo data-tint traz as duas cores usadas no fundo

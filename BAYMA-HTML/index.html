@@ -12,8 +12,16 @@
     <link rel="icon" type="image/png" href="assets/icons/favicon.png" />
     <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
     <link rel="preload" as="image" href="assets/img/logo/logo-bayma-branco.png" />
+    <link rel="preload" as="image" href="assets/img/logo/logo-bayma-roxo.png" />
     <link rel="stylesheet" href="css/style.css" />
-    <script>document.documentElement.classList.add('js')</script>
+    <script>
+      document.documentElement.classList.add('js')
+      // Abertura: uma vez por visita, e nunca com "reduzir movimento" ativado.
+      try {
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !sessionStorage.getItem('bayma-intro'))
+          document.documentElement.classList.add('has-intro')
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <!-- Ícones usados no site (referenciados com <use href="#i-...">) -->
@@ -33,6 +41,19 @@
       </symbol>
     </svg>
 
+    <!-- ===================== ABERTURA =====================
+         O raio do "Y" (contorno extraído do arquivo original da logo) se
+         desenha, a logo original aparece a partir dele e a abertura sobe,
+         revelando o Hero. Clique, toque, rolagem ou tecla pulam a abertura. -->
+    <div class="intro" data-intro aria-hidden="true">
+      <div class="intro__stage">
+        <img class="intro__logo" src="assets/img/logo/logo-bayma-roxo.png" width="1748" height="506" alt="" />
+        <svg class="intro__bolt" viewBox="0 0 1748 506" preserveAspectRatio="xMidYMid meet" focusable="false">
+          <path d="M1013,10 L839,10 L821,35 L782,102 L766,121 L726,0 L580,1 L581,10 L589,23 L696,251 L687,292 L673,339 L670,363 L689,366 L750,366 L697,504 L734,466 L882,289 L868,286 L800,287 L799,285 L1011,19 Z" pathLength="1" />
+        </svg>
+      </div>
+    </div>
+
     <a class="skip" href="#historia">Pular para o conteúdo</a>
 
     <!-- ===================== NAVEGAÇÃO ===================== -->
@@ -40,38 +61,17 @@
       <a href="#top" class="nav__mark" aria-label="BAYMA, voltar ao início" tabindex="-1">
         <img src="assets/img/logo/logo-bayma-branco.png" width="1748" height="506" alt="" />
       </a>
-
-      <nav class="nav__links" aria-label="Principal">
-        <a href="#historia">História</a>
-        <a href="#shows">Shows</a>
-        <a href="#contato">Contato</a>
-        <a class="btn btn--light nav__cta" href="https://wa.me/5581989575353" target="_blank" rel="noopener noreferrer">
-          Contratar
-          <svg aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
-        </a>
+      <nav class="nav__tabs" aria-label="Principal">
+        <span class="nav__indicator" aria-hidden="true"></span>
+        <a class="nav__tab" href="#historia">História</a>
+        <a class="nav__tab" href="#shows">Shows</a>
+        <a class="nav__tab" href="#contato">Contato</a>
       </nav>
-
-      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-menu" data-menu-toggle>
-        <span data-menu-label>Menu</span>
-        <i aria-hidden="true"></i>
-      </button>
-    </header>
-
-    <div id="nav-menu" class="nav__menu" hidden>
-      <nav aria-label="Menu">
-        <a href="#historia" style="--i: 0">História</a>
-        <a href="#shows" style="--i: 1">Shows</a>
-        <a href="#contato" style="--i: 2">Contato</a>
-        <a href="https://wa.me/5581989575353" target="_blank" rel="noopener noreferrer" style="--i: 3">
-          Contratar
-          <svg aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
-        </a>
-      </nav>
-      <a class="nav__menu-ig" href="https://www.instagram.com/bayma11/" target="_blank" rel="noopener noreferrer">
-        <svg aria-hidden="true"><use href="#i-instagram" /></svg>
-        @bayma11
+      <a class="btn btn--light nav__cta" href="https://wa.me/5581989575353" target="_blank" rel="noopener noreferrer">
+        Contratar
+        <svg aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
       </a>
-    </div>
+    </header>
 
     <main>
       <!-- ===================== HERO ===================== -->
@@ -140,11 +140,23 @@
         <div class="hist__body">
           <h2 id="hist-title" class="title hist__title" data-reveal>Quem é <span>Vitor Bayma?</span></h2>
 
-          <!-- TEXTO PROVISÓRIO: substituir pelo texto do presskit oficial (um <p> por parágrafo). -->
           <div class="hist__text">
-            <p data-reveal style="--d: 120">Vitor Bayma é o DJ BAYMA.</p>
-            <p data-reveal style="--d: 200">Texto provisório: a história completa entra aqui com o presskit oficial.</p>
+            <p data-reveal style="--d: 120">
+              Vitor Bayma é o artista por trás do projeto BAYMA. Com uma identidade musical conectada ao funk, brega
+              funk e mega funk, sua proposta é transformar cada apresentação em uma experiência marcada pela energia,
+              pelo ritmo e pela conexão com o público.
+            </p>
+            <p data-reveal style="--d: 200">
+              Sua presença musical carrega uma identidade própria, levando diferentes vertentes do funk para os palcos
+              e criando momentos de intensidade em cada show.
+            </p>
           </div>
+
+          <ul class="hist__styles" aria-label="Estilos musicais" data-reveal style="--d: 280">
+            <li>Funk</li>
+            <li>Brega Funk</li>
+            <li>Mega Funk</li>
+          </ul>
         </div>
       </section>
 
