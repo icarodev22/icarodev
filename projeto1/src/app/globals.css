@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #101112;        /* preto profundo */
+  --color-graphite: #1b1c1b;   /* grafite */
+  --color-charcoal: #272725;   /* carvão */
+  --color-umber: #493b32;      /* marrom histórico */
+  --color-bronze: #a68a68;     /* bronze antigo */
+  --color-ivory: #e8e0d4;      /* marfim */
+  --color-stone: #a6a19a;      /* cinza suave */
+  --color-forest: #24443b;     /* verde profundo */
+
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Newsreader Variable", ui-serif, Georgia, serif;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-ivory);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: rgba(166, 138, 104, 0.35);
+    color: var(--color-ivory);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-bronze);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .museum-texture {
+    background-image:
+      radial-gradient(ellipse at top, rgba(73, 59, 50, 0.35), transparent 60%),
+      radial-gradient(ellipse at bottom right, rgba(36, 68, 59, 0.18), transparent 55%);
+  }
+  .hairline {
+    border-color: rgba(166, 161, 154, 0.14);
+  }
+  .eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-bronze);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
