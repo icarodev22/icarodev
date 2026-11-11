@@ -12,8 +12,8 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <p className="eyebrow">Biblioteca</p>
-      <h1 className="mt-2 font-serif text-3xl text-ivory sm:text-4xl">Personalidades</h1>
-      <p className="mt-2 max-w-2xl text-stone">
+      <h1 className="mt-2 font-display text-3xl text-fg sm:text-4xl">Personalidades</h1>
+      <p className="mt-2 max-w-2xl text-muted">
         Seis áreas, dezoito conversas possíveis. Escolha alguém e comece a perguntar.
       </p>
       <LibraryView cards={allCards()} categories={CATEGORIES.map((c) => ({ id: c.id, name: c.name, description: c.description }))} initial={initial} />

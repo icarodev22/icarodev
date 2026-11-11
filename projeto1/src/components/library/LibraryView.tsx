@@ -40,7 +40,7 @@ export function LibraryView({
               aria-pressed={filter === c.id}
               onClick={() => setFilter(c.id)}
               className={`shrink-0 rounded-full border px-3.5 py-1.5 text-sm transition-colors ${
-                filter === c.id ? "border-bronze bg-umber/60 text-ivory" : "hairline bg-graphite/70 text-stone hover:text-ivory"
+                filter === c.id ? "border-accent bg-raised/60 text-fg" : "hairline bg-surface/70 text-muted hover:text-fg"
               }`}
             >
               {c.name}
@@ -55,7 +55,7 @@ export function LibraryView({
             maxLength={60}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Filtrar por nome…"
-            className="w-full rounded-lg border hairline bg-graphite px-3 py-2 text-sm text-ivory placeholder:text-stone/70 focus:border-bronze/60 focus:outline-none"
+            className="w-full rounded-lg border hairline bg-surface px-3 py-2 text-sm text-fg placeholder:text-muted/70 focus:border-accent/60 focus:outline-none"
           />
         </label>
       </div>
@@ -65,15 +65,15 @@ export function LibraryView({
       </p>
 
       {groups.length === 0 ? (
-        <div className="mt-12 rounded-xl border hairline bg-graphite/60 p-8 text-center text-stone">
+        <div className="mt-12 rounded-xl border hairline bg-surface/60 p-8 text-center text-muted">
           Nenhuma personalidade corresponde à busca. Tente outro nome ou categoria.
         </div>
       ) : (
         groups.map((g) => (
           <section key={g.id} aria-labelledby={`cat-${g.id}`} className="mt-10">
             <div className="mb-4 flex items-baseline gap-3 border-b hairline pb-2">
-              <h2 id={`cat-${g.id}`} className="font-serif text-2xl text-ivory">{g.name}</h2>
-              <p className="text-sm text-stone">{g.description}</p>
+              <h2 id={`cat-${g.id}`} className="font-display text-2xl text-fg">{g.name}</h2>
+              <p className="text-sm text-muted">{g.description}</p>
             </div>
             <ul className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
               {g.items.map((p) => (

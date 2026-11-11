@@ -7,8 +7,9 @@ import { LEVELS, type Level } from "./chat-shared";
  * Preferências guardadas SOMENTE neste navegador (localStorage), sem dados pessoais.
  * As leituras/escritas toleram armazenamento indisponível (modo privado, bloqueio).
  */
-export const PREF_KEYS = { level: "p1:nivel", motion: "p1:animacoes" } as const;
+export const PREF_KEYS = { level: "p1:nivel", motion: "p1:animacoes", theme: "p1:tema" } as const;
 export type MotionPref = "sistema" | "reduzidas";
+export type ThemePref = "escuro" | "claro" | "sistema";
 const EVENT = "p1:preferencias";
 
 function read(key: string): string | null {
@@ -61,5 +62,16 @@ export function useMotionPreference(): MotionPref {
     subscribe,
     () => (read(PREF_KEYS.motion) === "reduzidas" ? "reduzidas" : "sistema"),
     () => "sistema",
+  );
+}
+
+export function useThemePreference(): ThemePref {
+  return useSyncExternalStore(
+    subscribe,
+    () => {
+      const v = read(PREF_KEYS.theme);
+      return v === "claro" || v === "sistema" ? v : "escuro";
+    },
+    () => "escuro",
   );
 }

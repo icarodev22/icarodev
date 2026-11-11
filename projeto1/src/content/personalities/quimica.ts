@@ -63,7 +63,7 @@ export const quimica: Personality[] = [
     },
     portrait: {
       kind: "ilustracao-original",
-      alt: "Ilustração original em silhueta de uma mulher com cabelo preso em coque e vestido escuro de gola alta, em tons de bronze.",
+      alt: "Ilustração original em silhueta de uma mulher com cabelo preso em coque e vestido escuro de gola alta, com luz de recorte azul.",
       notice: ILLUSTRATION_NOTICE,
       art: { hair: "bun", attire: "dress", tilt: -1 },
     },
@@ -154,7 +154,7 @@ export const quimica: Personality[] = [
     },
     portrait: {
       kind: "ilustracao-original",
-      alt: "Ilustração original em silhueta de um homem com peruca do século XVIII, casaca e lenço ao pescoço, em tons de bronze.",
+      alt: "Ilustração original em silhueta de um homem com peruca do século XVIII, casaca e lenço ao pescoço, com luz de recorte azul.",
       notice: ILLUSTRATION_NOTICE,
       art: { hair: "wig", attire: "coat-cravat", tilt: -2 },
     },
@@ -244,7 +244,7 @@ export const quimica: Personality[] = [
     },
     portrait: {
       kind: "ilustracao-original",
-      alt: "Ilustração original em silhueta de um homem com cabelos longos e barba longa, em tons de bronze.",
+      alt: "Ilustração original em silhueta de um homem com cabelos longos e barba longa, com luz de recorte azul.",
       notice: ILLUSTRATION_NOTICE,
       art: { hair: "long", facialHair: "long-beard", attire: "coat-cravat", tilt: 1 },
     },

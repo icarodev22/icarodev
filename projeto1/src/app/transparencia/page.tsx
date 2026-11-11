@@ -6,8 +6,13 @@ export const metadata: Metadata = { title: "Como funciona" };
 
 export default function TransparencyPage() {
   return (
-    <Prose eyebrow="Transparência" title="Como funciona esta simulação">
-      <p className="rounded-lg border border-forest bg-forest/20 p-4 text-ivory/90">{SIMULATION_DISCLAIMER}</p>
+    <Prose eyebrow="Transparência" title="Como funciona a EPOCH.ia">
+      <p className="rounded-lg border border-accent bg-accent/20 p-4 text-fg/90">{SIMULATION_DISCLAIMER}</p>
+      <p>
+        A EPOCH.ia transforma conhecimento em diálogo: cada conversa acontece com uma representação digital educacional de
+        uma personalidade, dentro do seu campo de conhecimento e da sua época. Perguntas fora desse universo são
+        redirecionadas com gentileza para o tema da conversa.
+      </p>
       <h2>De onde vêm as respostas</h2>
       <p>
         As respostas são geradas por um modelo de linguagem (inteligência artificial) do provedor Anthropic. Antes de cada
@@ -23,7 +28,7 @@ export default function TransparencyPage() {
         <li>A IA pode errar. Confira informações importantes nas fontes indicadas.</li>
         <li>As personalidades não “sabem” de acontecimentos posteriores à própria morte; quando isso surgir, a resposta deve indicá-lo.</li>
         <li>Opiniões hipotéticas são marcadas como simulação. Frases entre aspas não devem ser tomadas como citações reais.</li>
-        <li>Os retratos são <strong>ilustrações originais e estilizadas</strong>, não fotografias nem retratos autênticos.</li>
+        <li>Cada retrato é identificado: <strong>ilustração original</strong>, <strong>reconstrução digital</strong> ou fotografia com crédito. Reconstruções e ilustrações não são fotografias autênticas.</li>
         <li>Não há sincronização labial nem voz nesta versão.</li>
       </ul>
       <h2>Níveis de explicação</h2>

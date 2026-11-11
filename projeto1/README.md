@@ -1,17 +1,17 @@
-# Projeto 1 — Converse com a história
+# EPOCH.ia — Conhecimento além do tempo.
 
 Plataforma educacional em que estudantes conversam com **representações digitais fictícias** de 18 personalidades
 históricas e científicas. As respostas são geradas por IA (Anthropic Claude) a partir de uma base de referência curada
 e isolada por personalidade (RAG), com regras de precisão histórica e proteção contra prompt injection.
 
-> Representação digital fictícia para fins educacionais. As respostas são geradas por inteligência artificial e não
-> correspondem a declarações reais da personalidade.
+> Esta é uma simulação educacional criada com inteligência artificial. As respostas são interpretações contextualizadas
+> e não representam falas autênticas da personalidade histórica.
 
 ## Stack
 
 | Camada | Tecnologia |
 |---|---|
-| Frontend | Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, Framer Motion, Lucide |
+| Frontend | Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, Framer Motion, Lucide · Space Grotesk + Inter |
 | Backend | Route Handlers do Next.js (runtime Node), Zod |
 | IA | `@anthropic-ai/sdk` atrás da interface `AIProvider` (`src/server/ai`) |
 | Banco | PostgreSQL (compatível com Supabase), busca full-text em português com `unaccent`, RLS |
@@ -85,5 +85,6 @@ diário de conversas expiradas.
 - [docs/ARQUITETURA.md](docs/ARQUITETURA.md) — arquitetura, módulos, fluxo do chat, decisões e evolução
 - [docs/SEGURANCA.md](docs/SEGURANCA.md) — relatório de segurança (AppSec) e riscos residuais
 - [docs/VALIDACAO.md](docs/VALIDACAO.md) — testes executados e resultados
+- [docs/MARCA.md](docs/MARCA.md) — identidade EPOCH.ia aplicada ao produto (tokens, contraste, logotipos)
 - [docs/CONVERSATION_GUARD.md](docs/CONVERSATION_GUARD.md) — políticas de conversa (escopo, redirecionamento, segurança)
 - [docs/CONTEUDO.md](docs/CONTEUDO.md) — curadoria, fontes, retratos e como adicionar personalidades

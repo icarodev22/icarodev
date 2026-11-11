@@ -60,7 +60,7 @@ export const imperadores: Personality[] = [
     },
     portrait: {
       kind: "ilustracao-original",
-      alt: "Ilustração original em silhueta de um homem jovem de cabelo curto com franja, vestindo toga, em tons de bronze.",
+      alt: "Ilustração original em silhueta de um homem jovem de cabelo curto com franja, vestindo toga, com luz de recorte azul.",
       notice:
         "Ilustração original e estilizada — representação artística, não é retrato autêntico. Inspirada no tipo de penteado das estátuas romanas.",
       art: { hair: "fringe", attire: "toga", tilt: -1 },
@@ -148,7 +148,7 @@ export const imperadores: Personality[] = [
     },
     portrait: {
       kind: "ilustracao-original",
-      alt: "Ilustração original em silhueta de um homem com chapéu bicorne e uniforme militar com dragonas, em tons de bronze.",
+      alt: "Ilustração original em silhueta de um homem com chapéu bicorne e uniforme militar com dragonas, com luz de recorte azul.",
       notice: ILLUSTRATION_NOTICE,
       art: { hair: "short", headwear: "bicorne", attire: "military", tilt: 2 },
     },
@@ -235,7 +235,7 @@ export const imperadores: Personality[] = [
     },
     portrait: {
       kind: "ilustracao-original",
-      alt: "Ilustração original em silhueta de um homem de barba branca longa, com casaca formal, em tons de bronze.",
+      alt: "Ilustração original em silhueta de um homem de barba branca longa, com casaca formal, com luz de recorte azul.",
       notice: ILLUSTRATION_NOTICE,
       art: { hair: "short", facialHair: "white-beard", attire: "imperial", tilt: -2 },
     },

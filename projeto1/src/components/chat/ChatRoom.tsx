@@ -198,12 +198,12 @@ export function ChatRoom({
           <AnimatedPortrait data={profile.portrait} priority className="h-full w-full" />
           <div className="absolute inset-x-0 bottom-0 p-5">
             <p className="eyebrow">{profile.categoryName}</p>
-            <h1 className="mt-1 font-serif text-3xl leading-tight text-ivory">{profile.name}</h1>
-            <p className="text-sm text-stone">{profile.periodLabel} · {profile.field}</p>
+            <h1 className="mt-1 font-display text-3xl leading-tight text-fg">{profile.name}</h1>
+            <p className="text-sm text-muted">{profile.periodLabel} · {profile.field}</p>
           </div>
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-6 pt-3">
-          <p className="mb-3 text-[0.7rem] leading-snug text-stone/70">{profile.portraitNotice}</p>
+          <p className="mb-3 text-[0.7rem] leading-snug text-muted/70">{profile.portraitNotice}</p>
           <ProfilePanel p={profile} />
         </div>
       </aside>
@@ -215,18 +215,18 @@ export function ChatRoom({
             <button
               type="button"
               onClick={() => aboutRef.current?.showModal()}
-              className="relative size-11 shrink-0 overflow-hidden rounded-full border border-bronze/40"
+              className="relative size-11 shrink-0 overflow-hidden rounded-full border border-accent/40"
               aria-label={`Ver informações sobre ${profile.name}`}
             >
               <Portrait data={profile.portrait} sizes="(min-width: 640px) 32rem, 100vw" className="h-full w-full" />
             </button>
             <div className="min-w-0">
-              <h1 className="truncate font-serif text-lg leading-tight text-ivory">{profile.name}</h1>
-              <p className="truncate text-xs text-stone">{profile.periodLabel} · {profile.field}</p>
+              <h1 className="truncate font-display text-lg leading-tight text-fg">{profile.name}</h1>
+              <p className="truncate text-xs text-muted">{profile.periodLabel} · {profile.field}</p>
             </div>
           </div>
-          <span className="hidden items-center gap-1.5 rounded-full border border-forest bg-forest/30 px-2.5 py-1 text-xs text-ivory/90 lg:inline-flex">
-            <span aria-hidden className="size-1.5 rounded-full bg-bronze" />
+          <span className="hidden items-center gap-1.5 rounded-full border border-accent bg-accent/30 px-2.5 py-1 text-xs text-fg/90 lg:inline-flex">
+            <span aria-hidden className="size-1.5 rounded-full bg-accent" />
             Simulação educacional
           </span>
           <div className="ml-auto flex shrink-0 items-center gap-1.5">
@@ -235,7 +235,7 @@ export function ChatRoom({
               id="nivel"
               value={level}
               onChange={(e) => changeLevel(e.target.value as Level)}
-              className="max-w-[9.5rem] rounded-md border hairline bg-graphite px-2 py-1.5 text-xs text-ivory focus:border-bronze/60 focus:outline-none sm:max-w-none"
+              className="max-w-[9.5rem] rounded-md border hairline bg-surface px-2 py-1.5 text-xs text-fg focus:border-accent/60 focus:outline-none sm:max-w-none"
             >
               {LEVELS.map((l) => (
                 <option key={l} value={l}>{LEVEL_LABELS[l]}</option>
@@ -244,7 +244,7 @@ export function ChatRoom({
             <button
               type="button"
               onClick={() => switchRef.current?.showModal()}
-              className="inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-xs text-stone hover:bg-charcoal hover:text-ivory"
+              className="inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-xs text-muted hover:bg-raised hover:text-fg"
             >
               <Users className="size-4" aria-hidden />
               <span className="hidden sm:inline">Trocar</span>
@@ -254,7 +254,7 @@ export function ChatRoom({
               type="button"
               onClick={newConversation}
               disabled={messages.length === 0 && !sessionId}
-              className="inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-xs text-stone hover:bg-charcoal hover:text-ivory disabled:opacity-40"
+              className="inline-flex items-center gap-1.5 rounded-md px-2 py-1.5 text-xs text-muted hover:bg-raised hover:text-fg disabled:opacity-40"
               title="Inicia uma nova conversa e apaga a atual"
             >
               <RotateCcw className="size-4" aria-hidden />
@@ -266,20 +266,20 @@ export function ChatRoom({
 
         <div ref={listRef} className="min-h-0 flex-1 overflow-y-auto px-3 py-5 sm:px-6" aria-busy={sending}>
           {aiAvailable === false && (
-            <div role="status" className="mx-auto mb-4 flex max-w-2xl gap-2 rounded-lg border border-umber bg-umber/25 p-3 text-sm text-ivory/90">
-              <AlertTriangle className="mt-0.5 size-4 shrink-0 text-bronze" aria-hidden />
+            <div role="status" className="mx-auto mb-4 flex max-w-2xl gap-2 rounded-lg border border-warn/40 bg-warn/10 p-3 text-sm text-fg/90">
+              <AlertTriangle className="mt-0.5 size-4 shrink-0 text-accent" aria-hidden />
               <p>A integração com a inteligência artificial ainda não foi configurada neste ambiente. As conversas ficarão disponíveis assim que a chave do provedor for definida no servidor.</p>
             </div>
           )}
 
           {restoring ? (
-            <p className="flex items-center justify-center gap-2 py-10 text-sm text-stone">
+            <p className="flex items-center justify-center gap-2 py-10 text-sm text-muted">
               <Loader2 className="size-4 animate-spin" aria-hidden /> Carregando conversa…
             </p>
           ) : empty ? (
             <div className="mx-auto flex max-w-2xl flex-col items-center py-6 text-center">
               <p className="eyebrow">Comece a conversa</p>
-              <p className="mt-2 font-serif text-2xl text-ivory">O que você gostaria de perguntar a {profile.name}?</p>
+              <p className="mt-2 font-display text-2xl text-fg">O que você gostaria de perguntar a {profile.name}?</p>
               <ul className="mt-6 grid w-full gap-2 sm:grid-cols-2">
                 {profile.suggestedQuestions.map((q) => (
                   <li key={q}>
@@ -287,7 +287,7 @@ export function ChatRoom({
                       type="button"
                       onClick={() => send(q)}
                       disabled={sending || aiAvailable === false}
-                      className="h-full w-full rounded-lg border hairline bg-graphite/80 px-3.5 py-3 text-left text-sm text-ivory/90 transition-colors hover:border-bronze/50 disabled:opacity-50"
+                      className="h-full w-full rounded-lg border hairline bg-surface/80 px-3.5 py-3 text-left text-sm text-fg/90 transition-colors hover:border-accent/50 disabled:opacity-50"
                     >
                       {q}
                     </button>
@@ -298,14 +298,14 @@ export function ChatRoom({
           ) : (
             <ol className="mx-auto flex max-w-3xl flex-col gap-5">
               {messages.map((m) => (
-                <li key={m.id} className={m.role === "user" ? "flex justify-end" : "flex gap-3"}>
+                <li key={m.id} className={`epoch-message-in ${m.role === "user" ? "flex justify-end" : "flex gap-3"}`}>
                   {m.role === "assistant" && (
-                    <div aria-hidden className="mt-1 hidden size-8 shrink-0 overflow-hidden rounded-full border border-bronze/30 sm:block">
+                    <div aria-hidden className="mt-1 hidden size-8 shrink-0 overflow-hidden rounded-full border border-accent/30 sm:block">
                       <Portrait data={profile.portrait} decorative sizes="32px" className="h-full w-full" />
                     </div>
                   )}
                   {m.role === "user" ? (
-                    <div className="max-w-[85%] rounded-2xl rounded-br-sm bg-umber/70 px-4 py-2.5 text-[0.95rem] leading-relaxed text-ivory">
+                    <div className="max-w-[85%] rounded-2xl rounded-br-sm bg-accent/15 ring-1 ring-inset ring-accent/20 px-4 py-2.5 text-[0.95rem] leading-relaxed text-fg">
                       <span className="sr-only">Você: </span>
                       <p className="whitespace-pre-wrap break-words">{m.content}</p>
                     </div>
@@ -313,25 +313,25 @@ export function ChatRoom({
                     <div className="min-w-0 max-w-[92%] flex-1">
                       <span className="sr-only">{profile.name} (simulação): </span>
                       <div
-                        className={`space-y-3 break-words text-[0.97rem] leading-relaxed ${m.status === "error" ? "rounded-lg border border-umber bg-umber/20 p-3 text-ivory/90" : "text-ivory/90"}`}
+                        className={`space-y-3 break-words text-[0.97rem] leading-relaxed ${m.status === "error" ? "rounded-lg border border-warn/40 bg-warn/10 p-3 text-fg/90" : "text-fg/90"}`}
                       >
                         {m.content ? (
                           <MessageText text={m.content} />
                         ) : (
-                          <p className="flex items-center gap-2 text-stone">
+                          <p className="flex items-center gap-2 text-muted">
                             <Loader2 className="size-4 animate-spin" aria-hidden /> {profile.name} está formulando a resposta…
                           </p>
                         )}
                       </div>
-                      {m.truncated && <p className="mt-2 text-xs text-stone">A resposta atingiu o limite de tamanho e pode estar incompleta.</p>}
+                      {m.truncated && <p className="mt-2 text-xs text-muted">A resposta atingiu o limite de tamanho e pode estar incompleta.</p>}
                       {m.status === "done" && m.sources && m.sources.length > 0 && (
-                        <details className="mt-2 text-xs text-stone">
-                          <summary className="cursor-pointer select-none hover:text-ivory">Fontes de referência consultadas</summary>
+                        <details className="mt-2 text-xs text-muted">
+                          <summary className="cursor-pointer select-none hover:text-fg">Fontes de referência consultadas</summary>
                           <ul className="mt-1.5 space-y-1 pl-3">
                             {m.sources.map((s) => (
                               <li key={s.title + s.publisher}>
                                 {s.url ? (
-                                  <a href={s.url} target="_blank" rel="noopener noreferrer nofollow" className="underline decoration-bronze/40 underline-offset-2 hover:text-ivory">
+                                  <a href={s.url} target="_blank" rel="noopener noreferrer nofollow" className="underline decoration-accent/40 underline-offset-2 hover:text-fg">
                                     {s.title}
                                   </a>
                                 ) : (
@@ -341,7 +341,7 @@ export function ChatRoom({
                               </li>
                             ))}
                           </ul>
-                          <p className="mt-1 pl-3 text-stone/70">Trechos da base curada da plataforma (não houve consulta à internet em tempo real).</p>
+                          <p className="mt-1 pl-3 text-muted/70">Trechos da base curada da plataforma (não houve consulta à internet em tempo real).</p>
                         </details>
                       )}
                     </div>
@@ -352,7 +352,7 @@ export function ChatRoom({
           )}
         </div>
 
-        <div className="border-t hairline bg-ink/80 px-3 pb-3 pt-2 sm:px-6">
+        <div className="border-t hairline bg-canvas/80 px-3 pb-3 pt-2 sm:px-6">
           {!empty && !restoring && (
             <div className="mx-auto mb-2 flex max-w-3xl gap-2 overflow-x-auto pb-1" aria-label="Perguntas sugeridas">
               {profile.suggestedQuestions.slice(0, 3).map((q) => (
@@ -361,7 +361,7 @@ export function ChatRoom({
                   type="button"
                   disabled={sending}
                   onClick={() => send(q)}
-                  className="shrink-0 rounded-full border hairline bg-graphite px-3 py-1 text-xs text-stone hover:text-ivory disabled:opacity-50"
+                  className="shrink-0 rounded-full border hairline bg-surface px-3 py-1 text-xs text-muted hover:text-fg disabled:opacity-50"
                 >
                   {q}
                 </button>
@@ -369,16 +369,16 @@ export function ChatRoom({
             </div>
           )}
           {notice && (
-            <div role="alert" className="mx-auto mb-2 flex max-w-3xl items-start gap-2 rounded-md border border-umber bg-umber/25 px-3 py-2 text-sm text-ivory/90">
-              <AlertTriangle className="mt-0.5 size-4 shrink-0 text-bronze" aria-hidden />
+            <div role="alert" className="mx-auto mb-2 flex max-w-3xl items-start gap-2 rounded-md border border-warn/40 bg-warn/10 px-3 py-2 text-sm text-fg/90">
+              <AlertTriangle className="mt-0.5 size-4 shrink-0 text-accent" aria-hidden />
               <span className="flex-1">{notice}</span>
-              <button type="button" onClick={() => setNotice(null)} aria-label="Fechar aviso" className="text-stone hover:text-ivory">
+              <button type="button" onClick={() => setNotice(null)} aria-label="Fechar aviso" className="text-muted hover:text-fg">
                 <X className="size-4" aria-hidden />
               </button>
             </div>
           )}
           <form
-            className="mx-auto flex max-w-3xl items-end gap-2 rounded-2xl border hairline bg-graphite p-2 focus-within:border-bronze/50"
+            className="mx-auto flex max-w-3xl items-end gap-2 rounded-2xl border hairline bg-surface p-2 focus-within:border-accent/50"
             onSubmit={(e) => {
               e.preventDefault();
               void send(input);
@@ -399,13 +399,13 @@ export function ChatRoom({
                 }
               }}
               placeholder={`Pergunte algo a ${profile.name}…`}
-              className="max-h-40 min-h-[2.5rem] flex-1 resize-none bg-transparent px-2 py-2 text-[0.95rem] text-ivory placeholder:text-stone/70 focus:outline-none [field-sizing:content]"
+              className="max-h-40 min-h-[2.5rem] flex-1 resize-none bg-transparent px-2 py-2 text-[0.95rem] text-fg placeholder:text-muted/70 focus:outline-none [field-sizing:content]"
             />
             {sending ? (
               <button
                 type="button"
                 onClick={() => abortRef.current?.abort()}
-                className="grid size-10 shrink-0 place-items-center rounded-xl bg-charcoal text-ivory hover:bg-umber"
+                className="grid size-10 shrink-0 place-items-center rounded-xl bg-raised text-fg hover:bg-raised"
               >
                 <Square className="size-4" aria-hidden />
                 <span className="sr-only">Parar resposta</span>
@@ -414,18 +414,18 @@ export function ChatRoom({
               <button
                 type="submit"
                 disabled={!input.trim() || aiAvailable === false}
-                className="grid size-10 shrink-0 place-items-center rounded-xl bg-ivory text-ink transition-colors hover:bg-bronze disabled:bg-charcoal disabled:text-stone/50"
+                className="grid size-10 shrink-0 place-items-center rounded-xl bg-fg text-canvas transition-colors hover:bg-accent disabled:bg-raised disabled:text-muted/50"
               >
                 <ArrowUp className="size-5" aria-hidden />
                 <span className="sr-only">Enviar pergunta</span>
               </button>
             )}
           </form>
-          <p className="mx-auto mt-2 flex max-w-3xl items-start gap-1.5 text-[0.7rem] leading-snug text-stone/80">
+          <p className="mx-auto mt-2 flex max-w-3xl items-start gap-1.5 text-[0.7rem] leading-snug text-muted/80">
             <Info className="mt-px size-3 shrink-0" aria-hidden />
             <span>
               {SIMULATION_DISCLAIMER}{" "}
-              <Link href="/transparencia" className="underline underline-offset-2 hover:text-ivory">Saiba mais</Link>
+              <Link href="/transparencia" className="underline underline-offset-2 hover:text-fg">Saiba mais</Link>
             </span>
           </p>
         </div>
@@ -437,7 +437,7 @@ export function ChatRoom({
       <dialog
         ref={aboutRef}
         aria-labelledby="sobre-titulo"
-        className="m-0 mt-auto max-h-[85dvh] w-full max-w-none overflow-y-auto rounded-t-2xl border hairline bg-graphite p-0 text-ivory backdrop:bg-ink/70 sm:m-auto sm:max-w-lg sm:rounded-2xl"
+        className="m-0 mt-auto max-h-[85dvh] w-full max-w-none overflow-y-auto rounded-t-2xl border hairline bg-surface p-0 text-fg backdrop:bg-canvas/70 sm:m-auto sm:max-w-lg sm:rounded-2xl"
         onClick={(e) => e.target === aboutRef.current && aboutRef.current?.close()}
       >
         <div className="relative aspect-[16/10]">
@@ -445,16 +445,16 @@ export function ChatRoom({
           <button
             type="button"
             onClick={() => aboutRef.current?.close()}
-            className="absolute right-3 top-3 grid size-9 place-items-center rounded-full bg-ink/80 text-ivory"
+            className="absolute right-3 top-3 grid size-9 place-items-center rounded-full bg-canvas/80 text-fg"
           >
             <X className="size-4" aria-hidden />
             <span className="sr-only">Fechar</span>
           </button>
         </div>
         <div className="p-5">
-          <h2 id="sobre-titulo" className="font-serif text-2xl">{profile.name}</h2>
-          <p className="text-sm text-stone">{profile.periodLabel} · {profile.field}</p>
-          <p className="mb-3 mt-2 text-[0.7rem] text-stone/70">{profile.portraitNotice}</p>
+          <h2 id="sobre-titulo" className="font-display text-2xl">{profile.name}</h2>
+          <p className="text-sm text-muted">{profile.periodLabel} · {profile.field}</p>
+          <p className="mb-3 mt-2 text-[0.7rem] text-muted/70">{profile.portraitNotice}</p>
           <ProfilePanel p={profile} />
         </div>
       </dialog>
@@ -463,26 +463,26 @@ export function ChatRoom({
       <dialog
         ref={switchRef}
         aria-labelledby="trocar-titulo"
-        className="m-auto max-h-[80dvh] w-[calc(100%-2rem)] max-w-md overflow-y-auto rounded-2xl border hairline bg-graphite p-5 text-ivory backdrop:bg-ink/70"
+        className="m-auto max-h-[80dvh] w-[calc(100%-2rem)] max-w-md overflow-y-auto rounded-2xl border hairline bg-surface p-5 text-fg backdrop:bg-canvas/70"
         onClick={(e) => e.target === switchRef.current && switchRef.current?.close()}
       >
         <div className="mb-3 flex items-center justify-between">
-          <h2 id="trocar-titulo" className="font-serif text-xl">Trocar de personalidade</h2>
-          <button type="button" onClick={() => switchRef.current?.close()} className="grid size-8 place-items-center rounded-full hover:bg-charcoal">
+          <h2 id="trocar-titulo" className="font-display text-xl">Trocar de personalidade</h2>
+          <button type="button" onClick={() => switchRef.current?.close()} className="grid size-8 place-items-center rounded-full hover:bg-raised">
             <X className="size-4" aria-hidden />
             <span className="sr-only">Fechar</span>
           </button>
         </div>
-        <ul className="divide-y divide-stone/10">
+        <ul className="divide-y divide-muted/10">
           {options.map((o) => (
             <li key={o.slug}>
               <Link
                 href={`/conversar/${o.slug}`}
                 aria-current={o.slug === profile.slug ? "page" : undefined}
-                className={`flex items-center justify-between py-2.5 text-sm ${o.slug === profile.slug ? "text-bronze" : "text-ivory/90 hover:text-bronze"}`}
+                className={`flex items-center justify-between py-2.5 text-sm ${o.slug === profile.slug ? "text-accent" : "text-fg/90 hover:text-accent"}`}
               >
                 {o.name}
-                <span className="text-xs text-stone">{o.categoryName}</span>
+                <span className="text-xs text-muted">{o.categoryName}</span>
               </Link>
             </li>
           ))}

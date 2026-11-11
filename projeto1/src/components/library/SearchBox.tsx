@@ -30,8 +30,8 @@ export function SearchBox({ items }: { items: PersonalityCardData[] }) {
       <label htmlFor={`${listId}-input`} className="sr-only">
         Buscar personalidade
       </label>
-      <div className="flex items-center gap-2 rounded-xl border hairline bg-graphite px-4 py-3 focus-within:border-bronze/60">
-        <Search className="size-5 text-stone" aria-hidden />
+      <div className="flex items-center gap-2 rounded-xl border hairline bg-surface px-4 py-3 focus-within:border-accent/60">
+        <Search className="size-5 text-muted" aria-hidden />
         <input
           id={`${listId}-input`}
           type="search"
@@ -42,8 +42,8 @@ export function SearchBox({ items }: { items: PersonalityCardData[] }) {
           aria-activedescendant={open && results[active] ? `${listId}-${results[active].slug}` : undefined}
           autoComplete="off"
           maxLength={60}
-          placeholder="Busque por nome ou área — ex.: Curie, filosofia"
-          className="w-full bg-transparent text-ivory placeholder:text-stone/70 focus:outline-none"
+          placeholder="Busque por personalidade, tema ou época"
+          className="w-full bg-transparent text-fg placeholder:text-muted/70 focus:outline-none"
           value={q}
           onChange={(e) => {
             setQ(e.target.value);
@@ -72,11 +72,11 @@ export function SearchBox({ items }: { items: PersonalityCardData[] }) {
         <ul
           id={listId}
           role="listbox"
-          className="absolute z-30 mt-2 w-full overflow-hidden rounded-xl border hairline bg-charcoal shadow-2xl"
+          className="absolute z-30 mt-2 w-full overflow-hidden rounded-xl border hairline bg-raised shadow-2xl"
         >
           {results.length === 0 ? (
-            <li className="px-4 py-3 text-sm text-stone" role="option" aria-selected={false} aria-disabled>
-              Nenhuma personalidade encontrada.
+            <li className="px-4 py-3 text-sm text-muted" role="option" aria-selected={false} aria-disabled>
+              Ninguém encontrado. Tente um tema, como “relatividade”, ou uma época, como “século XIX”.
             </li>
           ) : (
             results.map((r, i) => (
@@ -90,10 +90,10 @@ export function SearchBox({ items }: { items: PersonalityCardData[] }) {
                   go(r.slug);
                 }}
                 onMouseEnter={() => setActive(i)}
-                className={`flex cursor-pointer items-center justify-between gap-3 px-4 py-3 text-sm ${i === active ? "bg-umber/50" : ""}`}
+                className={`flex cursor-pointer items-center justify-between gap-3 px-4 py-3 text-sm ${i === active ? "bg-accent/15" : ""}`}
               >
-                <span className="text-ivory">{r.name}</span>
-                <span className="text-xs text-stone">{r.categoryName} · {r.periodLabel}</span>
+                <span className="text-fg">{r.name}</span>
+                <span className="text-xs text-muted">{r.categoryName} · {r.periodLabel}</span>
               </li>
             ))
           )}

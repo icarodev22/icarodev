@@ -7,8 +7,8 @@ export default function SettingsPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
       <p className="eyebrow">Preferências</p>
-      <h1 className="mt-2 font-serif text-3xl text-ivory sm:text-4xl">Configurações</h1>
-      <p className="mt-2 text-stone">
+      <h1 className="mt-2 font-display text-3xl text-fg sm:text-4xl">Configurações</h1>
+      <p className="mt-2 text-muted">
         As preferências ficam guardadas apenas neste navegador. Nenhum cadastro é necessário.
       </p>
       <SettingsPanel />

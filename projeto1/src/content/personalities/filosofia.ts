@@ -61,7 +61,7 @@ export const filosofia: Personality[] = [
     },
     portrait: {
       kind: "ilustracao-original",
-      alt: "Ilustração original em silhueta de um homem calvo de barba espessa, com manto grego, em tons de bronze.",
+      alt: "Ilustração original em silhueta de um homem calvo de barba espessa, com manto grego, com luz de recorte azul.",
       notice: ANCIENT_NOTICE,
       art: { hair: "bald-sides", facialHair: "beard", attire: "himation", tilt: -1 },
     },
@@ -147,7 +147,7 @@ export const filosofia: Personality[] = [
     },
     portrait: {
       kind: "ilustracao-original",
-      alt: "Ilustração original em silhueta de um homem de cabelo curto ondulado e barba cheia, com manto grego, em tons de bronze.",
+      alt: "Ilustração original em silhueta de um homem de cabelo curto ondulado e barba cheia, com manto grego, com luz de recorte azul.",
       notice: ANCIENT_NOTICE,
       art: { hair: "curly-short", facialHair: "beard", attire: "himation", tilt: 1 },
     },
@@ -228,7 +228,7 @@ export const filosofia: Personality[] = [
     },
     portrait: {
       kind: "ilustracao-original",
-      alt: "Ilustração original em silhueta de um homem de cabelo curto e barba aparada, com manto grego, em tons de bronze.",
+      alt: "Ilustração original em silhueta de um homem de cabelo curto e barba aparada, com manto grego, com luz de recorte azul.",
       notice: ANCIENT_NOTICE,
       art: { hair: "short", facialHair: "beard", attire: "himation", tilt: 2 },
     },

@@ -81,7 +81,7 @@ function Headwear({ kind }: { kind: NonNullable<PortraitArt["headwear"]> }) {
 }
 
 function AttireDetails({ attire }: { attire: PortraitArt["attire"] }) {
-  const s = { fill: "none", stroke: "rgba(166,138,104,0.45)", strokeWidth: 2, strokeLinecap: "round" as const };
+  const s = { fill: "none", stroke: "rgba(130,155,255,0.38)", strokeWidth: 2, strokeLinecap: "round" as const };
   switch (attire) {
     case "suit":
       return (
@@ -184,14 +184,14 @@ export function PortraitSvg({ art, title, className }: { art: PortraitArt; title
       <title>{title}</title>
       <defs>
         <radialGradient id={`${id}-bg`} cx="58%" cy="36%" r="75%">
-          <stop offset="0%" stopColor="#2b2824" />
-          <stop offset="55%" stopColor="#1a1a19" />
-          <stop offset="100%" stopColor="#0e0f10" />
+          <stop offset="0%" stopColor="#1b2131" />
+          <stop offset="55%" stopColor="#12151c" />
+          <stop offset="100%" stopColor="#0b0d12" />
         </radialGradient>
         <linearGradient id={`${id}-body`} x1="0" y1="0" x2="1" y2="0.3">
-          <stop offset="0%" stopColor="#3a3029" />
-          <stop offset="45%" stopColor="#1b1918" />
-          <stop offset="100%" stopColor="#0c0c0c" />
+          <stop offset="0%" stopColor="#2a3142" />
+          <stop offset="45%" stopColor="#161a22" />
+          <stop offset="100%" stopColor="#0b0d12" />
         </linearGradient>
         <filter id={`${id}-blur`} x="-20%" y="-20%" width="140%" height="140%">
           <feGaussianBlur stdDeviation="3" />
@@ -205,16 +205,16 @@ export function PortraitSvg({ art, title, className }: { art: PortraitArt; title
         </filter>
       </defs>
       <rect width="400" height="500" fill={`url(#${id}-bg)`} />
-      <circle cx="232" cy="190" r="150" fill="#a68a68" opacity="0.07" />
+      <circle cx="232" cy="190" r="150" fill="#829bff" opacity="0.06" />
       <g transform={`rotate(${tilt} 200 300)`}>
         {/* Luz de recorte em bronze */}
-        <g transform="translate(-5 -3)" filter={`url(#${id}-blur)`} opacity="0.85">
-          {figure("#a68a68")}
+        <g transform="translate(-5 -3)" filter={`url(#${id}-blur)`} opacity="0.6">
+          {figure("#829bff")}
         </g>
-        {figure(`url(#${id}-body)`, art.facialHair === "white-beard" ? "#5a554d" : undefined)}
-        {lightHair && hair && <path d={hair} fill="#6d675f" opacity="0.9" />}
+        {figure(`url(#${id}-body)`, art.facialHair === "white-beard" ? "#646b7b" : undefined)}
+        {lightHair && hair && <path d={hair} fill="#7c8292" opacity="0.9" />}
         {art.glasses && (
-          <g fill="none" stroke="#a68a68" strokeWidth="2.5" opacity="0.9">
+          <g fill="none" stroke="#829bff" strokeWidth="2.5" opacity="0.9">
             <rect x="166" y="198" width="28" height="20" rx="6" />
             <rect x="206" y="198" width="28" height="20" rx="6" />
             <path d="M194 206 L 206 206" />

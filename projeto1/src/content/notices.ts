@@ -2,4 +2,10 @@ export const ILLUSTRATION_NOTICE =
   "Ilustração original e estilizada — representação artística, não é fotografia nem retrato autêntico.";
 
 export const SIMULATION_DISCLAIMER =
-  "Representação digital fictícia para fins educacionais. As respostas são geradas por inteligência artificial e não correspondem a declarações reais da personalidade.";
+  "Esta é uma simulação educacional criada com inteligência artificial. As respostas são interpretações contextualizadas e não representam falas autênticas da personalidade histórica.";
+
+export const BRAND = {
+  name: "EPOCH.ia",
+  tagline: "Conhecimento além do tempo.",
+  campaign: "Grandes mentes. Novas perspectivas.",
+} as const;

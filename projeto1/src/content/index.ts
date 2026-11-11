@@ -8,7 +8,7 @@ import { imperadores } from "./personalities/imperadores";
 
 export * from "./types";
 export { CATEGORIES, getCategory } from "./categories";
-export { SIMULATION_DISCLAIMER, ILLUSTRATION_NOTICE } from "./notices";
+export { SIMULATION_DISCLAIMER, ILLUSTRATION_NOTICE, BRAND } from "./notices";
 
 export const PERSONALITIES: readonly Personality[] = [
   ...fisica,

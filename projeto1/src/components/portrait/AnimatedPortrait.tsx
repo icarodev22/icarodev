@@ -23,12 +23,12 @@ export function AnimatedPortrait({ data, className, priority }: { data: Portrait
       {/* Mesma estrutura de DOM com ou sem movimento reduzido (evita erro de hidratação). */}
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_25%,rgba(232,224,212,0.10),transparent_55%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_25%,rgba(241,243,247,0.08),transparent_55%)]"
         initial={{ opacity: 0.6 }}
         animate={reduce ? undefined : { opacity: [0.4, 0.9, 0.4] }}
         transition={reduce ? undefined : { duration: 9, repeat: Infinity, ease: "easeInOut" }}
       />
-      <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink via-transparent to-transparent" />
+      <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-t from-canvas via-transparent to-transparent" />
     </div>
   );
 }

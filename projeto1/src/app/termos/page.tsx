@@ -11,7 +11,7 @@ export default function TermsPage() {
       </p>
       <h2>Natureza do serviço</h2>
       <p>
-        O Projeto 1 é uma ferramenta educacional. As personalidades são representações digitais fictícias e as respostas são
+        A EPOCH.ia é uma ferramenta educacional. As personalidades são representações digitais fictícias e as respostas são
         geradas por inteligência artificial; elas não correspondem a declarações reais dessas pessoas e podem conter erros.
       </p>
       <h2>Uso adequado</h2>

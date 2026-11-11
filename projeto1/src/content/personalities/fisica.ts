@@ -67,7 +67,7 @@ export const fisica: Personality[] = [
     },
     portrait: {
       kind: "ilustracao-original",
-      alt: "Ilustração original em silhueta de um homem de cabelos volumosos e bigode, com terno, em tons de bronze.",
+      alt: "Ilustração original em silhueta de um homem de cabelos volumosos e bigode, com terno, com luz de recorte azul.",
       notice: ILLUSTRATION_NOTICE,
       art: { hair: "wild", facialHair: "mustache", attire: "suit", tilt: -2 },
     },
@@ -156,7 +156,7 @@ export const fisica: Personality[] = [
     },
     portrait: {
       kind: "ilustracao-original",
-      alt: "Ilustração original em silhueta de um homem de cabelo curto com entradas, de terno, em tons de bronze.",
+      alt: "Ilustração original em silhueta de um homem de cabelo curto com entradas, de terno, com luz de recorte azul.",
       notice: ILLUSTRATION_NOTICE,
       art: { hair: "receding", attire: "suit", tilt: 1 },
     },
@@ -243,7 +243,7 @@ export const fisica: Personality[] = [
     },
     portrait: {
       kind: "ilustracao-original",
-      alt: "Ilustração original em silhueta de um homem robusto de bigode espesso e colarinho alto, em tons de bronze.",
+      alt: "Ilustração original em silhueta de um homem robusto de bigode espesso e colarinho alto, com luz de recorte azul.",
       notice: ILLUSTRATION_NOTICE,
       art: { hair: "short", facialHair: "thick-mustache", attire: "high-collar", tilt: 2 },
     },

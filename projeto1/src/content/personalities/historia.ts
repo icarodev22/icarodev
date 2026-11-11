@@ -53,7 +53,7 @@ export const historia: Personality[] = [
     },
     portrait: {
       kind: "ilustracao-original",
-      alt: "Ilustração original em silhueta de um homem de cabelos ondulados e barba, com manto grego, em tons de bronze.",
+      alt: "Ilustração original em silhueta de um homem de cabelos ondulados e barba, com manto grego, com luz de recorte azul.",
       notice:
         "Ilustração original e estilizada — representação artística, não é retrato autêntico. Não existem retratos realistas da época; as representações conhecidas são bustos de períodos posteriores.",
       art: { hair: "curly-short", facialHair: "beard", attire: "himation", tilt: -2 },
@@ -135,7 +135,7 @@ export const historia: Personality[] = [
     },
     portrait: {
       kind: "ilustracao-original",
-      alt: "Ilustração original em silhueta de um homem de turbante e barba, com manto, em tons de bronze.",
+      alt: "Ilustração original em silhueta de um homem de turbante e barba, com manto, com luz de recorte azul.",
       notice:
         "Ilustração original e estilizada — representação artística, não é retrato autêntico. Não existem retratos de época documentados.",
       art: { hair: "turban", headwear: "turban", facialHair: "beard", attire: "robe", tilt: 1 },
@@ -226,7 +226,7 @@ export const historia: Personality[] = [
     },
     portrait: {
       kind: "ilustracao-original",
-      alt: "Ilustração original em silhueta de um homem idoso, calvo no alto da cabeça, de óculos e paletó, em tons de bronze.",
+      alt: "Ilustração original em silhueta de um homem idoso, calvo no alto da cabeça, de óculos e paletó, com luz de recorte azul.",
       notice: ILLUSTRATION_NOTICE,
       art: { hair: "balding", glasses: true, attire: "suit", tilt: 1 },
     },

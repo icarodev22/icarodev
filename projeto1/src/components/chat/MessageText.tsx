@@ -9,7 +9,7 @@ function inline(text: string): ReactNode[] {
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
   return parts.map((part, i) =>
     part.startsWith("**") && part.endsWith("**") && part.length > 4 ? (
-      <strong key={i} className="font-semibold text-ivory">{part.slice(2, -2)}</strong>
+      <strong key={i} className="font-semibold text-fg">{part.slice(2, -2)}</strong>
     ) : (
       <Fragment key={i}>{part}</Fragment>
     ),
@@ -26,7 +26,7 @@ export function MessageText({ text }: { text: string }) {
           const ordered = /^\s*\d/.test(lines[0] ?? "");
           const Tag = ordered ? "ol" : "ul";
           return (
-            <Tag key={i} className={`${ordered ? "list-decimal" : "list-disc"} space-y-1 pl-5 marker:text-bronze`}>
+            <Tag key={i} className={`${ordered ? "list-decimal" : "list-disc"} space-y-1 pl-5 marker:text-accent`}>
               {lines.map((l, j) => (
                 <li key={j}>{inline(l.replace(/^\s*([-*•]|\d+[.)])\s+/, ""))}</li>
               ))}

@@ -2,16 +2,34 @@
 
 import { useEffect } from "react";
 import { MotionConfig } from "framer-motion";
-import { useMotionPreference } from "@/lib/preferences";
+import { useMotionPreference, useThemePreference } from "@/lib/preferences";
 
 /**
- * Respeita prefers-reduced-motion do sistema e a preferência "Reduzir animações"
- * escolhida em Configurações (aplicada também às animações CSS via data-motion).
+ * Aplica as preferências de Aparência e Acessibilidade:
+ * - tema (escuro padrão da marca, claro ou seguir o sistema) via data-theme;
+ * - "Reduzir animações" no Framer Motion e nas animações CSS (data-motion),
+ *   além de respeitar prefers-reduced-motion do sistema.
  */
 export function MotionProvider({ children }: { children: React.ReactNode }) {
-  const pref = useMotionPreference();
+  const motion = useMotionPreference();
+  const theme = useThemePreference();
+
   useEffect(() => {
-    document.documentElement.dataset.motion = pref === "reduzidas" ? "reduce" : "system";
-  }, [pref]);
-  return <MotionConfig reducedMotion={pref === "reduzidas" ? "always" : "user"}>{children}</MotionConfig>;
+    document.documentElement.dataset.motion = motion === "reduzidas" ? "reduce" : "system";
+  }, [motion]);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme !== "sistema") {
+      root.dataset.theme = theme === "claro" ? "light" : "dark";
+      return;
+    }
+    const mq = window.matchMedia("(prefers-color-scheme: light)");
+    const apply = () => (root.dataset.theme = mq.matches ? "light" : "dark");
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, [theme]);
+
+  return <MotionConfig reducedMotion={motion === "reduzidas" ? "always" : "user"}>{children}</MotionConfig>;
 }

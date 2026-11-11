@@ -137,3 +137,13 @@ Configurações**. Nova rota `DELETE /api/me/data` (exige Origin; apaga só as c
 | lint, typecheck, build, Playwright (7 dispositivos) | sem erros |
 | Retrato de Einstein | servido em AVIF/WebP (320/720/1122 px, 13–160 KB); exibido como **reconstrução digital** |
 | `npm run eval:guard` (modelo real) | **não executado** — sem `ANTHROPIC_API_KEY` neste ambiente |
+
+## Atualização — nova identidade EPOCH.ia (11/11/2026)
+
+| Verificação | Resultado |
+|---|---|
+| `npm test` com PostgreSQL | **98/98** (novos: paleta oficial, contraste WCAG AA dos dois temas, nome/assinatura/aviso, logotipos sem dependência de fonte) |
+| lint, typecheck, build, `npm audit` | sem erros · 0 vulnerabilidades |
+| Playwright: navegação (7 dispositivos), páginas, streaming de UI, temas escuro e claro em desktop e iPhone | sem erros de console, sem overflow, `data-theme` correto em todas as páginas |
+| Ícones e manifest | `icon.svg`, `apple-icon.png` e `manifest.webmanifest` servidos (200) |
+| Script de tema | carregado com o nonce da CSP, antes da pintura |

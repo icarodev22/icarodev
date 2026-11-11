@@ -58,7 +58,7 @@ export const musica: Personality[] = [
     },
     portrait: {
       kind: "ilustracao-original",
-      alt: "Ilustração original em silhueta de um homem com chapéu fedora e cabelos cacheados longos, de jaqueta, em tons de bronze.",
+      alt: "Ilustração original em silhueta de um homem com chapéu fedora e cabelos cacheados longos, de jaqueta, com luz de recorte azul.",
       notice: ILLUSTRATION_NOTICE,
       art: { hair: "curly-long", headwear: "fedora", attire: "military", tilt: -3 },
     },
@@ -140,7 +140,7 @@ export const musica: Personality[] = [
     },
     portrait: {
       kind: "ilustracao-original",
-      alt: "Ilustração original em silhueta de um homem de cabelo curto escuro e bigode, com jaqueta, em tons de bronze.",
+      alt: "Ilustração original em silhueta de um homem de cabelo curto escuro e bigode, com jaqueta, com luz de recorte azul.",
       notice: ILLUSTRATION_NOTICE,
       art: { hair: "slick", facialHair: "thick-mustache", attire: "jacket", tilt: 2 },
     },
@@ -223,7 +223,7 @@ export const musica: Personality[] = [
     },
     portrait: {
       kind: "ilustracao-original",
-      alt: "Ilustração original em silhueta de um homem com topete volumoso e gola alta, em tons de bronze.",
+      alt: "Ilustração original em silhueta de um homem com topete volumoso e gola alta, com luz de recorte azul.",
       notice: ILLUSTRATION_NOTICE,
       art: { hair: "pompadour", attire: "high-collar", tilt: -2 },
     },

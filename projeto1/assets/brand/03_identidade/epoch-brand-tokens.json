@@ -1,0 +1,75 @@
+{
+  "brand": "EPOCH.ia",
+  "tagline": "Conhecimento além do tempo.",
+  "concept": "Digital Humanism",
+  "colors": [
+    {
+      "name": "Midnight",
+      "hex": "#0B0D12",
+      "role": "Fundo institucional e fundo principal do produto"
+    },
+    {
+      "name": "Deep Surface",
+      "hex": "#151922",
+      "role": "Cards, menus, painéis e superfícies"
+    },
+    {
+      "name": "Slate",
+      "hex": "#252B36",
+      "role": "Divisores, bordas e níveis secundários"
+    },
+    {
+      "name": "Electric Blue",
+      "hex": "#829BFF",
+      "role": "Acentos, foco, estados ativos e interações"
+    },
+    {
+      "name": "Cloud White",
+      "hex": "#F1F3F7",
+      "role": "Texto principal e aplicações claras"
+    },
+    {
+      "name": "Muted Gray",
+      "hex": "#939BAA",
+      "role": "Metadados, legendas e texto auxiliar"
+    }
+  ],
+  "typography": {
+    "display": {
+      "family": "Space Grotesk",
+      "weights": [
+        500,
+        600,
+        700
+      ],
+      "usage": "Títulos, chamadas e destaques"
+    },
+    "interface": {
+      "family": "Inter",
+      "weights": [
+        400,
+        500,
+        600,
+        700
+      ],
+      "usage": "Texto corrido, navegação e componentes"
+    },
+    "fallback": "Arial, sans-serif"
+  },
+  "usage_ratio": {
+    "dark_surfaces": "70%",
+    "light_neutrals": "20%",
+    "electric_blue": "up to 10%"
+  },
+  "motion": {
+    "fast": "140ms",
+    "standard": "220ms",
+    "emphasis": "320ms",
+    "easing": "cubic-bezier(.2,.7,.2,1)"
+  },
+  "navigation": [
+    "Home",
+    "Personalidades",
+    "Configurações"
+  ]
+}
