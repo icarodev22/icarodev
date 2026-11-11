@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { MessageCircle } from "lucide-react";
 import type { PersonalityCardData } from "@/lib/catalog";
-import { PortraitSvg } from "@/components/portrait/PortraitSvg";
+import { Portrait } from "@/components/portrait/Portrait";
 
 export function PersonalityCard({ p, headingLevel = 3 }: { p: PersonalityCardData; headingLevel?: 2 | 3 }) {
   const H = headingLevel === 2 ? "h2" : "h3";
   return (
     <article className="group relative flex w-full flex-col overflow-hidden rounded-xl border hairline bg-graphite transition-colors hover:border-bronze/40">
       <div className="relative aspect-[4/5] overflow-hidden">
-        <PortraitSvg art={p.art} title={p.portraitAlt} className="h-full w-full transition-transform duration-700 group-hover:scale-[1.03]" />
+        <Portrait data={p.portrait} sizes="(min-width: 768px) 33vw, 50vw" className="h-full w-full transition-transform duration-700 group-hover:scale-[1.03]" />
         <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-graphite via-graphite/10 to-transparent" />
         <span className="absolute left-3 top-3 rounded-full border border-ivory/15 bg-ink/70 px-2.5 py-1 text-[0.68rem] uppercase tracking-[0.14em] text-stone backdrop-blur">
           {p.categoryName}

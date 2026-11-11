@@ -18,6 +18,16 @@ e isolada por personalidade (RAG), com regras de precisão histórica e proteç�
 | Testes | Vitest (unitários + integração com PostgreSQL real), Playwright (verificação visual manual) |
 | Infra alvo | Vercel + Supabase |
 
+## Experiência principal
+
+A página inicial apresenta uma **personalidade em destaque** (retrato grande, nome, contexto e acesso direto à
+conversa) e uma **barra flutuante inferior** com as 18 personalidades. A seleção troca o destaque sem recarregar a
+página e fica refletida na URL (`/?p=marie-curie`), inclusive em acesso direto. A barra respeita a área segura do
+iPhone, funciona por teclado (setas, Home, End) e tem um painel expansível com todas as personalidades por categoria.
+
+Fotografias reais podem ser adicionadas sem alterar a interface: veja [assets/retratos/README.md](assets/retratos/README.md).
+Enquanto não houver foto, cada personalidade usa sua ilustração original, identificada como tal.
+
 ## Início rápido (desenvolvimento)
 
 ```bash
@@ -59,6 +69,7 @@ As migrações são aditivas, idempotentes e registradas em `schema_migrations`.
 | `npm run db:migrate` / `db:seed` | Migrações e carga do conteúdo curado |
 | `npm run check:content` | Integridade do conteúdo (18 personalidades, referências) |
 | `npm run check:references` | Verifica se as URLs de referência respondem (requer internet) |
+| `npm run portraits:build` | Otimiza as fotos fornecidas em `assets/retratos/` (AVIF/WebP) e atualiza o manifesto |
 
 ## Deploy (Vercel) — requer autorização
 

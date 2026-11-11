@@ -36,6 +36,17 @@
   }
 }
 
+@layer base {
+  /* Quando a barra flutuante está presente, o rodapé ganha espaço para não ser encoberto. */
+  body:has([data-dock]) footer {
+    padding-bottom: calc(6.5rem + env(safe-area-inset-bottom));
+  }
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
 @layer components {
   .museum-texture {
     background-image:

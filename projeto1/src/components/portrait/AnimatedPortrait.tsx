@@ -1,15 +1,14 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import type { PortraitArt } from "@/content/types";
-import { PortraitSvg } from "./PortraitSvg";
+import { Portrait, type PortraitData } from "./Portrait";
 
 /**
  * Movimento sutil de câmera (aproximação lenta e deriva lateral) e variação
  * discreta de luz. Desativado quando o usuário prefere movimento reduzido.
  * Não há sincronização labial: o retrato não "fala".
  */
-export function AnimatedPortrait({ art, title, className }: { art: PortraitArt; title: string; className?: string }) {
+export function AnimatedPortrait({ data, className, priority }: { data: PortraitData; className?: string; priority?: boolean }) {
   const reduce = useReducedMotion();
   return (
     <div className={`relative overflow-hidden ${className ?? ""}`}>
@@ -19,7 +18,7 @@ export function AnimatedPortrait({ art, title, className }: { art: PortraitArt; 
         animate={reduce ? undefined : { scale: [1.02, 1.07, 1.02], x: [0, -6, 0], y: [0, -4, 0] }}
         transition={reduce ? undefined : { duration: 22, repeat: Infinity, ease: "easeInOut" }}
       >
-        <PortraitSvg art={art} title={title} className="h-full w-full" />
+        <Portrait data={data} className="h-full w-full" priority={priority} />
       </motion.div>
       {/* Mesma estrutura de DOM com ou sem movimento reduzido (evita erro de hidratação). */}
       <motion.div

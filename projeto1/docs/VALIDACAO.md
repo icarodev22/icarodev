@@ -103,3 +103,15 @@ psql projeto1_test -c "ALTER ROLE projeto1_app WITH LOGIN PASSWORD '<senha de te
 TEST_DATABASE_URL=postgres://projeto1_app:***@localhost/projeto1_test \
 TEST_DATABASE_ADMIN_URL=postgres://owner:***@localhost/projeto1_test npm test
 ```
+
+## Atualização — personalidade em destaque e barra flutuante (11/11/2026)
+
+| Verificação | Resultado |
+|---|---|
+| `npm test` com PostgreSQL | **61/61** (2 novos testes do pipeline de retratos) |
+| lint, typecheck, build, `npm audit`, `check:content` | sem erros · 0 vulnerabilidades |
+| Playwright em iPhone 13, iPhone SE, Pixel 7, iPad Mini, iPhone paisagem, notebook 1366×768 e monitor 1920×1080 | seleção dos 18 itens por clique sem recarregar a página; `aria-checked` correto; URL `?p=` sincronizada; teclado (Home/End/setas) com foco acompanhando; painel expandido abre, seleciona e fecha (inclusive com Esc); sem overflow horizontal; rodapé não encoberto pela barra; área de toque ≥ 44 px; CTA leva à conversa |
+| Acesso direto `/?p=socrates` | destaque e estado ativo corretos já no HTML do servidor |
+| Movimento reduzido | sem erros (após correção de hidratação com `MotionConfig reducedMotion="user"`) |
+| Safe Area | `viewport-fit=cover` presente e `padding-bottom: max(0.75rem, env(safe-area-inset-bottom))` na barra. O Chromium não emula o recorte do iPhone; **confirmar em aparelho real** |
+| Fotos reais | **não verificado com fotos reais** — nenhuma imagem foi fornecida; pipeline testado com imagens sintéticas |

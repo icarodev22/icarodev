@@ -5,6 +5,7 @@ import "@fontsource-variable/newsreader";
 import "./globals.css";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
+import { MotionProvider } from "@/components/layout/MotionProvider";
 
 export const metadata: Metadata = {
   title: { default: "Projeto 1 — Converse com a história", template: "%s · Projeto 1" },
@@ -17,6 +18,8 @@ export const viewport: Viewport = {
   themeColor: "#101112",
   width: "device-width",
   initialScale: 1,
+  // Necessário para env(safe-area-inset-*) no iPhone.
+  viewportFit: "cover",
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -32,11 +35,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         >
           Pular para o conteúdo
         </a>
-        <SiteHeader />
-        <main id="conteudo" className="flex-1">
-          {children}
-        </main>
-        <SiteFooter />
+        <MotionProvider>
+          <SiteHeader />
+          <main id="conteudo" className="flex-1">
+            {children}
+          </main>
+          <SiteFooter />
+        </MotionProvider>
       </body>
     </html>
   );

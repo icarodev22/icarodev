@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { formatHistoricalDate, getCategory, getPersonality, PERSONALITIES } from "@/content";
 import { ChatRoom } from "@/components/chat/ChatRoom";
+import { portraitData, portraitNotice } from "@/lib/catalog";
 import type { ChatProfile } from "@/components/chat/types";
 
 type Params = { slug: string };
@@ -44,9 +45,8 @@ export default async function ChatPage({
     timeline: p.timeline,
     references: p.references,
     suggestedQuestions: p.suggestedQuestions,
-    art: p.portrait.art,
-    portraitAlt: p.portrait.alt,
-    portraitNotice: p.portrait.notice,
+    portrait: portraitData(p),
+    portraitNotice: portraitNotice(p),
   };
   const options = PERSONALITIES.map((x) => ({ slug: x.slug, name: x.name, categoryName: getCategory(x.category).name }));
 

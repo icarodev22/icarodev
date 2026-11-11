@@ -1,4 +1,5 @@
-import type { PortraitArt, Reference, TimelineEvent } from "@/content/types";
+import type { Reference, TimelineEvent } from "@/content/types";
+import type { PortraitData } from "@/components/portrait/Portrait";
 
 export interface ChatProfile {
   slug: string;
@@ -16,8 +17,7 @@ export interface ChatProfile {
   timeline: TimelineEvent[];
   references: Reference[];
   suggestedQuestions: string[];
-  art: PortraitArt;
-  portraitAlt: string;
+  portrait: PortraitData;
   portraitNotice: string;
 }
 

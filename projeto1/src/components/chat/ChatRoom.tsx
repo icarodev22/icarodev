@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AlertTriangle, ArrowUp, Info, Loader2, Mic, RotateCcw, Square, Users, X } from "lucide-react";
+import { AlertTriangle, ArrowUp, Info, Loader2, RotateCcw, Square, Users, X } from "lucide-react";
 import { SIMULATION_DISCLAIMER } from "@/content/notices";
 import { LEVELS, LEVEL_LABELS, MAX_MESSAGE_CHARS, type Level } from "@/lib/chat-shared";
 import { ChatRequestError, streamChat, type ChatSource } from "@/lib/chat-client";
 import { AnimatedPortrait } from "@/components/portrait/AnimatedPortrait";
-import { PortraitSvg } from "@/components/portrait/PortraitSvg";
+import { Portrait } from "@/components/portrait/Portrait";
 import { MessageText } from "./MessageText";
 import { ProfilePanel } from "./ProfilePanel";
 import type { ChatProfile, SwitchOption } from "./types";
@@ -194,7 +194,7 @@ export function ChatRoom({
       {/* Coluna de perfil (desktop) */}
       <aside aria-label={`Sobre ${profile.name}`} className="hidden min-h-0 flex-col border-r hairline lg:flex">
         <div className="relative aspect-[4/5] max-h-[46dvh] w-full">
-          <AnimatedPortrait art={profile.art} title={profile.portraitAlt} className="h-full w-full" />
+          <AnimatedPortrait data={profile.portrait} priority className="h-full w-full" />
           <div className="absolute inset-x-0 bottom-0 p-5">
             <p className="eyebrow">{profile.categoryName}</p>
             <h1 className="mt-1 font-serif text-3xl leading-tight text-ivory">{profile.name}</h1>
@@ -217,7 +217,7 @@ export function ChatRoom({
               className="relative size-11 shrink-0 overflow-hidden rounded-full border border-bronze/40"
               aria-label={`Ver informações sobre ${profile.name}`}
             >
-              <PortraitSvg art={profile.art} title={profile.portraitAlt} className="h-full w-full" />
+              <Portrait data={profile.portrait} sizes="(min-width: 640px) 32rem, 100vw" className="h-full w-full" />
             </button>
             <div className="min-w-0">
               <h1 className="truncate font-serif text-lg leading-tight text-ivory">{profile.name}</h1>
@@ -300,7 +300,7 @@ export function ChatRoom({
                 <li key={m.id} className={m.role === "user" ? "flex justify-end" : "flex gap-3"}>
                   {m.role === "assistant" && (
                     <div aria-hidden className="mt-1 hidden size-8 shrink-0 overflow-hidden rounded-full border border-bronze/30 sm:block">
-                      <PortraitSvg art={profile.art} title="" className="h-full w-full" />
+                      <Portrait data={profile.portrait} decorative sizes="32px" className="h-full w-full" />
                     </div>
                   )}
                   {m.role === "user" ? (
@@ -400,17 +400,6 @@ export function ChatRoom({
               placeholder={`Pergunte algo a ${profile.name}…`}
               className="max-h-40 min-h-[2.5rem] flex-1 resize-none bg-transparent px-2 py-2 text-[0.95rem] text-ivory placeholder:text-stone/70 focus:outline-none [field-sizing:content]"
             />
-            {/* Estrutura preparada para entrada por voz; ainda não implementada. */}
-            <button
-              type="button"
-              disabled
-              aria-disabled="true"
-              title="Entrada por voz: ainda não disponível nesta versão"
-              className="grid size-10 shrink-0 cursor-not-allowed place-items-center rounded-xl text-stone/40"
-            >
-              <Mic className="size-5" aria-hidden />
-              <span className="sr-only">Entrada por voz (indisponível nesta versão)</span>
-            </button>
             {sending ? (
               <button
                 type="button"
@@ -451,7 +440,7 @@ export function ChatRoom({
         onClick={(e) => e.target === aboutRef.current && aboutRef.current?.close()}
       >
         <div className="relative aspect-[16/10]">
-          <PortraitSvg art={profile.art} title={profile.portraitAlt} className="h-full w-full" />
+          <Portrait data={profile.portrait} sizes="(min-width: 640px) 32rem, 100vw" className="h-full w-full" />
           <button
             type="button"
             onClick={() => aboutRef.current?.close()}

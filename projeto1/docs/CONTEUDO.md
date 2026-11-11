@@ -37,9 +37,15 @@ por `src/components/portrait/PortraitSvg.tsx` a partir de elementos documentados
 da época). Cada um exibe o aviso de que é representação artística, não fotografia nem retrato autêntico. Não há
 sincronização labial; a animação é um movimento lento de câmera e luz, desativado com "movimento reduzido".
 
-Para usar imagens reais no futuro: adicione o arquivo em `public/retratos/`, altere `portrait.kind` para
-`fotografia` ou `obra-de-arte`, registre autor, licença e URL de origem, e verifique a licença de cada imagem
-(muitas fotografias de artistas do século XX são protegidas por direitos autorais).
+### Fotografias e obras reais
+
+1. Coloque o arquivo original em `assets/retratos/<slug>.<ext>` e registre `credit`, `license`, `sourceUrl` e,
+   opcionalmente, `focus` (enquadramento) em `assets/retratos/creditos.json`.
+2. Rode `npm run portraits:build`: a imagem é apenas redimensionada (nunca ampliada) e convertida para AVIF e WebP
+   (320/720/1200 px), sem filtros e sem metadados EXIF/GPS. O manifesto `src/content/portraits.generated.json` é
+   atualizado e a interface passa a usar a foto automaticamente (cartões, destaque, barra, chat).
+3. O crédito e a licença aparecem junto ao retrato. Verifique a licença de cada imagem: muitas fotografias de
+   artistas do século XX são protegidas por direitos autorais.
 
 ## Adicionar uma personalidade
 
