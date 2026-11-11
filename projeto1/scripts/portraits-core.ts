@@ -5,7 +5,7 @@ import type { PortraitPhoto } from "../src/content/portraits";
 
 export interface CreditEntry {
   file: string;
-  kind?: "fotografia" | "obra-de-arte";
+  kind?: "fotografia" | "obra-de-arte" | "reconstrucao-digital";
   credit: string;
   license: string;
   sourceUrl?: string;
@@ -19,6 +19,7 @@ export const MIN_SOURCE_WIDTH = 600;
 export async function processPortrait(slug: string, entry: CreditEntry, srcDir: string, outDir: string): Promise<PortraitPhoto> {
   if (!/^[a-z0-9-]{2,64}$/.test(slug)) throw new Error(`${slug}: slug inválido.`);
   if (!entry.credit?.trim() || !entry.license?.trim()) throw new Error(`${slug}: informe "credit" e "license".`);
+  if (entry.kind && !["fotografia", "obra-de-arte", "reconstrucao-digital"].includes(entry.kind)) throw new Error(`${slug}: kind inválido.`);
   if (entry.sourceUrl && !entry.sourceUrl.startsWith("https://")) throw new Error(`${slug}: sourceUrl deve usar https.`);
   const file = path.basename(entry.file); // impede path traversal
   const input = path.join(srcDir, file);

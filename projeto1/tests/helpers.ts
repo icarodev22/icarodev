@@ -1,5 +1,6 @@
 import { resetEnvCache } from "@/server/config/env";
 import type { AIProvider, ProviderEvent, StreamChatInput } from "@/server/ai/provider";
+import type { ClassifyInput, GuardClassification } from "@/server/guard/classification";
 
 export const ORIGIN = "http://localhost:3000";
 
@@ -25,11 +26,32 @@ export function setTestEnv(extra: Record<string, string | undefined> = {}) {
   resetEnvCache();
 }
 
+export const DIRECT: GuardClassification = {
+  relevance: "direto",
+  connection: "",
+  safety: "seguro",
+  professional_advice: false,
+  temporal: "nao_se_aplica",
+  manipulation: false,
+  asks_quote: false,
+  follow_up: false,
+};
+
 /** Dublê de provedor usado SOMENTE em testes automatizados. */
 export class FakeProvider implements AIProvider {
   readonly name = "fake";
   calls: StreamChatInput[] = [];
-  constructor(private reply: (input: StreamChatInput) => string[] = () => ["Olá, ", "estudante."]) {}
+  classifyCalls: ClassifyInput[] = [];
+  constructor(
+    private reply: (input: StreamChatInput) => string[] = () => ["Olá, ", "estudante."],
+    private classification: (input: ClassifyInput) => GuardClassification | Error = () => DIRECT,
+  ) {}
+  async classify(input: ClassifyInput): Promise<GuardClassification> {
+    this.classifyCalls.push(input);
+    const c = this.classification(input);
+    if (c instanceof Error) throw c;
+    return c;
+  }
   isConfigured() {
     return true;
   }

@@ -71,6 +71,7 @@ As migrações são aditivas, idempotentes e registradas em `schema_migrations`.
 | `npm run db:migrate` / `db:seed` | Migrações e carga do conteúdo curado |
 | `npm run check:content` | Integridade do conteúdo (18 personalidades, referências) |
 | `npm run check:references` | Verifica se as URLs de referência respondem (requer internet) |
+| `npm run eval:guard` | Avalia o Conversation Guard com o modelo real (requer chave; gera custo) |
 | `npm run portraits:build` | Otimiza as fotos fornecidas em `assets/retratos/` (AVIF/WebP) e atualiza o manifesto |
 
 ## Deploy (Vercel) — requer autorização
@@ -84,4 +85,5 @@ diário de conversas expiradas.
 - [docs/ARQUITETURA.md](docs/ARQUITETURA.md) — arquitetura, módulos, fluxo do chat, decisões e evolução
 - [docs/SEGURANCA.md](docs/SEGURANCA.md) — relatório de segurança (AppSec) e riscos residuais
 - [docs/VALIDACAO.md](docs/VALIDACAO.md) — testes executados e resultados
+- [docs/CONVERSATION_GUARD.md](docs/CONVERSATION_GUARD.md) — políticas de conversa (escopo, redirecionamento, segurança)
 - [docs/CONTEUDO.md](docs/CONTEUDO.md) — curadoria, fontes, retratos e como adicionar personalidades

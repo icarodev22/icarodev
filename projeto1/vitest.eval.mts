@@ -1,0 +1,11 @@
+import { defineConfig } from "vitest/config";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+/** Avaliação com o modelo REAL (gera custo). Execute com: npm run eval:guard */
+export default defineConfig({
+  resolve: { alias: { "@": path.resolve(__dirname, "src"), "server-only": path.resolve(__dirname, "tests/stubs/server-only.ts") } },
+  test: { environment: "node", include: ["tests/eval/**/*.eval.ts"], testTimeout: 180000, fileParallelism: false },
+});

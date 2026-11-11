@@ -18,7 +18,8 @@
     "db:seed": "tsx scripts/db-seed.ts",
     "check:content": "tsx scripts/check-content.ts",
     "check:references": "tsx scripts/check-references.ts",
-    "portraits:build": "tsx scripts/build-portraits.ts"
+    "portraits:build": "tsx scripts/build-portraits.ts",
+    "eval:guard": "vitest run --config vitest.eval.mts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.8.0",

@@ -1,1 +1,16 @@
-{}
+{
+  "albert-einstein": {
+    "base": "/retratos/albert-einstein",
+    "widths": [
+      320,
+      720,
+      1122
+    ],
+    "width": 1122,
+    "height": 1402,
+    "kind": "reconstrucao-digital",
+    "credit": "Imagem fornecida pelo responsável pelo projeto",
+    "license": "uso autorizado pelo responsável; origem e direitos a confirmar",
+    "focus": "50% 22%"
+  }
+}

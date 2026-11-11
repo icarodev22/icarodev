@@ -47,7 +47,7 @@ export function allCards(): PersonalityCardData[] {
 
 export function portraitData(p: Personality): PortraitData {
   const photo = getPortraitPhoto(p.slug);
-  return { art: p.portrait.art, alt: photo ? `Retrato de ${p.name}` : p.portrait.alt, ...(photo ? { photo } : {}) };
+  return { art: p.portrait.art, alt: photo ? `${photo.kind === "reconstrucao-digital" ? "Reconstrução digital do retrato" : "Retrato"} de ${p.name}` : p.portrait.alt, ...(photo ? { photo } : {}) };
 }
 
 export function portraitNotice(p: Personality): string {

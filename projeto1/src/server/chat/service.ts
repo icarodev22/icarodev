@@ -6,7 +6,10 @@ import { getEnv } from "../config/env";
 import { getAIProvider } from "../ai";
 import { AIProviderError, type ChatTurn } from "../ai/provider";
 import { assessInjection, neutralizeDelimiters } from "../ai/guard";
-import { buildSystemPrompt, buildUserContent, INJECTION_REMINDER } from "../ai/prompt";
+import { buildSystemPrompt, buildUserContent } from "../ai/prompt";
+import { runGuard } from "../guard";
+import { buildRedirect, buildUnsafeDecline } from "../guard/redirect";
+import { validateOutput } from "../guard/output";
 import { getRetriever } from "../knowledge/retriever";
 import { getConversationStore } from "../conversations/store";
 import { getLimitStore } from "../limits/limiter";
@@ -131,6 +134,7 @@ export async function handleChat(req: Request): Promise<Response> {
     const userContent = buildUserContent(chunks, input.message, input.level);
     const sources = uniqueSources(chunks.flatMap((c) => c.references));
     const sessionId = session.id;
+    const turn = history.length;
 
     const encoder = new TextEncoder();
     const abort = new AbortController();
@@ -139,23 +143,55 @@ export async function handleChat(req: Request): Promise<Response> {
     const body = new ReadableStream<Uint8Array>({
       async start(controller) {
         const send = (e: ChatStreamEvent) => controller.enqueue(encoder.encode(`${JSON.stringify(e)}\n`));
-        send({ type: "meta", sessionId, sources });
         let text = "";
         try {
+          // 1) Conversation Guard: classificação semântica e decisão ANTES da geração.
+          const decision = await runGuard(provider, personality, history, input.message, injection.flagged, abort.signal);
+          logEvent("guard_decision", { personality: personality.slug, action: decision.action, relevance: decision.relevance, flags: decision.flags.join(",") });
+
+          // 2) Fora do escopo / conteúdo inadequado: resposta do servidor, sem desenvolver o assunto.
+          if (decision.action !== "respond") {
+            const reply =
+              decision.action === "redirect"
+                ? buildRedirect(personality, input.message, turn)
+                : buildUnsafeDecline(personality, input.message, turn);
+            send({ type: "meta", sessionId, sources: [] });
+            send({ type: "delta", text: reply });
+            await store.appendMessages(owner, sessionId, [
+              { role: "user", content: input.message },
+              { role: "assistant", content: reply },
+            ]);
+            await recordUsage({
+              personalitySlug: personality.slug,
+              model: "guard",
+              inputTokens: 0,
+              outputTokens: 0,
+              stopReason: decision.action,
+              injectionFlagged: injection.flagged,
+              relevance: decision.relevance,
+              guardAction: decision.action,
+              guardFlags: decision.flags,
+            });
+            send({ type: "done", truncated: false });
+            return;
+          }
+
+          // 3) Geração com as orientações do Guard e validação contínua da saída.
+          send({ type: "meta", sessionId, sources });
           for await (const ev of provider.streamChat({
             system,
             history,
             userContent,
-            securityReminder: injection.flagged ? INJECTION_REMINDER : undefined,
+            operatorNote: decision.notes.length ? decision.notes.join("\n\n") : undefined,
             signal: abort.signal,
           })) {
             if (ev.type === "text") {
               text += ev.text;
-              if (text.includes(canary) || text.length > MAX_RESPONSE_CHARS) {
+              const violation = text.includes(canary) ? "canary" : text.length > MAX_RESPONSE_CHARS ? "length" : validateOutput(text, personality);
+              if (violation) {
                 abort.abort();
-                logEvent("output_blocked", { personality: personality.slug, reason: text.includes(canary) ? "canary" : "length" });
-                send({ type: "error", code: "output_blocked", message: "A resposta foi interrompida por segurança. Tente reformular a pergunta." });
-                controller.close();
+                logEvent("output_blocked", { personality: personality.slug, reason: violation });
+                send({ type: "error", code: "output_blocked", message: "A resposta foi interrompida por desviar das regras da simulação. Tente reformular a pergunta." });
                 return;
               }
               send({ type: "delta", text: ev.text });
@@ -172,6 +208,9 @@ export async function handleChat(req: Request): Promise<Response> {
                 outputTokens: ev.outputTokens,
                 stopReason: ev.stopReason,
                 injectionFlagged: injection.flagged,
+                relevance: decision.relevance,
+                guardAction: decision.action,
+                guardFlags: decision.flags,
               });
               send({ type: "done", truncated });
             }

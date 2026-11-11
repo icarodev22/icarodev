@@ -19,6 +19,9 @@ const EnvSchema = z.object({
   AI_EFFORT: z.enum(["low", "medium", "high"]).default("low"),
   AI_MAX_OUTPUT_TOKENS: z.coerce.number().int().min(256).max(16000).default(4096),
   AI_TIMEOUT_MS: z.coerce.number().int().min(5000).max(300000).default(90000),
+  /** Modelo do classificador do Conversation Guard (padrão: o mesmo de AI_MODEL). */
+  AI_GUARD_MODEL: z.string().min(1).optional(),
+  AI_GUARD_TIMEOUT_MS: z.coerce.number().int().min(1000).max(60000).default(12000),
   /** Habilita o fallback server-side da Anthropic em caso de recusa por política. */
   AI_REFUSAL_FALLBACK: boolish.default(true),
 
@@ -58,7 +61,9 @@ let cached: ServerEnv | null = null;
 
 export function getEnv(): ServerEnv {
   if (cached) return cached;
-  const parsed = EnvSchema.safeParse(process.env);
+  // Variáveis vazias (ex.: copiadas do .env.example) contam como não definidas.
+  const raw = Object.fromEntries(Object.entries(process.env).filter(([, v]) => v !== undefined && v.trim() !== ""));
+  const parsed = EnvSchema.safeParse(raw);
   if (!parsed.success) {
     // Mostra apenas os nomes das variáveis inválidas — nunca os valores.
     const names = parsed.error.issues.map((i) => i.path.join(".")).join(", ");

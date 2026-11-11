@@ -3,6 +3,8 @@
  * alterar o serviço de conversa. Nenhuma ferramenta (tool use) é exposta ao
  * modelo: ele não executa operações nem acessa dados.
  */
+import type { ClassifyInput, GuardClassification } from "../guard/classification";
+
 export interface ChatTurn {
   role: "user" | "assistant";
   content: string;
@@ -12,8 +14,8 @@ export interface StreamChatInput {
   system: string;
   history: ChatTurn[];
   userContent: string;
-  /** Lembrete de segurança extra (mensagem de sistema no meio da conversa). */
-  securityReminder?: string;
+  /** Orientações do Conversation Guard (mensagem de sistema no meio da conversa). */
+  operatorNote?: string;
   signal?: AbortSignal;
 }
 
@@ -25,6 +27,8 @@ export interface AIProvider {
   readonly name: string;
   isConfigured(): boolean;
   streamChat(input: StreamChatInput): AsyncIterable<ProviderEvent>;
+  /** Classificação semântica pré-geração com saída estruturada. */
+  classify(input: ClassifyInput): Promise<GuardClassification>;
 }
 
 export class AIProviderError extends Error {

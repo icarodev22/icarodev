@@ -11,7 +11,7 @@ export interface PortraitPhoto {
   widths: number[];
   width: number;
   height: number;
-  kind: "fotografia" | "obra-de-arte";
+  kind: "fotografia" | "obra-de-arte" | "reconstrucao-digital";
   credit: string;
   license: string;
   sourceUrl?: string;
@@ -30,6 +30,9 @@ export function photoSrcSet(p: PortraitPhoto, format: "avif" | "webp"): string {
 }
 
 export function photoNotice(p: PortraitPhoto): string {
+  if (p.kind === "reconstrucao-digital") {
+    return `Reconstrução digital — representação artística, não é fotografia autêntica. ${p.credit} — ${p.license}.`;
+  }
   const kind = p.kind === "obra-de-arte" ? "Obra de arte" : "Fotografia";
   return `${kind}: ${p.credit} — ${p.license}.`;
 }

@@ -1,1 +1,9 @@
-{}
+{
+  "albert-einstein": {
+    "file": "albert-einstein.png",
+    "kind": "reconstrucao-digital",
+    "credit": "Imagem fornecida pelo responsável pelo projeto",
+    "license": "uso autorizado pelo responsável; origem e direitos a confirmar",
+    "focus": "50% 22%"
+  }
+}

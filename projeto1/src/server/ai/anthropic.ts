@@ -1,5 +1,7 @@
 import "server-only";
 import Anthropic from "@anthropic-ai/sdk";
+import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
+import { GuardClassificationSchema, type ClassifyInput, type GuardClassification } from "../guard/classification";
 import { getEnv } from "../config/env";
 import { AIProviderError, type AIProvider, type ProviderEvent, type StreamChatInput } from "./provider";
 
@@ -19,6 +21,14 @@ export class AnthropicProvider implements AIProvider {
     return this.client;
   }
 
+  async classify(input: ClassifyInput): Promise<GuardClassification> {
+    try {
+      return await classifyWithAnthropic(this.getClient(), input);
+    } catch (err) {
+      throw mapError(err);
+    }
+  }
+
   async *streamChat(input: StreamChatInput): AsyncIterable<ProviderEvent> {
     const env = getEnv();
     const client = this.getClient();
@@ -27,9 +37,9 @@ export class AnthropicProvider implements AIProvider {
       ...input.history.map((t) => ({ role: t.role, content: t.content })),
       { role: "user", content: input.userContent },
     ];
-    if (input.securityReminder) {
+    if (input.operatorNote) {
       // Mensagem de sistema no meio da conversa: canal de operador, não confundível com o estudante.
-      messages.push({ role: "system", content: input.securityReminder });
+      messages.push({ role: "system", content: input.operatorNote });
     }
 
     let stream;
@@ -68,6 +78,23 @@ export class AnthropicProvider implements AIProvider {
       throw mapError(err);
     }
   }
+}
+
+export async function classifyWithAnthropic(client: Anthropic, input: ClassifyInput): Promise<GuardClassification> {
+  const env = getEnv();
+  const response = await client.messages.parse(
+    {
+      model: env.AI_GUARD_MODEL ?? env.AI_MODEL,
+      max_tokens: 2048,
+      system: [{ type: "text", text: input.system }],
+      messages: [{ role: "user", content: input.userContent }],
+      output_config: { effort: "low", format: zodOutputFormat(GuardClassificationSchema) },
+    },
+    { signal: input.signal, timeout: env.AI_GUARD_TIMEOUT_MS, maxRetries: 1 },
+  );
+  if (response.stop_reason === "refusal") throw new AIProviderError("refused", "Classificação recusada.");
+  if (!response.parsed_output) throw new AIProviderError("upstream", "Classificação inválida.");
+  return GuardClassificationSchema.parse(response.parsed_output);
 }
 
 function mapError(err: unknown): AIProviderError {

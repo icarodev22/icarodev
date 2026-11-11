@@ -11,6 +11,14 @@ describe("configuração", () => {
     setTestEnv({ NODE_ENV: "production", ALLOW_IN_MEMORY_STORE: "true" });
     expect(() => getEnv()).not.toThrow();
   });
+  it("trata variáveis vazias do .env.example como não definidas", () => {
+    setTestEnv({ ANTHROPIC_API_KEY: "", DATABASE_URL: "", AI_GUARD_MODEL: "", CRON_SECRET: "" });
+    const env = getEnv();
+    expect(env.ANTHROPIC_API_KEY).toBeUndefined();
+    expect(env.DATABASE_URL).toBeUndefined();
+    expect(env.AI_GUARD_MODEL).toBeUndefined();
+  });
+
   it("não expõe valores de variáveis inválidas na mensagem de erro", () => {
     setTestEnv({ DATABASE_URL: "nao-e-url-segredo-123" });
     try {

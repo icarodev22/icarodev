@@ -127,3 +127,13 @@ Configurações**. Nova rota `DELETE /api/me/data` (exige Origin; apaga só as c
 | lint, typecheck, build | sem erros |
 | Playwright em 7 dispositivos (iPhone 13, iPhone SE, Pixel 7, iPad Mini, iPhone paisagem, 1366×768, 1920×1080) | exatamente 3 itens; item ativo correto em `/`, `/personalidades`, `/conversar/*`, `/configuracoes` e após navegação; biblioteca com 6 categorias e 18 personalidades; preferências aplicadas e persistidas após recarregar; nível padrão usado no chat; exclusão de dados concluída; barra não cobre o campo de texto nem o rodapé; recolhe ao digitar em telas de toque e volta ao sair do campo; sem overflow; área de toque ≥ 44 px; sem erros de console |
 | Safe Area | `viewport-fit=cover` + `env(safe-area-inset-bottom)`; **confirmar em iPhone real** (o Chromium não emula o recorte) |
+
+## Atualização — Conversation Guard e retrato de Einstein (11/11/2026)
+
+| Verificação | Resultado |
+|---|---|
+| `npm test` com PostgreSQL | **93/93** (30 novos, incluindo variáveis vazias do .env.example: 15 cenários obrigatórios + escopos, redirecionamento, validação de saída, integração com `/api/chat`) |
+| Migração `0005_guard_metrics.sql` | aplicada (aditiva) |
+| lint, typecheck, build, Playwright (7 dispositivos) | sem erros |
+| Retrato de Einstein | servido em AVIF/WebP (320/720/1122 px, 13–160 KB); exibido como **reconstrução digital** |
+| `npm run eval:guard` (modelo real) | **não executado** — sem `ANTHROPIC_API_KEY` neste ambiente |
