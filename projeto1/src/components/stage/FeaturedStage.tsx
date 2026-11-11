@@ -83,6 +83,9 @@ export function FeaturedStage({ p }: { p: PersonalityCardData }) {
                   </li>
                 ))}
               </ul>
+              <Link href="/personalidades" className="inline-flex items-center gap-1 text-sm text-bronze transition-colors hover:text-ivory">
+                Escolher outra personalidade <ArrowUpRight className="size-4" aria-hidden />
+              </Link>
             </div>
             <p className="mt-5 text-[0.7rem] leading-snug text-stone/60">{p.portraitNotice}</p>
           </motion.div>

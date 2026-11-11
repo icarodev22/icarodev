@@ -37,11 +37,12 @@
 }
 
 @layer base {
-  /* Quando a barra flutuante está presente, o rodapé ganha espaço para não ser encoberto. */
-  body:has([data-dock]) footer {
-    padding-bottom: calc(6.5rem + env(safe-area-inset-bottom));
+  /* Espaço reservado para a navegação inferior flutuante (nunca encobre conteúdo). */
+  :root {
+    --bottom-nav-space: calc(4.75rem + max(0.75rem, env(safe-area-inset-bottom)));
   }
   body {
+    padding-bottom: var(--bottom-nav-space);
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
   }
@@ -62,6 +63,16 @@
     text-transform: uppercase;
     color: var(--color-bronze);
   }
+}
+
+/* Preferência "Reduzir animações" (Configurações) */
+[data-motion="reduce"] *,
+[data-motion="reduce"] *::before,
+[data-motion="reduce"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

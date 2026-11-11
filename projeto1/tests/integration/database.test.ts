@@ -64,6 +64,18 @@ run("PostgreSQL: RLS, privilégios e stores", () => {
     expect(await store.listMessages(a, s.id, 10)).toHaveLength(2);
   });
 
+  it("exclusão total apaga apenas as conversas do próprio dono", async () => {
+    const { PostgresConversationStore } = await import("@/server/conversations/store");
+    const store = new PostgresConversationStore();
+    const a = owner();
+    const b = owner();
+    await store.createSession(a, "socrates", "geral");
+    await store.createSession(a, "platao", "geral");
+    const sb = await store.createSession(b, "aristoteles", "geral");
+    expect(await store.deleteAllSessions(a)).toBe(2);
+    expect(await store.getSession(b, sb.id)).not.toBeNull();
+  });
+
   it("RLS impede inserir linhas em nome de outro dono", async () => {
     const a = owner();
     const b = owner();

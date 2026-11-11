@@ -20,10 +20,12 @@ e isolada por personalidade (RAG), com regras de precisão histórica e proteç�
 
 ## Experiência principal
 
-A página inicial apresenta uma **personalidade em destaque** (retrato grande, nome, contexto e acesso direto à
-conversa) e uma **barra flutuante inferior** com as 18 personalidades. A seleção troca o destaque sem recarregar a
-página e fica refletida na URL (`/?p=marie-curie`), inclusive em acesso direto. A barra respeita a área segura do
-iPhone, funciona por teclado (setas, Home, End) e tem um painel expansível com todas as personalidades por categoria.
+- **Página inicial**: personalidade em destaque (retrato grande, nome, contexto e acesso direto à conversa). Pode ser
+  aberta já com outra personalidade via `/?p=<slug>`.
+- **Navegação inferior flutuante** com exatamente três destinos — **Home**, **Personalidades** (biblioteca com as 18
+  personalidades nas 6 categorias) e **Configurações** (nível de explicação padrão, reduzir animações e exclusão das
+  conversas deste navegador). O item ativo acompanha a rota; na sala de conversa a barra fica acima do campo de texto
+  e, em telas de toque, recolhe enquanto o teclado está aberto. Respeita a área segura do iPhone.
 
 Fotografias reais podem ser adicionadas sem alterar a interface: veja [assets/retratos/README.md](assets/retratos/README.md).
 Enquanto não houver foto, cada personalidade usa sua ilustração original, identificada como tal.

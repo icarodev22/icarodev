@@ -206,6 +206,30 @@ describe("POST /api/chat — fluxo de conversa", () => {
   });
 });
 
+describe("DELETE /api/me/data", () => {
+  it("exige Origin, apaga só as conversas do próprio estudante e remove o cookie", async () => {
+    const { handleChat, handleGetSession, handleDeleteAllData } = await load();
+    const rA = await handleChat(chatRequest(body));
+    const cookieA = cookieFrom(rA)!;
+    const sA = ((await readEvents(rA))[0] as { sessionId: string }).sessionId;
+    const rB = await handleChat(chatRequest(body));
+    const cookieB = cookieFrom(rB)!;
+    const sB = ((await readEvents(rB))[0] as { sessionId: string }).sessionId;
+
+    const noOrigin = await handleDeleteAllData(new Request(`${ORIGIN}/api/me/data`, { method: "DELETE", headers: { cookie: cookieA } }));
+    expect(noOrigin.status).toBe(403);
+
+    const res = await handleDeleteAllData(new Request(`${ORIGIN}/api/me/data`, { method: "DELETE", headers: { cookie: cookieA, origin: ORIGIN } }));
+    expect(res.status).toBe(200);
+    expect((await res.json()).removed).toBe(1);
+    expect(res.headers.get("set-cookie")).toMatch(/Max-Age=0/);
+
+    const get = (id: string, cookie: string) => handleGetSession(new Request(`${ORIGIN}/api/sessions/${id}`, { headers: { cookie } }), id);
+    expect((await get(sA, cookieA)).status).toBe(404);
+    expect((await get(sB, cookieB)).status).toBe(200);
+  });
+});
+
 describe("GET /api/cron/purge", () => {
   it("retorna 404 sem o segredo correto", async () => {
     vi.resetModules();

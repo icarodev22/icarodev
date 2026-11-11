@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { CATEGORIES, PERSONALITY_SLUGS } from "@/content";
 import { allCards } from "@/lib/catalog";
 import { SearchBox } from "@/components/library/SearchBox";
-import { HomeExperience } from "@/components/stage/HomeExperience";
+import { FeaturedStage } from "@/components/stage/FeaturedStage";
 
 const DEFAULT_SLUG = "albert-einstein";
 
@@ -14,7 +14,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
 
   return (
     <div className="museum-texture overflow-x-clip">
-      <HomeExperience items={cards} categories={CATEGORIES.map((c) => ({ id: c.id, name: c.name }))} initial={initial} />
+      <FeaturedStage p={cards.find((c) => c.slug === initial)!} />
 
       <section aria-labelledby="explorar" className="mx-auto mt-20 max-w-6xl px-4 pb-16 sm:px-6">
         <div className="flex flex-col gap-6 rounded-3xl border border-white/[0.06] bg-graphite/50 p-5 sm:p-8 md:flex-row md:items-end md:justify-between">

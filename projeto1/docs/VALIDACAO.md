@@ -115,3 +115,15 @@ TEST_DATABASE_ADMIN_URL=postgres://owner:***@localhost/projeto1_test npm test
 | Movimento reduzido | sem erros (após correção de hidratação com `MotionConfig reducedMotion="user"`) |
 | Safe Area | `viewport-fit=cover` presente e `padding-bottom: max(0.75rem, env(safe-area-inset-bottom))` na barra. O Chromium não emula o recorte do iPhone; **confirmar em aparelho real** |
 | Fotos reais | **não verificado com fotos reais** — nenhuma imagem foi fornecida; pipeline testado com imagens sintéticas |
+
+## Atualização — navegação inferior com três destinos (11/11/2026)
+
+A barra de personalidades da página inicial foi substituída por uma navegação global com **Home, Personalidades e
+Configurações**. Nova rota `DELETE /api/me/data` (exige Origin; apaga só as conversas do próprio estudante e remove o cookie).
+
+| Verificação | Resultado |
+|---|---|
+| `npm test` com PostgreSQL | **63/63** (novos: exclusão total isolada por dono — API e RLS) |
+| lint, typecheck, build | sem erros |
+| Playwright em 7 dispositivos (iPhone 13, iPhone SE, Pixel 7, iPad Mini, iPhone paisagem, 1366×768, 1920×1080) | exatamente 3 itens; item ativo correto em `/`, `/personalidades`, `/conversar/*`, `/configuracoes` e após navegação; biblioteca com 6 categorias e 18 personalidades; preferências aplicadas e persistidas após recarregar; nível padrão usado no chat; exclusão de dados concluída; barra não cobre o campo de texto nem o rodapé; recolhe ao digitar em telas de toque e volta ao sair do campo; sem overflow; área de toque ≥ 44 px; sem erros de console |
+| Safe Area | `viewport-fit=cover` + `env(safe-area-inset-bottom)`; **confirmar em iPhone real** (o Chromium não emula o recorte) |

@@ -44,3 +44,9 @@ export function resolveIdentity(headers: Headers, create: boolean): AnonIdentity
     setCookie: `${name}=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAge}${secure}`,
   };
 }
+
+/** Cabeçalho que remove o cookie de identidade anônima. */
+export function clearIdentityCookie(): string {
+  const secure = getEnv().NODE_ENV === "production" ? "; Secure" : "";
+  return `${cookieName()}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0${secure}`;
+}

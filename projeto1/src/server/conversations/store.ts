@@ -29,6 +29,8 @@ export interface ConversationStore {
   countMessages(ownerHash: string, sessionId: string): Promise<number>;
   appendMessages(ownerHash: string, sessionId: string, msgs: { role: "user" | "assistant"; content: string }[]): Promise<void>;
   deleteSession(ownerHash: string, sessionId: string): Promise<boolean>;
+  /** Apaga todas as conversas do próprio estudante (direito de exclusão). */
+  deleteAllSessions(ownerHash: string): Promise<number>;
   purgeExpired(): Promise<number>;
 }
 
@@ -75,6 +77,17 @@ export class MemoryConversationStore implements ConversationStore {
   async deleteSession(ownerHash: string, id: string) {
     if (!this.owned(ownerHash, id)) return false;
     return this.sessions.delete(id);
+  }
+
+  async deleteAllSessions(ownerHash: string) {
+    let n = 0;
+    for (const [id, s] of this.sessions) {
+      if (s.ownerHash === ownerHash) {
+        this.sessions.delete(id);
+        n++;
+      }
+    }
+    return n;
   }
 
   async purgeExpired() {
@@ -161,6 +174,13 @@ export class PostgresConversationStore implements ConversationStore {
     return withOwner(ownerHash, async (c) => {
       const r = await c.query("DELETE FROM conversation_sessions WHERE id = $1 AND owner_hash = $2", [id, ownerHash]);
       return (r.rowCount ?? 0) > 0;
+    });
+  }
+
+  async deleteAllSessions(ownerHash: string) {
+    return withOwner(ownerHash, async (c) => {
+      const r = await c.query("DELETE FROM conversation_sessions WHERE owner_hash = $1", [ownerHash]);
+      return r.rowCount ?? 0;
     });
   }
 

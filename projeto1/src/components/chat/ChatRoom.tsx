@@ -6,6 +6,7 @@ import { AlertTriangle, ArrowUp, Info, Loader2, RotateCcw, Square, Users, X } fr
 import { SIMULATION_DISCLAIMER } from "@/content/notices";
 import { LEVELS, LEVEL_LABELS, MAX_MESSAGE_CHARS, type Level } from "@/lib/chat-shared";
 import { ChatRequestError, streamChat, type ChatSource } from "@/lib/chat-client";
+import { PREF_KEYS, setPreference } from "@/lib/preferences";
 import { AnimatedPortrait } from "@/components/portrait/AnimatedPortrait";
 import { Portrait } from "@/components/portrait/Portrait";
 import { MessageText } from "./MessageText";
@@ -101,7 +102,7 @@ export function ChatRoom({
 
   const changeLevel = (l: Level) => {
     setLevel(l);
-    safeStorage("local")?.setItem(LEVEL_KEY, l);
+    setPreference(PREF_KEYS.level, l);
   };
 
   const send = useCallback(
@@ -190,7 +191,7 @@ export function ChatRoom({
           : "";
 
   return (
-    <div className="mx-auto grid h-[calc(100dvh-3.5rem)] max-w-7xl grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(300px,380px)_minmax(0,1fr)]">
+    <div className="mx-auto grid h-[calc(100dvh-3.5rem-var(--bottom-nav-space))] max-w-7xl grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(300px,380px)_minmax(0,1fr)]">
       {/* Coluna de perfil (desktop) */}
       <aside aria-label={`Sobre ${profile.name}`} className="hidden min-h-0 flex-col border-r hairline lg:flex">
         <div className="relative aspect-[4/5] max-h-[46dvh] w-full">

@@ -2,7 +2,7 @@ import "server-only";
 import { SessionIdSchema } from "@/lib/validation";
 import { getConversationStore } from "../conversations/store";
 import { assertSameOrigin, HttpError, jsonError } from "../security/request";
-import { resolveIdentity } from "../security/identity";
+import { clearIdentityCookie, resolveIdentity } from "../security/identity";
 import { logError } from "../observability/logger";
 
 function parseId(id: string): string {
@@ -48,6 +48,23 @@ export async function handleDeleteSession(req: Request, rawId: string): Promise<
   } catch (err) {
     if (err instanceof HttpError) return jsonError(err);
     logError("session_delete_failed", err);
+    return jsonError(new HttpError(500, "internal_error", "Erro interno."));
+  }
+}
+
+/** DELETE: apaga todas as conversas deste navegador e descarta o identificador anônimo. */
+export async function handleDeleteAllData(req: Request): Promise<Response> {
+  try {
+    assertSameOrigin(req);
+    const identity = resolveIdentity(req.headers, false);
+    const removed = identity ? await getConversationStore().deleteAllSessions(identity.ownerHash) : 0;
+    return Response.json(
+      { removed },
+      { status: 200, headers: { "Cache-Control": "no-store", "Set-Cookie": clearIdentityCookie() } },
+    );
+  } catch (err) {
+    if (err instanceof HttpError) return jsonError(err);
+    logError("data_delete_failed", err);
     return jsonError(new HttpError(500, "internal_error", "Erro interno."));
   }
 }
