@@ -134,3 +134,106 @@
     transform: none;
   }
 }
+
+/* ---------- Navegação discreta ---------- */
+.nav-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  padding: 0 0.75em;
+  font-size: var(--nav-fs, 13px);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #032e71;
+  white-space: nowrap;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 7px;
+  transition: text-decoration-color 200ms ease, color 200ms ease;
+}
+.nav-link:hover {
+  text-decoration-color: rgba(255, 178, 0, 0.6);
+}
+.nav-link.is-ativo {
+  text-decoration-color: #ffb200;
+}
+.aba-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0 1em;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #032e71;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+.aba-link:hover {
+  background: rgba(3, 46, 113, 0.08);
+}
+.aba-link.is-ativo {
+  background: #032e71;
+  color: #fff;
+}
+.ctrl {
+  display: grid;
+  height: 44px;
+  width: 44px;
+  place-items: center;
+  border-radius: 999px;
+  background: #fff;
+  color: #032e71;
+  box-shadow: inset 0 0 0 1.5px rgba(3, 46, 113, 0.18);
+  transition: background-color 200ms ease, transform 200ms ease;
+}
+.ctrl:hover {
+  background: #ffb200;
+}
+.ctrl:active {
+  transform: scale(0.95);
+}
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- Painel das abas ---------- */
+.painel {
+  max-height: 86svh;
+  box-shadow: 0 -10px 40px -10px rgba(2, 31, 79, 0.45);
+  animation: painel 260ms ease-out both;
+}
+.fundo-painel {
+  animation: fundo 260ms ease-out both;
+}
+@keyframes painel {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fundo {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .painel,
+  .fundo-painel {
+    animation: none;
+  }
+}
+
+.lightbox :focus-visible {
+  outline-color: #ffb200;
+}

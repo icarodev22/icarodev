@@ -16,6 +16,15 @@ Tudo em `src/config/site.ts`:
 - `BILHETERIA_URL` — "Vendas digitais".
 - `SITE.url` — domínio definitivo (imagem de compartilhamento).
 
+## Abas (sem rolagem longa)
+Navegação discreta acima da logo: **Início · Momentos · Próximos eventos** (links `#inicio`, `#momentos`,
+`#proximos-eventos`). Momentos e Próximos eventos abrem num painel sobre a capa (Esc/✕ volta ao início).
+
+- `MOMENTOS` (em `site.ts`): só fotos/vídeos reais do evento. Vídeo: `{ tipo: "video", src: "/video/x.mp4", poster: ... }`
+  — abre com controles, sem autoplay.
+- `EVENTOS`: um evento só aparece com `data: "AAAA-MM-DD"` confirmada e ainda não passada (fuso de São Paulo,
+  calculado no navegador). Com `data: null` fica fora. Sem eventos futuros: "Novas datas em breve."
+
 ## Composição
 - Telas horizontais (largura ≥ altura e altura ≥ 540 px): arte horizontal inteira, sem corte nem distorção;
   logo e botões no céu da arte; sobras da tela preenchidas com a própria arte desfocada.
@@ -23,7 +32,9 @@ Tudo em `src/config/site.ts`:
   sem deformar, então logo e botões ficam juntos na primeira tela.
 
 ## Marca
-- Logo: lettering + sol como aplicado na arte oficial 07 NOV (fundo removido do JPG; sem efeitos).
+- Logo: `logo-sambinha-transparente.png/.webp` — extraída do arquivo circular (JPG 1080 px): círculo, anel e fundo
+  removidos; o anel claro e o miolo do sol foram mantidos. Não é o arquivo-fonte oficial.
 - Botões: verde `#227947` (folhas) e vermelho `#C62B11` (sol), extraídos da arte.
 - Fonte dos botões: Archivo (apoio, complementar — fonte oficial não fornecida).
-- Pendências: logo em SVG/PNG original, fonte oficial, link do WhatsApp de vendas.
+- Pendências: logo oficial em SVG/PNG transparente, fonte oficial, link do WhatsApp de vendas,
+  datas com ano confirmado, vídeos do evento.
