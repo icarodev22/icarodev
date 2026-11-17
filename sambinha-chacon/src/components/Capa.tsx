@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BOTOES } from "@/config/site";
 import { MOMENTOS, dataPorExtenso, proximasDatas, type Evento } from "@/lib/dados";
 import Carrossel from "./Carrossel";
@@ -38,14 +38,14 @@ function Botoes({ className }: { className: string }) {
   return (
     <div className={className}>
       <div className="entrada" style={{ animationDelay: "140ms" }}>
-        <a href={semTaxa.href} target="_blank" rel="noopener noreferrer" className="btn btn-verde">
+        <a href={semTaxa.href} target="_blank" rel="noopener noreferrer" className="btn btn-azul">
           <IconWhats />
           <span>{semTaxa.rotulo}</span>
           <span className="sr-only">({semTaxa.destino}, abre em nova aba)</span>
         </a>
       </div>
       <div className="entrada" style={{ animationDelay: "220ms" }}>
-        <a href={digitais.href} target="_blank" rel="noopener noreferrer" className="btn btn-vermelho">
+        <a href={digitais.href} target="_blank" rel="noopener noreferrer" className="btn btn-amarelo">
           <IconTicket />
           <span>{digitais.rotulo}</span>
           <span className="sr-only">({digitais.destino}, abre em nova aba)</span>
@@ -56,24 +56,155 @@ function Botoes({ className }: { className: string }) {
 }
 
 
-/* ---------- Navegação discreta (âncoras) ---------- */
-function Nav({ temDatas, className = "" }: { temDatas: boolean; className?: string }) {
-  const links = [
-    { href: "#momentos", rotulo: "Momentos" },
-    ...(temDatas ? [{ href: "#proximas-datas", rotulo: "Próximas datas" }] : []),
-  ];
+/* ---------- Momentos ---------- */
+type M = (typeof MOMENTOS)[number];
+const POR_VEZ = 4; // fotos extras reveladas a cada "Ver mais momentos"
+
+function Midia({ m, i, onAbrir, className = "", foco }: { m: M; i: number; onAbrir: (i: number) => void; className?: string; foco?: string }) {
   return (
-    <nav aria-label="Navegação" className={`entrada ${className}`}>
-      <ul className="flex items-center justify-center gap-[0.2em]">
-        {links.map((l) => (
-          <li key={l.href}>
-            <a href={l.href} className="nav-link">
-              {l.rotulo}
-            </a>
+    <button
+      type="button"
+      onClick={() => onAbrir(i)}
+      className={`midia ${className}`}
+      aria-label={`Ampliar ${m.tipo === "video" ? "vídeo" : "foto"} ${i + 1} de ${MOMENTOS.length}: ${m.alt}`}
+    >
+      <img
+        src={m.tipo === "video" ? m.poster ?? m.miniatura : m.miniatura}
+        alt=""
+        width={m.largura}
+        height={m.altura}
+        loading="lazy"
+        decoding="async"
+        style={{ objectPosition: foco ?? m.foco ?? "50% 50%" }}
+      />
+      {m.tipo === "video" && (
+        <span className="play" aria-hidden="true">
+          <IconPlay />
+        </span>
+      )}
+    </button>
+  );
+}
+
+/** Celular: 1 foto grande + 4 menores em duas colunas; "Ver mais momentos" revela o restante. */
+function MosaicoMomentos({ onAbrir }: { onAbrir: (i: number) => void }) {
+  const [visiveis, setVisiveis] = useState(5);
+  const [inicioNovos, setInicioNovos] = useState<number | null>(null);
+  const primeiraNova = useRef<HTMLLIElement>(null);
+  // Ao revelar mais fotos, o foco vai para a primeira foto nova (acessibilidade)
+  useEffect(() => {
+    if (inicioNovos !== null) primeiraNova.current?.querySelector("button")?.focus({ preventScroll: true });
+  }, [inicioNovos]);
+
+  const [destaque, ...resto] = MOMENTOS.slice(0, visiveis);
+  if (!destaque) return null;
+  return (
+    <div>
+      <ul className="mosaico" aria-label="Fotos e vídeos do Sambinha Chacon">
+        <li className="mosaico-destaque">
+          <Midia m={destaque} i={0} onAbrir={onAbrir} foco={destaque.focoDestaque} />
+        </li>
+        {resto.map((m, k) => (
+          <li key={m.src} ref={k + 1 === inicioNovos ? primeiraNova : undefined} className={k >= 4 ? "entrada" : undefined}>
+            <Midia m={m} i={k + 1} onAbrir={onAbrir} />
           </li>
         ))}
       </ul>
-    </nav>
+      {MOMENTOS.length > visiveis && (
+        <button
+          type="button"
+          className="ver-mais"
+          onClick={() => {
+            setInicioNovos(visiveis);
+            setVisiveis((v) => Math.min(v + POR_VEZ, MOMENTOS.length));
+          }}
+        >
+          Ver mais momentos
+        </button>
+      )}
+    </div>
+  );
+}
+
+/* ---------- Próximas datas ---------- */
+const MAX_INICIAL = 2;
+
+function CardData({ e }: { e: Evento }) {
+  return (
+    <article className="card-data" aria-labelledby={`ev-${e.id}`}>
+      <div className="card-arte">
+        <img src={e.imagem} alt={e.imagemAlt} width={e.imagemLargura} height={e.imagemAltura} loading="lazy" decoding="async" />
+      </div>
+      <div className="flex flex-1 flex-col gap-1 p-4 sm:p-5">
+        <h3 id={`ev-${e.id}`} className="text-[18px] font-extrabold leading-tight text-white">
+          {e.titulo}
+        </h3>
+        <InfoData e={e} />
+        <div className="mt-auto pt-4">
+          <BotaoCompra e={e} />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function InfoData({ e }: { e: Evento }) {
+  return (
+    <>
+      <p className="text-[15px] font-semibold text-amarelo">
+        <time dateTime={e.horario ? `${e.data}T${e.horario}` : e.data}>{dataPorExtenso(e)}</time>
+      </p>
+      {e.local && <p className="text-[14px] text-white/80">{e.local}</p>}
+    </>
+  );
+}
+
+function BotaoCompra({ e }: { e: Evento }) {
+  return (
+    <a href={e.linkCompra} target="_blank" rel="noopener noreferrer" className="btn btn-amarelo [--btn-fs:14px] [--btn-h:50px]">
+      <IconTicket />
+      <span>Comprar ingressos</span>
+      <span className="sr-only">para {e.titulo} (abre em nova aba)</span>
+    </a>
+  );
+}
+
+/** Celular: lista vertical compacta; mostra as 2 próximas e "Ver todas as datas" se houver mais. */
+function ListaDatas({ datas }: { datas: Evento[] }) {
+  const [todas, setTodas] = useState(false);
+  const terceira = useRef<HTMLLIElement>(null);
+  useEffect(() => {
+    if (todas) terceira.current?.querySelector("a")?.focus({ preventScroll: true });
+  }, [todas]);
+  const lista = todas ? datas : datas.slice(0, MAX_INICIAL);
+  return (
+    <div>
+      <ul className="lista-datas" aria-label="Próximas datas do Sambinha Chacon">
+        {lista.map((e, i) => (
+          <li key={e.id} ref={i === MAX_INICIAL ? terceira : undefined} className={i >= MAX_INICIAL ? "entrada" : undefined}>
+            <article className="data-compacta" aria-labelledby={`evm-${e.id}`}>
+              <div className="data-compacta-arte">
+                <img src={e.imagem} alt={e.imagemAlt} width={e.imagemLargura} height={e.imagemAltura} loading="lazy" decoding="async" />
+              </div>
+              <div className="flex min-w-0 flex-col justify-center gap-1">
+                <h3 id={`evm-${e.id}`} className="text-[16px] font-extrabold leading-tight text-white">
+                  {e.titulo}
+                </h3>
+                <InfoData e={e} />
+              </div>
+              <div className="data-compacta-acao">
+                <BotaoCompra e={e} />
+              </div>
+            </article>
+          </li>
+        ))}
+      </ul>
+      {!todas && datas.length > MAX_INICIAL && (
+        <button type="button" className="ver-mais" onClick={() => setTodas(true)}>
+          Ver todas as datas ({datas.length})
+        </button>
+      )}
+    </div>
   );
 }
 
@@ -105,10 +236,9 @@ export default function Capa() {
                 className="absolute inset-0 h-full w-full"
                 fetchPriority="high"
               />
-              <div className="absolute inset-x-[20%] top-[14.5%] flex h-[43%] flex-col items-center justify-center [--nav-fs:clamp(12px,0.95cqw,16px)]">
-                <Nav temDatas={datas.length > 0} />
-                <Logo className="mt-[1.6cqw] w-[15cqw]" />
-                <Botoes className="mt-[2.2cqw] flex items-center justify-center gap-[1.4cqw] [--btn-fs:clamp(14px,1.15cqw,20px)] [--btn-h:clamp(52px,3.9cqw,68px)]" />
+              <div className="absolute inset-x-[18%] top-[15%] flex h-[42%] flex-col items-center justify-center">
+                <Logo className="w-[15.5cqw]" />
+                <Botoes className="mt-[2.4cqw] grid w-[clamp(560px,42cqw,700px)] grid-cols-2 gap-3 [--btn-fs:clamp(15px,1.1cqw,18px)]" />
               </div>
             </div>
           </div>
@@ -117,10 +247,9 @@ export default function Capa() {
           <div className="layout-v">
             <div className="coluna-v">
               <img src="/img/hero-m-top.webp" alt="" width={941} height={225} className="block w-full" fetchPriority="high" />
-              <div className="ceu-v flex flex-1 flex-col items-center justify-center px-[9%] pb-[5%] pt-[2%] [--nav-fs:12.5px]">
-                <Nav temDatas={datas.length > 0} />
-                <Logo className="mt-[clamp(14px,3.5vh,28px)] w-[min(64%,290px)]" />
-                <Botoes className="mt-[clamp(22px,5vh,40px)] flex w-full max-w-[330px] flex-col gap-3.5 [--btn-fs:16px] [--btn-h:56px]" />
+              <div className="ceu-v flex flex-1 flex-col items-center justify-center px-[9%] pb-[5%] pt-[2%]">
+                <Logo className="w-[min(66%,300px)]" />
+                <Botoes className="mt-[clamp(24px,5.5vh,44px)] flex w-full max-w-[340px] flex-col gap-3 [--btn-fs:16px]" />
               </div>
               <img
                 src="/img/hero-m-bottom.webp"
@@ -137,60 +266,31 @@ export default function Capa() {
 
         <div className="conteudo">
           {/* ===================== MOMENTOS ===================== */}
-          <Carrossel id="momentos" titulo="Momentos" rotulo="Fotos e vídeos do Sambinha Chacon">
+          <Carrossel
+            id="momentos"
+            titulo="Momentos do Sambinha"
+            rotulo="Fotos e vídeos do Sambinha Chacon"
+            mobile={<MosaicoMomentos onAbrir={setMidia} />}
+          >
             {MOMENTOS.map((m, i) => (
               <li key={m.src} className="item-momento">
-                <button type="button" onClick={() => setMidia(i)} className="midia" aria-label={`Ampliar ${m.tipo === "video" ? "vídeo" : "foto"} ${i + 1} de ${MOMENTOS.length}: ${m.alt}`}>
-                  <img
-                    src={m.tipo === "video" ? m.poster ?? m.miniatura : m.miniatura}
-                    alt=""
-                    width={m.largura}
-                    height={m.altura}
-                    loading="lazy"
-                    decoding="async"
-                    style={{ objectPosition: m.foco ?? "50% 50%" }}
-                  />
-                  {m.tipo === "video" && (
-                    <span className="play" aria-hidden="true">
-                      <IconPlay />
-                    </span>
-                  )}
-                </button>
+                <Midia m={m} i={i} onAbrir={setMidia} />
               </li>
             ))}
           </Carrossel>
 
           {/* ===================== PRÓXIMAS DATAS (oculta se não houver) ===================== */}
           {datas.length > 0 && (
-            <Carrossel id="proximas-datas" titulo="Próximas datas" rotulo="Próximas datas do Sambinha Chacon">
+            <Carrossel id="proximas-datas" titulo="Próximas datas" rotulo="Próximas datas do Sambinha Chacon" mobile={<ListaDatas datas={datas} />}>
               {datas.map((e) => (
                 <li key={e.id} className="item-data">
-                  <article className="card-data" aria-labelledby={`ev-${e.id}`}>
-                    <div className="card-arte">
-                      <img src={e.imagem} alt={e.imagemAlt} width={e.imagemLargura} height={e.imagemAltura} loading="lazy" decoding="async" />
-                    </div>
-                    <div className="flex flex-1 flex-col gap-1 p-4 sm:p-5">
-                      <h3 id={`ev-${e.id}`} className="text-[18px] font-extrabold leading-tight text-white">
-                        {e.titulo}
-                      </h3>
-                      <p className="text-[15px] font-semibold text-amarelo">
-                        <time dateTime={e.horario ? `${e.data}T${e.horario}` : e.data}>{dataPorExtenso(e)}</time>
-                      </p>
-                      {e.local && <p className="text-[14px] text-white/80">{e.local}</p>}
-                      <div className="mt-auto pt-4">
-                      <a href={e.linkCompra} target="_blank" rel="noopener noreferrer" className="btn btn-vermelho [--btn-fs:14px] [--btn-h:48px]">
-                        <IconTicket />
-                        <span>Comprar ingressos</span>
-                        <span className="sr-only">para {e.titulo} (abre em nova aba)</span>
-                      </a>
-                      </div>
-                    </div>
-                  </article>
+                  <CardData e={e} />
                 </li>
               ))}
             </Carrossel>
           )}
         </div>
+        <div className="faixa-oficial" aria-hidden="true" />
       </main>
       <Lightbox itens={itens} indice={midia} onFechar={() => setMidia(null)} onIr={setMidia} />
     </>

@@ -19,12 +19,15 @@ export default function Carrossel({
   titulo,
   rotulo,
   children,
+  mobile,
 }: {
   id: string;
   titulo: string;
   /** Nome acessível do trilho (ex.: "Fotos e vídeos do Sambinha Chacon") */
   rotulo: string;
   children: React.ReactNode;
+  /** Apresentação alternativa para celular (< 768 px). Se informada, o trilho aparece só no desktop. */
+  mobile?: React.ReactNode;
 }) {
   const trilho = useRef<HTMLUListElement>(null);
   const [inicio, setInicio] = useState(true);
@@ -73,7 +76,8 @@ export default function Carrossel({
           </button>
         </div>
       </div>
-      <div role="region" aria-roledescription="carrossel" aria-label={rotulo}>
+      {mobile && <div className="so-mobile">{mobile}</div>}
+      <div role="region" aria-roledescription="carrossel" aria-label={rotulo} className={mobile ? "so-desktop" : undefined}>
       <ul
         id={`${id}-trilho`}
         ref={trilho}

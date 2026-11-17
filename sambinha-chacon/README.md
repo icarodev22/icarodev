@@ -12,13 +12,13 @@ npm run build    # gera out/ para publicar em qualquer hospedagem
 ## Editar links
 Tudo em `src/config/site.ts`:
 - `WHATSAPP_URL` — link oficial do WhatsApp de vendas (**pendente**). Enquanto vazio,
-  "Vendas sem taxa" usa o destino oficial já existente (central de links).
-- `BILHETERIA_URL` — "Vendas digitais".
+  "Comprar pelo WhatsApp" usa o destino oficial já existente (central de links).
+- `BILHETERIA_URL` — "Comprar online".
 - `SITE.url` — domínio definitivo (imagem de compartilhamento).
 
 ## Estrutura
-Hero (arte + logo transparente + 2 botões) → **Momentos** (carrossel de fotos/vídeos) → **Próximas datas**
-(carrossel; oculta quando não há edição futura publicada). Navegação discreta no hero por âncoras.
+Hero (arte + logo transparente + "Comprar pelo WhatsApp" e "Comprar online") → **Momentos do Sambinha** (desktop: carrossel; celular: mosaico 1 grande + 4 e "Ver mais momentos") → **Próximas datas** (desktop: carrossel; celular: lista com 2 e "Ver todas as datas")
+— oculta quando não há edição futura publicada.
 
 - Cadastro de edições: `src/data/eventos.json` — veja **EVENTOS.md** (status rascunho/publicado, data com ano,
   horário opcional, fuso de São Paulo).

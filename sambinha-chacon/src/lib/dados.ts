@@ -76,6 +76,8 @@ export type Momento = {
   largura: number;
   altura: number;
   foco?: string;
+  /** Enquadramento quando a foto é a grande do mosaico do celular (opcional). */
+  focoDestaque?: string;
   alt: string;
 };
 export const MOMENTOS = momentosJson as Momento[];
