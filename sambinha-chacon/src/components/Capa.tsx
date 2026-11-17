@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { BOTOES } from "@/config/site";
 import { dataDestaque, proximasDatas, type Evento } from "@/lib/dados";
+import Movimento from "./Movimento";
 
 /* ---------- Ícones vetoriais ---------- */
 const IconWhats = () => (
@@ -89,6 +90,7 @@ function Botoes({ className }: { className: string }) {
 /* ---------- Menu ⋮ (canto superior direito) ---------- */
 function MenuPontos() {
   const [aberto, setAberto] = useState(false);
+  const [saindo, setSaindo] = useState(false); // mantém o menu por 140ms para a animação de saída
   const raiz = useRef<HTMLDivElement>(null);
   const botao = useRef<HTMLButtonElement>(null);
   const lista = useRef<HTMLUListElement>(null);
@@ -96,6 +98,10 @@ function MenuPontos() {
 
   const fechar = (devolverFoco = true) => {
     setAberto(false);
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setSaindo(true);
+      window.setTimeout(() => setSaindo(false), 140);
+    }
     if (devolverFoco) botao.current?.focus();
   };
 
@@ -142,13 +148,13 @@ function MenuPontos() {
         aria-label={aberto ? "Fechar menu" : "Abrir menu"}
         aria-expanded={aberto}
         aria-controls="menu-pontos-lista"
-        onClick={() => setAberto((v) => !v)}
+        onClick={() => (aberto ? fechar(false) : setAberto(true))}
       >
         <IconPontos />
       </button>
-      {aberto && (
-        <nav aria-label="Menu">
-          <ul id="menu-pontos-lista" ref={lista} className="menu-lista">
+      {(aberto || saindo) && (
+        <nav aria-label="Menu" inert={!aberto ? true : undefined}>
+          <ul id="menu-pontos-lista" ref={lista} className={`menu-lista ${!aberto ? "is-saindo" : ""}`}>
             {itens.map((it, k) => (
               <li key={it.rotulo}>
                 {k === 2 && <div className="menu-sep" aria-hidden="true" />}
@@ -175,7 +181,7 @@ function MenuPontos() {
 function CardEvento({ e }: { e: Evento }) {
   const d = dataDestaque(e);
   return (
-    <article className="evento" aria-labelledby={`ev-${e.id}`}>
+    <article className="evento" aria-labelledby={`ev-${e.id}`} data-revelar>
       <div className="evento-cartaz">
         <img src={e.imagem} alt={e.imagemAlt} width={e.imagemLargura} height={e.imagemAltura} loading="lazy" decoding="async" />
       </div>
@@ -263,6 +269,42 @@ function CarrosselAgenda({ datas }: { datas: Evento[] }) {
     return () => el.removeEventListener("scroll", onScroll);
   }, []);
 
+  /* Arrastar com o mouse (desktop). No toque, o deslize nativo já funciona. */
+  const arrasto = useRef<{ x: number; inicio: number; moveu: boolean; indice: number } | null>(null);
+  const bloquearClique = useRef(false);
+  const onPointerDown = (e: React.PointerEvent<HTMLUListElement>) => {
+    if (e.pointerType !== "mouse" || e.button !== 0 || !rotativo) return;
+    const el = trilho.current!;
+    arrasto.current = { x: e.clientX, inicio: el.scrollLeft, moveu: false, indice: atual };
+  };
+  const onPointerMove = (e: React.PointerEvent<HTMLUListElement>) => {
+    const a = arrasto.current;
+    const el = trilho.current;
+    if (!a || !el) return;
+    const dx = e.clientX - a.x;
+    if (!a.moveu && Math.abs(dx) < 6) return;
+    if (!a.moveu) {
+      a.moveu = true;
+      el.setPointerCapture(e.pointerId);
+      el.classList.add("arrastando");
+    }
+    el.scrollLeft = a.inicio - dx;
+  };
+  const onPointerUp = () => {
+    const a = arrasto.current;
+    const el = trilho.current;
+    arrasto.current = null;
+    if (!a?.moveu || !el) return;
+    bloquearClique.current = true;
+    window.setTimeout(() => (bloquearClique.current = false), 0);
+    // gesto decidido (> 60px) avança/volta um evento; puxão curto volta ao atual (snap preciso)
+    const dx = el.scrollLeft - a.inicio;
+    const destino = Math.abs(dx) > 60 ? Math.min(Math.max(a.indice + Math.sign(dx), 0), n - 1) : a.indice;
+    ir(destino);
+    // o snap só volta depois do deslize suave (senão o navegador "puxa" de volta)
+    window.setTimeout(() => el.classList.remove("arrastando"), reduzido ? 0 : 480);
+  };
+
   const girando = rotativo && !pausadoUsuario && !emUso && !reduzido;
   useEffect(() => {
     if (!girando) return;
@@ -283,7 +325,22 @@ function CarrosselAgenda({ datas }: { datas: Evento[] }) {
       onFocus={() => setEmUso(true)}
       onBlur={(e) => !e.currentTarget.contains(e.relatedTarget as Node) && setEmUso(false)}
     >
-      <ul ref={trilho} className={`agenda-trilho ${rotativo ? "" : "is-unico"}`} aria-live={girando ? "off" : "polite"}>
+      <ul
+        ref={trilho}
+        className={`agenda-trilho ${rotativo ? "" : "is-unico"}`}
+        aria-live={girando ? "off" : "polite"}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        onClickCapture={(e) => {
+          if (bloquearClique.current) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }}
+        onDragStart={(e) => e.preventDefault()}
+      >
         {datas.map((e, i) => (
           <li key={e.id} aria-roledescription="slide" aria-label={`${i + 1} de ${n}`} className={i === atual ? "is-atual" : ""}>
             <CardEvento e={e} />
@@ -327,7 +384,7 @@ function Agenda() {
   useEffect(() => setDatas(proximasDatas()), []);
   return (
     <section id="agenda" aria-labelledby="agenda-titulo" className="agenda">
-      <h2 id="agenda-titulo" className="secao-titulo">
+      <h2 id="agenda-titulo" className="secao-titulo" data-revelar>
         Agenda
       </h2>
       {datas === null ? null : datas.length === 0 ? (
@@ -347,6 +404,8 @@ export default function Capa() {
       <main id="inicio" tabIndex={-1} className="relative outline-none">
         {/* ===================== HERO ===================== */}
         <header className="capa">
+          {/* capa-movel: só recebe transform durante a rolagem (profundidade); em repouso fica idêntica */}
+          <div className="capa-movel">
           {/* Telas horizontais: arte horizontal inteira */}
           <div className="layout-h">
             <div className="palco-h">
@@ -384,12 +443,17 @@ export default function Capa() {
               />
             </div>
           </div>
+          </div>
+          {/* Luz quente de entrada (some em ~1,6s) e transição para o azul da Agenda durante a rolagem */}
+          <div className="capa-luz" aria-hidden="true" />
+          <div className="capa-anoitecer" aria-hidden="true" />
         </header>
 
         <div className="faixa-oficial" aria-hidden="true" />
         <Agenda />
         <div className="faixa-oficial" aria-hidden="true" />
       </main>
+      <Movimento />
     </>
   );
 }

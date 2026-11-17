@@ -485,3 +485,225 @@ body {
   }
 }
 
+
+/* =====================================================================
+ * CAMADA DE MOVIMENTO
+ * Regra: em repouso, tudo fica idêntico ao layout aprovado. Os efeitos abaixo
+ * só existem durante entradas, rolagem, hover, toque, arrasto ou foco.
+ * Apenas transform e opacity são animados.
+ * ===================================================================== */
+:root {
+  --suave: cubic-bezier(0.22, 0.8, 0.24, 1);
+  --mola: cubic-bezier(0.34, 1.3, 0.5, 1);
+}
+
+/* ---------- Capa: entrada coordenada ---------- */
+.entrada {
+  animation: entrada 620ms var(--suave) both;
+}
+
+/* Luz quente de fim de tarde que se dissipa na abertura (some por completo) */
+.capa {
+  overflow: clip;
+}
+.capa-luz,
+.capa-anoitecer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+.capa-luz {
+  background: radial-gradient(ellipse 85% 65% at 50% 6%, rgba(255, 196, 92, 0.42), rgba(241, 124, 27, 0.14) 48%, transparent 76%);
+  animation: luz 1700ms ease-out both;
+}
+@keyframes luz {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+/* Profundidade: o cenário acompanha a rolagem um pouco mais devagar (só enquanto rola) */
+.mov-ativo .capa.rolando .capa-movel {
+  transform: translate3d(0, var(--y, 0px), 0);
+}
+/* Passagem para a Agenda: o pé da arte "anoitece" no azul oficial conforme rola (0 no topo) */
+.capa-anoitecer {
+  background: linear-gradient(to bottom, rgba(3, 46, 113, 0) 60%, rgba(3, 46, 113, 0.45) 84%, rgba(3, 46, 113, 0.85) 100%);
+}
+.mov-ativo .capa.rolando .capa-anoitecer {
+  opacity: var(--p, 0);
+}
+
+/* ---------- Botões de compra: microinterações ---------- */
+.btn {
+  transition: transform 260ms var(--mola), box-shadow 260ms var(--suave), background-color 200ms ease;
+}
+.btn > :not(.sr-only) {
+  position: relative;
+  z-index: 1;
+}
+/* destaque de luz no hover (só aparece com o ponteiro sobre o botão) */
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(120% 140% at 50% -30%, rgba(255, 255, 255, 0.28), transparent 58%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 260ms var(--suave);
+}
+@media (hover: hover) {
+  .btn:hover::after {
+    opacity: 1;
+  }
+}
+/* pressionar: afunda ~2px, sombra encolhe, resposta imediata */
+.btn:active {
+  transform: translateY(2px) scale(0.985);
+  box-shadow: 0 1px 0 var(--btn-sombra), 0 3px 6px -6px rgba(2, 31, 79, 0.5);
+  transition: transform 80ms ease-out, box-shadow 80ms ease-out, background-color 80ms ease-out;
+}
+.btn svg {
+  transition: transform 260ms var(--mola);
+}
+@media (hover: hover) {
+  .btn:hover svg {
+    transform: translateY(-1px) rotate(-6deg);
+  }
+}
+
+/* ---------- Revelação única ao entrar na tela ---------- */
+.mov-ativo [data-revelar]:not(.revelado) {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.mov-ativo [data-revelar].revelado {
+  transition: opacity 700ms var(--suave), transform 700ms var(--suave);
+}
+.mov-ativo .agenda-trilho > li:nth-child(2) [data-revelar] {
+  transition-delay: 90ms;
+}
+.mov-ativo .agenda-trilho > li:nth-child(n + 3) [data-revelar] {
+  transition-delay: 160ms;
+}
+
+/* ---------- Agenda: carrossel ---------- */
+.agenda-trilho > li {
+  transition: opacity 450ms var(--suave), transform 450ms var(--suave);
+}
+.agenda-trilho:not(.is-unico) {
+  cursor: grab;
+}
+.agenda-trilho.arrastando {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  user-select: none;
+}
+/* resposta ao arrasto: os cards "cedem" levemente enquanto são puxados */
+.agenda-trilho.arrastando > li .evento {
+  transform: scale(0.985);
+  pointer-events: none;
+}
+.evento {
+  transition: transform 300ms var(--suave);
+}
+.evento-cartaz img {
+  transition: transform 700ms var(--suave);
+}
+@media (hover: hover) {
+  .agenda-trilho > li.is-atual .evento:hover .evento-cartaz img {
+    transform: scale(1.025);
+  }
+}
+.evento-cartaz {
+  overflow: hidden;
+}
+.ag-ponto::before {
+  transition: width 350ms var(--suave), background-color 350ms ease;
+}
+
+/* ---------- Menu ⋮: abertura e fechamento ---------- */
+.menu-botao svg {
+  transition: transform 300ms var(--suave);
+}
+.menu-botao[aria-expanded="true"] svg {
+  transform: rotate(90deg);
+}
+.menu-lista {
+  animation: menu 220ms var(--suave) both;
+}
+.menu-lista.is-saindo {
+  animation: menu-sai 140ms ease-in both;
+}
+@keyframes menu-sai {
+  to {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+}
+.menu-lista li {
+  animation: menu-item 260ms var(--suave) both;
+}
+.menu-lista li:nth-child(2) {
+  animation-delay: 30ms;
+}
+.menu-lista li:nth-child(3) {
+  animation-delay: 60ms;
+}
+.menu-lista li:nth-child(4) {
+  animation-delay: 90ms;
+}
+@keyframes menu-item {
+  from {
+    opacity: 0;
+    transform: translateX(6px);
+  }
+}
+.menu-icone {
+  transition: transform 260ms var(--mola);
+}
+@media (hover: hover) {
+  .menu-item:hover .menu-icone {
+    transform: scale(1.08);
+  }
+}
+
+/* ---------- Movimento reduzido: nada se move ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .entrada,
+  .capa-luz,
+  .menu-lista,
+  .menu-lista.is-saindo,
+  .menu-lista li {
+    animation: none;
+  }
+  .mov-ativo .capa.rolando .capa-movel {
+    transform: none;
+  }
+  .mov-ativo .capa.rolando .capa-anoitecer {
+    opacity: 0;
+  }
+  .agenda-trilho > li {
+    transition: none;
+  }
+  .mov-ativo [data-revelar]:not(.revelado) {
+    opacity: 1;
+    transform: none;
+  }
+  .btn svg,
+  .btn:hover svg,
+  .menu-botao svg,
+  .menu-icone,
+  .evento,
+  .evento-cartaz img {
+    transition: none;
+    transform: none;
+  }
+  .btn:active {
+    transform: none;
+  }
+}
