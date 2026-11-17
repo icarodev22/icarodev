@@ -707,3 +707,177 @@ body {
     transform: none;
   }
 }
+
+/* =====================================================================
+ * ABERTURA (~1,5 s) — sol oficial gira e revela o lettering oficial
+ * Camadas: logo-sol + logo-letras = logo original (mesmas dimensões).
+ * Centro do sol no arquivo: 78,67% × 21,65%.
+ * ===================================================================== */
+.abertura-tela {
+  display: none;
+}
+html.abertura .abertura-tela {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: #ffb200; /* amarelo oficial da logo */
+  animation: abertura-sai 380ms cubic-bezier(0.4, 0, 0.2, 1) 1150ms forwards;
+}
+@keyframes abertura-sai {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+.abertura-logo {
+  position: relative;
+  width: min(58vw, 320px);
+  aspect-ratio: 729 / 522;
+  animation: abertura-assenta 380ms ease-in 1150ms forwards;
+}
+@keyframes abertura-assenta {
+  to {
+    transform: scale(0.96);
+  }
+}
+.abertura-sol,
+.abertura-letras {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+html.abertura .abertura-sol {
+  background-image: url(/img/logo-sol.webp);
+  transform-origin: 78.67% 21.65%;
+  animation: sol-gira 1100ms both;
+}
+/* nasce no centro da tela, gira desacelerando e assenta no lugar exato da logo */
+@keyframes sol-gira {
+  0% {
+    opacity: 0;
+    transform: translate(-28.67%, 28.35%) rotate(-420deg) scale(0.55);
+    animation-timing-function: cubic-bezier(0.2, 0.6, 0.35, 1);
+  }
+  12% {
+    opacity: 1;
+  }
+  55% {
+    opacity: 1;
+    transform: translate(-28.67%, 28.35%) rotate(-70deg) scale(1.2);
+    animation-timing-function: cubic-bezier(0.3, 0, 0.15, 1);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+html.abertura .abertura-letras {
+  background-image: url(/img/logo-letras.webp);
+  -webkit-mask-image: linear-gradient(100deg, #000 42%, transparent 58%);
+  mask-image: linear-gradient(100deg, #000 42%, transparent 58%);
+  -webkit-mask-size: 260% 100%;
+  mask-size: 260% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  animation: letras-revela 620ms cubic-bezier(0.25, 0.7, 0.2, 1) 480ms both;
+}
+@keyframes letras-revela {
+  from {
+    opacity: 0;
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+  to {
+    opacity: 1;
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+}
+.abertura-pular {
+  position: absolute;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  left: 50%;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  color: #032e71;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transform: translateX(-50%);
+  opacity: 0.8;
+  transition: opacity 200ms ease, background-color 200ms ease;
+}
+.abertura-pular:hover {
+  opacity: 1;
+  background: rgba(3, 46, 113, 0.08);
+}
+.abertura-pular:focus-visible {
+  opacity: 1;
+  outline: 3px solid #032e71;
+  outline-offset: 2px;
+}
+/* a capa entra logo depois da abertura (o atraso some se a pessoa pular) */
+html.abertura .entrada {
+  animation-delay: calc(1200ms + var(--d, 0ms)) !important;
+}
+html.abertura .capa-luz {
+  animation-delay: 1150ms !important;
+}
+
+/* =====================================================================
+ * CENÁRIO — brilho do sol da arte (sem recortar a ilustração)
+ * Ciclo lento e espaçado (11 s): sobe, desce e descansa.
+ * ===================================================================== */
+.sol-brilho {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 240, 190, 0.6), rgba(255, 206, 90, 0.28) 48%, rgba(255, 178, 0, 0) 100%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  animation: sol-brilha 11s ease-in-out 2.4s infinite;
+}
+.sol-brilho-h {
+  left: 50%;
+  top: 12.5%;
+  width: 24%;
+}
+.layout-v .sol-brilho-v {
+  left: 50%;
+  top: 14.6vw; /* centro do sol na faixa superior (61% de 23,9vw) */
+  width: 30vw;
+}
+@keyframes sol-brilha {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  32% {
+    opacity: 1;
+  }
+  64% {
+    opacity: 0;
+  }
+}
+/* fora da tela ou com a aba em segundo plano: pausa */
+.mov-pausado .sol-brilho {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.abertura .abertura-tela {
+    display: none;
+  }
+  .sol-brilho {
+    animation: none;
+    opacity: 0;
+  }
+}

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { BOTOES } from "@/config/site";
 import { dataDestaque, proximasDatas, type Evento } from "@/lib/dados";
 import Movimento from "./Movimento";
+import Abertura from "./Abertura";
 
 /* ---------- Ícones vetoriais ---------- */
 const IconWhats = () => (
@@ -57,7 +58,7 @@ const IconPontos = () => (
 /** Logo oficial com fundo transparente (lettering + sol). Uma única aplicação, sem efeitos. */
 function Logo({ className }: { className: string }) {
   return (
-    <h1 className={`entrada ${className}`} style={{ animationDelay: "60ms" }}>
+    <h1 className={`entrada ${className}`} style={{ animationDelay: "60ms", ["--d" as string]: "60ms" }}>
       <img src="/img/logo-sambinha-transparente.webp" alt="Sambinha Chacon" width={729} height={522} className="block h-auto w-full" fetchPriority="high" />
     </h1>
   );
@@ -67,14 +68,14 @@ function Botoes({ className }: { className: string }) {
   const { semTaxa, digitais } = BOTOES;
   return (
     <div className={className}>
-      <div className="entrada" style={{ animationDelay: "140ms" }}>
+      <div className="entrada" style={{ animationDelay: "140ms", ["--d" as string]: "140ms" }}>
         <a href={semTaxa.href} target="_blank" rel="noopener noreferrer" className="btn btn-azul">
           <IconWhats />
           <span>{semTaxa.rotulo}</span>
           <span className="sr-only">({semTaxa.destino}, abre em nova aba)</span>
         </a>
       </div>
-      <div className="entrada" style={{ animationDelay: "220ms" }}>
+      <div className="entrada" style={{ animationDelay: "220ms", ["--d" as string]: "220ms" }}>
         <a href={digitais.href} target="_blank" rel="noopener noreferrer" className="btn btn-amarelo">
           <IconTicket />
           <span>{digitais.rotulo}</span>
@@ -400,6 +401,7 @@ function Agenda() {
 export default function Capa() {
   return (
     <>
+      <Abertura />
       <MenuPontos />
       <main id="inicio" tabIndex={-1} className="relative outline-none">
         {/* ===================== HERO ===================== */}
@@ -419,6 +421,8 @@ export default function Capa() {
                 className="absolute inset-0 h-full w-full"
                 fetchPriority="high"
               />
+              {/* brilho suave sobre o sol do cenário (a arte não é recortada) */}
+              <span className="sol-brilho sol-brilho-h" aria-hidden="true" />
               <div className="absolute inset-x-[18%] top-[15%] flex h-[42%] flex-col items-center justify-center">
                 <Logo className="w-[15.5cqw]" />
                 <Botoes className="mt-[2.4cqw] grid w-[clamp(560px,42cqw,700px)] grid-cols-2 gap-3 [--btn-fs:clamp(15px,1.1cqw,18px)]" />
@@ -430,6 +434,7 @@ export default function Capa() {
           <div className="layout-v">
             <div className="coluna-v">
               <img src="/img/hero-m-top.webp" alt="" width={941} height={225} className="block w-full" fetchPriority="high" />
+              <span className="sol-brilho sol-brilho-v" aria-hidden="true" />
               <div className="ceu-v flex flex-1 flex-col items-center justify-center px-[9%] py-2">
                 <Logo className="logo-v" />
                 <Botoes className="mt-[clamp(16px,3vh,32px)] flex w-full max-w-[340px] flex-col gap-3 [--btn-fs:16px]" />

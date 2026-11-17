@@ -35,6 +35,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR">
       <head>
+        {/* Abertura: só no 1º acesso da sessão e nunca com "movimento reduzido".
+            Se este script falhar, a classe não entra e a página aparece direto. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{var d=document.documentElement;if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.getItem('sc-abertura')){sessionStorage.setItem('sc-abertura','1');d.classList.add('abertura')}}catch(e){}",
+          }}
+        />
         <link rel="preload" as="image" href="/img/hero-m-top.webp" media="not all and (min-aspect-ratio: 1/1) and (min-height: 540px)" />
         <link rel="preload" as="image" href="/img/hero-desktop.webp" media="(min-aspect-ratio: 1/1) and (min-height: 540px)" />
       </head>

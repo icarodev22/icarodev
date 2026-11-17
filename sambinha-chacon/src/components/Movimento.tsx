@@ -62,10 +62,14 @@ export default function Movimento() {
     const agendar = () => {
       if (visivel && !raf) raf = requestAnimationFrame(atualizar);
     };
+    // pausa as animações contínuas do cenário fora da tela ou com a aba em segundo plano
+    const pausar = () => raiz.classList.toggle("mov-pausado", document.hidden || !visivel);
+    document.addEventListener("visibilitychange", pausar);
     let ioCapa: IntersectionObserver | null = null;
     if (capa && !reduzido) {
       ioCapa = new IntersectionObserver(([e]) => {
         visivel = e.isIntersecting;
+        pausar();
         if (!visivel) {
           // fora da tela: fixa o estado final, sem trabalho contínuo
           capa.style.setProperty("--p", "1");
@@ -84,6 +88,7 @@ export default function Movimento() {
       ioCapa?.disconnect();
       window.removeEventListener("scroll", agendar);
       window.removeEventListener("resize", agendar);
+      document.removeEventListener("visibilitychange", pausar);
       if (raf) cancelAnimationFrame(raf);
     };
   }, []);
