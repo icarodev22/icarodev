@@ -12,13 +12,13 @@ npm run build    # gera out/ para publicar em qualquer hospedagem
 ## Editar links
 Tudo em `src/config/site.ts`:
 - `WHATSAPP_URL` — link oficial do WhatsApp de vendas (**pendente**). Enquanto vazio,
-  "Comprar pelo WhatsApp" usa o destino oficial já existente (central de links).
+  "Comprar via Pix" usa o destino oficial já existente (central de links).
 - `BILHETERIA_URL` — "Comprar online".
 - `SITE.url` — domínio definitivo (imagem de compartilhamento).
 
 ## Estrutura
-Capa (arte + logo transparente + "Comprar pelo WhatsApp" e "Comprar online") → **Agenda** → **Momentos do Sambinha** (fotos; somente no celular).
-Menu ⋮ no canto superior direito: Início, Agenda, Comprar pelo WhatsApp, Comprar online.
+Capa (arte + logo transparente + "Comprar via Pix" e "Comprar online") → **Agenda** (carrossel rotativo).
+Menu ⋮ no canto superior direito: Início, Agenda, Comprar via Pix, Comprar online.
 
 - Cadastro de edições: `src/data/eventos.json` — veja **EVENTOS.md** (status rascunho/publicado, data com ano,
   horário opcional, fuso de São Paulo). Sem edição futura: "Novas datas em breve."

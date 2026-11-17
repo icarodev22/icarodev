@@ -1,5 +1,4 @@
 import eventosJson from "@/data/eventos.json";
-import momentosJson from "@/data/momentos.json";
 
 /* ============================================================
  * EVENTOS — cadastro em src/data/eventos.json (ver EVENTOS.md)
@@ -59,20 +58,3 @@ export function dataDestaque(e: Evento) {
   const hora = horaValida(e.horario) ? `${Number(e.horario!.split(":")[0])}h${e.horario!.split(":")[1] !== "00" ? e.horario!.split(":")[1] : ""}` : "";
   return { dia: String(d).padStart(2, "0"), mes: MES_CURTO[m - 1], ano: String(a), semana: SEMANA[new Date(Date.UTC(a, m - 1, d)).getUTCDay()], hora };
 }
-
-/* ============================================================
- * MOMENTOS (somente celular) — fotos/vídeos reais em src/data/momentos.json
- * ============================================================ */
-export type Momento = {
-  tipo: "foto" | "video";
-  src: string;
-  miniatura: string;
-  poster?: string;
-  largura: number;
-  altura: number;
-  foco?: string;
-  /** Enquadramento quando a foto é a grande do mosaico (opcional). */
-  focoDestaque?: string;
-  alt: string;
-};
-export const MOMENTOS = momentosJson as Momento[];

@@ -9,7 +9,7 @@
  * >>> WHATSAPP_URL — COLE AQUI O LINK OFICIAL DO WHATSAPP DE VENDAS <<<
  * Ex.: "https://wa.me/55819XXXXXXXX?text=Quero%20comprar%20ingresso"
  *
- * Enquanto estiver vazio, o botão "Comprar pelo WhatsApp" usa o destino oficial
+ * Enquanto estiver vazio, o botão "Comprar via Pix" usa o destino oficial
  * já existente (Central de links). O telefone impresso nas artes está
  * marcado como "INFO" e por isso NÃO foi usado aqui.
  */
@@ -20,7 +20,7 @@ export const CENTRAL_LINKS_URL = "https://linklist.bio/gobu8_xxkv";
 
 export const BOTOES = {
   semTaxa: {
-    rotulo: "Comprar pelo WhatsApp",
+    rotulo: "Comprar via Pix",
     href: WHATSAPP_URL.trim() || CENTRAL_LINKS_URL,
     destino: WHATSAPP_URL.trim() ? "WhatsApp" : "canais oficiais",
   },
@@ -35,7 +35,7 @@ export const SITE = {
   nome: "Sambinha Chacon",
   titulo: "Sambinha Chacon | Ingressos",
   descricao:
-    "Ingressos do Sambinha Chacon: compre pelo WhatsApp ou online na Bilheteria Digital.",
+    "Ingressos do Sambinha Chacon: compre via Pix (WhatsApp) ou online na Bilheteria Digital.",
   // Troque pelo domínio definitivo (usado na imagem de compartilhamento).
   url: "https://sambinhachacon.com.br",
 };

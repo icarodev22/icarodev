@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { BOTOES } from "@/config/site";
-import { MOMENTOS, dataDestaque, proximasDatas, type Evento } from "@/lib/dados";
-import Lightbox from "./Lightbox";
+import { dataDestaque, proximasDatas, type Evento } from "@/lib/dados";
 
 /* ---------- Ícones vetoriais ---------- */
 const IconWhats = () => (
@@ -20,6 +19,17 @@ const IconTicket = () => (
 const IconPlay = () => (
   <svg viewBox="0 0 24 24" className="h-6 w-6" fill="currentColor" aria-hidden="true">
     <path d="M8 5.5v13l11-6.5z" />
+  </svg>
+);
+const IconPausa = () => (
+  <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
+    <rect x="6.5" y="5" width="4" height="14" rx="1" />
+    <rect x="13.5" y="5" width="4" height="14" rx="1" />
+  </svg>
+);
+const IconSeta = ({ esquerda = false }: { esquerda?: boolean }) => (
+  <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={esquerda ? { transform: "rotate(180deg)" } : undefined}>
+    <path d="m9 5 7 7-7 7" />
   </svg>
 );
 const IconCasa = () => (
@@ -161,90 +171,6 @@ function MenuPontos() {
   );
 }
 
-/* ---------- Momentos ---------- */
-type M = (typeof MOMENTOS)[number];
-const POR_VEZ = 4; // fotos extras reveladas a cada "Ver mais momentos"
-
-function Midia({ m, i, onAbrir, className = "", foco }: { m: M; i: number; onAbrir: (i: number) => void; className?: string; foco?: string }) {
-  return (
-    <button
-      type="button"
-      onClick={() => onAbrir(i)}
-      className={`midia ${className}`}
-      aria-label={`Ampliar ${m.tipo === "video" ? "vídeo" : "foto"} ${i + 1} de ${MOMENTOS.length}: ${m.alt}`}
-    >
-      <img
-        src={m.tipo === "video" ? m.poster ?? m.miniatura : m.miniatura}
-        alt=""
-        width={m.largura}
-        height={m.altura}
-        loading="lazy"
-        decoding="async"
-        style={{ objectPosition: foco ?? m.foco ?? "50% 50%" }}
-      />
-      {m.tipo === "video" && (
-        <span className="play" aria-hidden="true">
-          <IconPlay />
-        </span>
-      )}
-    </button>
-  );
-}
-
-/** Celular: 1 foto grande + 4 menores em duas colunas; "Ver mais momentos" revela o restante. */
-function MosaicoMomentos({ onAbrir }: { onAbrir: (i: number) => void }) {
-  const [visiveis, setVisiveis] = useState(5);
-  const [inicioNovos, setInicioNovos] = useState<number | null>(null);
-  const primeiraNova = useRef<HTMLLIElement>(null);
-  // Ao revelar mais fotos, o foco vai para a primeira foto nova (acessibilidade)
-  useEffect(() => {
-    if (inicioNovos !== null) primeiraNova.current?.querySelector("button")?.focus({ preventScroll: true });
-  }, [inicioNovos]);
-
-  const [destaque, ...resto] = MOMENTOS.slice(0, visiveis);
-  if (!destaque) return null;
-  return (
-    <div>
-      <ul className="mosaico" aria-label="Fotos e vídeos do Sambinha Chacon">
-        <li className="mosaico-destaque">
-          <Midia m={destaque} i={0} onAbrir={onAbrir} foco={destaque.focoDestaque} />
-        </li>
-        {resto.map((m, k) => (
-          <li key={m.src} ref={k + 1 === inicioNovos ? primeiraNova : undefined} className={k >= 4 ? "entrada" : undefined}>
-            <Midia m={m} i={k + 1} onAbrir={onAbrir} />
-          </li>
-        ))}
-      </ul>
-      {MOMENTOS.length > visiveis && (
-        <button
-          type="button"
-          className="ver-mais"
-          onClick={() => {
-            setInicioNovos(visiveis);
-            setVisiveis((v) => Math.min(v + POR_VEZ, MOMENTOS.length));
-          }}
-        >
-          Ver mais momentos
-        </button>
-      )}
-    </div>
-  );
-}
-
-function Momentos() {
-  const [midia, setMidia] = useState<number | null>(null);
-  const itens = MOMENTOS.map((m) => ({ src: m.src, alt: m.alt, largura: m.largura, altura: m.altura, tipo: m.tipo, poster: m.poster }));
-  return (
-    <section id="momentos" aria-labelledby="momentos-titulo" className="momentos">
-      <h2 id="momentos-titulo" className="secao-titulo">
-        Momentos do Sambinha
-      </h2>
-      <MosaicoMomentos onAbrir={setMidia} />
-      <Lightbox itens={itens} indice={midia} onFechar={() => setMidia(null)} onIr={setMidia} />
-    </section>
-  );
-}
-
 /* ---------- Agenda ---------- */
 function CardEvento({ e }: { e: Evento }) {
   const d = dataDestaque(e);
@@ -282,6 +208,119 @@ function CardEvento({ e }: { e: Evento }) {
   );
 }
 
+/** Carrossel rotativo: avança sozinho para a direita e volta ao primeiro no fim.
+ *  Pausa ao tocar, passar o mouse ou focar; tem botão de pausar; não gira com "movimento reduzido". */
+const INTERVALO = 5000;
+
+function CarrosselAgenda({ datas }: { datas: Evento[] }) {
+  const trilho = useRef<HTMLUListElement>(null);
+  const [atual, setAtual] = useState(0);
+  const [pausadoUsuario, setPausadoUsuario] = useState(false);
+  const [emUso, setEmUso] = useState(false);
+  const [reduzido, setReduzido] = useState(false);
+  const n = datas.length;
+  const rotativo = n > 1;
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const f = () => setReduzido(mq.matches);
+    f();
+    mq.addEventListener("change", f);
+    return () => mq.removeEventListener("change", f);
+  }, []);
+
+  const ir = useCallback(
+    (i: number) => {
+      const el = trilho.current;
+      if (!el) return;
+      const alvo = ((i % n) + n) % n;
+      const li = el.children[alvo] as HTMLElement | undefined;
+      if (!li) return;
+      el.scrollTo({ left: li.offsetLeft - el.offsetLeft - (el.clientWidth - li.offsetWidth) / 2, behavior: reduzido ? "auto" : "smooth" });
+    },
+    [n, reduzido]
+  );
+
+  // Descobre o slide atual pela rolagem (deslize manual, setas ou rotação)
+  useEffect(() => {
+    const el = trilho.current;
+    if (!el) return;
+    const onScroll = () => {
+      const centro = el.scrollLeft + el.clientWidth / 2;
+      let melhor = 0;
+      let dist = Infinity;
+      [...el.children].forEach((c, i) => {
+        const li = c as HTMLElement;
+        const d = Math.abs(li.offsetLeft - el.offsetLeft + li.offsetWidth / 2 - centro);
+        if (d < dist) {
+          dist = d;
+          melhor = i;
+        }
+      });
+      setAtual(melhor);
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const girando = rotativo && !pausadoUsuario && !emUso && !reduzido;
+  useEffect(() => {
+    if (!girando) return;
+    const t = window.setTimeout(() => ir(atual + 1), INTERVALO);
+    return () => window.clearTimeout(t);
+  }, [girando, atual, ir]);
+
+  return (
+    <div
+      className="carrossel-agenda"
+      role="region"
+      aria-roledescription="carrossel"
+      aria-label="Agenda do Sambinha Chacon"
+      onPointerEnter={(e) => e.pointerType === "mouse" && setEmUso(true)}
+      onPointerLeave={(e) => e.pointerType === "mouse" && setEmUso(false)}
+      onTouchStart={() => setEmUso(true)}
+      onTouchEnd={() => window.setTimeout(() => setEmUso(false), 4000)}
+      onFocus={() => setEmUso(true)}
+      onBlur={(e) => !e.currentTarget.contains(e.relatedTarget as Node) && setEmUso(false)}
+    >
+      <ul ref={trilho} className={`agenda-trilho ${rotativo ? "" : "is-unico"}`} aria-live={girando ? "off" : "polite"}>
+        {datas.map((e, i) => (
+          <li key={e.id} aria-roledescription="slide" aria-label={`${i + 1} de ${n}`} className={i === atual ? "is-atual" : ""}>
+            <CardEvento e={e} />
+          </li>
+        ))}
+      </ul>
+      {rotativo && (
+        <div className="agenda-controles">
+          <button type="button" className="ag-ctrl" onClick={() => ir(atual - 1)} aria-label="Evento anterior">
+            <IconSeta esquerda />
+          </button>
+          <div className="ag-pontos">
+            {datas.map((e, i) => (
+              <button
+                key={e.id}
+                type="button"
+                className={`ag-ponto ${i === atual ? "is-atual" : ""}`}
+                onClick={() => ir(i)}
+                aria-label={`Ir para ${e.titulo}`}
+                aria-current={i === atual ? "true" : undefined}
+              />
+            ))}
+          </div>
+          <button type="button" className="ag-ctrl" onClick={() => ir(atual + 1)} aria-label="Próximo evento">
+            <IconSeta />
+          </button>
+          {!reduzido && (
+            <button type="button" className="ag-ctrl" onClick={() => setPausadoUsuario((v) => !v)} aria-label={pausadoUsuario ? "Retomar rotação" : "Pausar rotação"}>
+              {pausadoUsuario ? <IconPlay /> : <IconPausa />}
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Agenda() {
   // Calculado no navegador com a data/hora atual de São Paulo (a página é estática).
   const [datas, setDatas] = useState<Evento[] | null>(null);
@@ -294,13 +333,7 @@ function Agenda() {
       {datas === null ? null : datas.length === 0 ? (
         <p className="agenda-vazia">Novas datas em breve.</p>
       ) : (
-        <ul className="agenda-lista">
-          {datas.map((e) => (
-            <li key={e.id}>
-              <CardEvento e={e} />
-            </li>
-          ))}
-        </ul>
+        <CarrosselAgenda datas={datas} />
       )}
     </section>
   );
@@ -355,8 +388,6 @@ export default function Capa() {
 
         <div className="faixa-oficial" aria-hidden="true" />
         <Agenda />
-        {/* Fotos: somente no celular, depois da Agenda */}
-        <Momentos />
         <div className="faixa-oficial" aria-hidden="true" />
       </main>
     </>

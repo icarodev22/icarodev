@@ -1,7 +1,0 @@
-[
-  { "tipo": "foto", "src": "/img/foto-galera.webp", "miniatura": "/img/foto-galera-sm.webp", "largura": 1088, "altura": 1440, "foco": "50% 62%", "focoDestaque": "50% 70%", "alt": "Grupo de amigas sorrindo juntas em frente ao palco iluminado do Sambinha Chacon." },
-  { "tipo": "foto", "src": "/img/foto-palco-vertical.webp", "miniatura": "/img/foto-palco-vertical-sm.webp", "largura": 1800, "altura": 2400, "foco": "50% 45%", "alt": "Letreiro em neon do Sambinha Chacon sobre o palco, com a banda tocando e o público em primeiro plano." },
-  { "tipo": "foto", "src": "/img/foto-banda.webp", "miniatura": "/img/foto-banda-sm.webp", "largura": 1800, "altura": 1200, "foco": "38% 55%", "alt": "Banda do Sambinha Chacon no palco com pandeiro, cavaquinho, violão e guitarra sob luzes azuis." },
-  { "tipo": "foto", "src": "/img/foto-palco-publico.webp", "miniatura": "/img/foto-palco-publico-sm.webp", "largura": 1800, "altura": 1200, "foco": "45% 55%", "alt": "Público lotando a pista diante do palco com cenografia vermelha e letreiro do Sambinha Chacon." },
-  { "tipo": "foto", "src": "/img/foto-palco-neon.webp", "miniatura": "/img/foto-palco-neon-sm.webp", "largura": 1620, "altura": 1080, "foco": "62% 45%", "alt": "Cenografia iluminada com arcos em neon e o logotipo do Sambinha Chacon no palco." }
-]
