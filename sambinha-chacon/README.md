@@ -16,14 +16,13 @@ Tudo em `src/config/site.ts`:
 - `BILHETERIA_URL` — "Vendas digitais".
 - `SITE.url` — domínio definitivo (imagem de compartilhamento).
 
-## Abas (sem rolagem longa)
-Navegação discreta acima da logo: **Início · Momentos · Próximos eventos** (links `#inicio`, `#momentos`,
-`#proximos-eventos`). Momentos e Próximos eventos abrem num painel sobre a capa (Esc/✕ volta ao início).
+## Estrutura
+Hero (arte + logo transparente + 2 botões) → **Momentos** (carrossel de fotos/vídeos) → **Próximas datas**
+(carrossel; oculta quando não há edição futura publicada). Navegação discreta no hero por âncoras.
 
-- `MOMENTOS` (em `site.ts`): só fotos/vídeos reais do evento. Vídeo: `{ tipo: "video", src: "/video/x.mp4", poster: ... }`
-  — abre com controles, sem autoplay.
-- `EVENTOS`: um evento só aparece com `data: "AAAA-MM-DD"` confirmada e ainda não passada (fuso de São Paulo,
-  calculado no navegador). Com `data: null` fica fora. Sem eventos futuros: "Novas datas em breve."
+- Cadastro de edições: `src/data/eventos.json` — veja **EVENTOS.md** (status rascunho/publicado, data com ano,
+  horário opcional, fuso de São Paulo).
+- Fotos/vídeos reais: `src/data/momentos.json` — veja **EVENTOS.md**.
 
 ## Composição
 - Telas horizontais (largura ≥ altura e altura ≥ 540 px): arte horizontal inteira, sem corte nem distorção;
