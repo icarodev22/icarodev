@@ -1,6 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import "@fontsource/sansita-swashed/700.css";
-import "@fontsource/sansita-swashed/800.css";
 import "@fontsource-variable/archivo/wdth.css";
 import "./globals.css";
 import { SITE } from "@/config/site";
@@ -29,7 +27,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#13256B",
+  themeColor: "#032E71",
   width: "device-width",
   initialScale: 1,
 };

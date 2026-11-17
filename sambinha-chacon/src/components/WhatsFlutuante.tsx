@@ -9,8 +9,8 @@ export default function WhatsFlutuante() {
       href={WHATSAPP_URL}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Comprar sem taxa pelo WhatsApp (abre em nova aba)"
-      className="fixed right-4 z-40 grid h-14 w-14 place-items-center rounded-full border-[3px] border-navy bg-verde text-white shadow-bloco-sm transition hover:scale-105 bottom-[calc(var(--buybar-h)+16px)] lg:bottom-6 lg:right-6 lg:h-16 lg:w-16"
+      aria-label="Vendas sem taxa pelo WhatsApp (abre em nova aba)"
+      className="fixed right-4 z-40 grid h-14 w-14 place-items-center rounded-full bg-verde text-white transition-colors hover:bg-verde-escuro bottom-[calc(var(--buybar-h)+16px)] lg:bottom-6 lg:right-6 lg:h-16 lg:w-16"
     >
       <IconWhats className="h-7 w-7 lg:h-8 lg:w-8" />
     </a>

@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --header-h: 64px;
+    --header-h: 72px;
     --buybar-h: 0px;
     color-scheme: light;
   }
@@ -14,7 +14,8 @@
     -webkit-text-size-adjust: 100%;
   }
   body {
-    @apply bg-navy-deep font-sans text-navy antialiased;
+    @apply bg-marinho-escuro font-sans text-marinho antialiased;
+    font-variation-settings: "wdth" 100;
     padding-bottom: var(--buybar-h);
   }
   @media (max-width: 1023.98px) {
@@ -23,104 +24,54 @@
     }
   }
   ::selection {
-    @apply bg-sol text-navy;
+    @apply bg-amarelo text-marinho;
   }
   :focus-visible {
-    outline: 3px solid #ffb800;
+    outline: 3px solid #ffb200;
     outline-offset: 3px;
-    border-radius: 6px;
+    border-radius: 8px;
   }
-  .on-light :focus-visible,
-  .on-light:focus-visible {
-    outline-color: #1f4fd1;
-  }
-  img {
-    -webkit-user-drag: none;
+  .fundo-claro :focus-visible {
+    outline-color: #0648ae;
   }
 }
 
 @layer components {
-  /* Botões */
+  /* ---------- Botões (elemento de interface complementar) ---------- */
   .btn {
-    @apply inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-xl border-[3px] border-navy px-4 text-[14px] font-extrabold uppercase leading-tight tracking-[0.02em] sm:px-5 sm:text-[15px] sm:tracking-[0.04em] transition-[transform,box-shadow,background-color] duration-150 ease-out;
-  }
-  .btn:hover {
-    transform: translate(-2px, -2px);
-  }
-  .btn:active {
-    transform: translate(2px, 2px);
-    box-shadow: 0 0 0 0 #13256b;
+    @apply inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full px-6 text-[15px] font-bold uppercase leading-tight tracking-[0.06em] transition-colors duration-150;
+    font-variation-settings: "wdth" 90;
   }
   .btn-whats {
-    @apply bg-verde text-white shadow-bloco-sm;
-  }
-  .btn-whats:hover {
-    @apply bg-[#1a7a43] shadow-bloco;
+    @apply bg-verde text-white hover:bg-verde-escuro;
   }
   .btn-bilheteria {
-    @apply bg-vermelho text-white shadow-bloco-sm;
+    @apply bg-vermelho text-white hover:bg-vermelho-escuro;
   }
-  .btn-bilheteria:hover {
-    @apply bg-vermelho-deep shadow-bloco;
+  .btn-amarelo {
+    @apply bg-amarelo text-marinho hover:bg-amarelo-claro;
   }
-  .btn-sol {
-    @apply bg-sol text-navy shadow-bloco-sm;
-  }
-  .btn-sol:hover {
-    @apply bg-sol-soft shadow-bloco;
-  }
-  .btn-claro {
-    @apply bg-white text-navy shadow-bloco-sm;
-  }
-  .btn-claro:hover {
-    @apply shadow-bloco;
+  .btn-contorno {
+    @apply border-2 border-marinho bg-transparent text-marinho hover:bg-marinho hover:text-white;
   }
 
-  /* Rótulo de seção (estilo placa) */
-  .kicker {
-    @apply inline-flex items-center gap-2 text-[13px] font-extrabold uppercase tracking-[0.22em];
+  /* ---------- Tipografia ---------- */
+  .rotulo {
+    @apply text-[13px] font-bold uppercase tracking-[0.2em];
   }
   .titulo {
-    @apply font-display font-extrabold leading-[0.98] tracking-[-0.01em];
+    @apply font-extrabold leading-[1.04] tracking-[-0.015em];
+    font-variation-settings: "wdth" 88;
   }
 
-  /* Faixa listrada inspirada no anel do logotipo */
-  .listras {
-    background: repeating-linear-gradient(
-      90deg,
-      #d7261e 0 22px,
-      #f2661b 22px 34px,
-      #ffb800 34px 42px,
-      #fff4dc 42px 64px
-    );
-  }
-  .listras-diag {
-    background: repeating-linear-gradient(
-      -45deg,
-      #d7261e 0 14px,
-      #f2661b 14px 22px,
-      #fff4dc 22px 36px
-    );
-  }
-  /* Calçada portuguesa / paralelepípedo */
-  .calcada {
-    background-color: #e9eef6;
-    background-image: radial-gradient(circle at 50% 50%, #c9d4e6 0 38%, transparent 40%),
-      radial-gradient(circle at 0 0, #c9d4e6 0 38%, transparent 40%);
-    background-size: 22px 16px;
-  }
-  /* Ponto de bordado (edição Bloco) */
-  .bordado {
-    outline: 3px dashed rgba(255, 255, 255, 0.85);
-    outline-offset: -10px;
-  }
-
-  /* Arco de porta/janela de casario */
-  .arco {
-    border-radius: 999px 999px 18px 18px;
-  }
-  .arco-sm {
-    border-radius: 200px 200px 14px 14px;
+  /* ---------- Faixa ornamental: recorte da arte oficial 07 NOV ---------- */
+  .faixa-oficial {
+    height: 40px;
+    background-image: url(/img/orn-faixa-oficial.webp);
+    background-size: auto 100%;
+    background-repeat: repeat-x;
+    background-position: center;
+    background-color: #c2260d;
   }
 }
 
@@ -136,17 +87,14 @@
   }
 }
 
-/* Animação de entrada discreta */
+/* Entrada discreta */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transform: translateY(14px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
   transition-delay: var(--d, 0ms);
 }
-[data-reveal].is-visible {
-  opacity: 1;
-  transform: none;
-}
+[data-reveal].is-visible,
 .no-js [data-reveal] {
   opacity: 1;
   transform: none;
@@ -160,7 +108,6 @@
   *::before,
   *::after {
     animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
   [data-reveal] {

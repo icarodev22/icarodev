@@ -1,77 +1,67 @@
-import { BILHETERIA_URL, CENTRAL_LINKS_URL, canalWhatsApp, whatsappConfigurado } from "@/config/site";
-import { IconArrow, IconTicket, IconWhats } from "./Icons";
+import { CENTRAL_LINKS_URL, canalBilheteria, canalWhatsApp, whatsappConfigurado } from "@/config/site";
+import { IconTicket, IconWhats } from "./Icons";
+import { BotaoBilheteria, BotaoWhats } from "./BotoesCompra";
+import FaixaOficial from "./FaixaOficial";
 import Titulo from "./Titulo";
-import { Lampiao, Sol } from "./Ornamentos";
 
 export default function Ingressos() {
   return (
-    <section id="ingressos" aria-labelledby="ingressos-titulo" className="relative overflow-hidden bg-sol py-16 sm:py-24">
-      <div className="listras absolute inset-x-0 top-0 h-3" aria-hidden="true" />
-      <Sol className="pointer-events-none absolute -right-20 -top-16 h-72 w-72 animate-girar opacity-25" />
-      <Lampiao className="pointer-events-none absolute left-4 top-6 hidden h-24 w-16 sm:block" />
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
-        <Titulo id="ingressos-titulo" kicker="Ingressos" centro>
+    <section id="ingressos" aria-labelledby="ingressos-titulo" className="fundo-claro relative bg-amarelo">
+      <FaixaOficial />
+      <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-24">
+        <Titulo id="ingressos-titulo" rotulo="Ingressos" centro sobreAmarelo>
           Garanta o seu e vem pro samba
         </Titulo>
-        <p data-reveal className="mx-auto mt-4 max-w-xl text-center text-[17px] font-semibold text-navy/85">
+        <p data-reveal className="mx-auto mt-4 max-w-xl text-center text-[17px] font-medium text-marinho">
           Escolha o canal oficial que for melhor pra você.
         </p>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-2 md:gap-8">
-          {/* WhatsApp — o ÚNICO canal com a indicação "sem taxa" */}
-          <article data-reveal aria-labelledby="canal-whats" className="relative flex flex-col overflow-hidden rounded-[26px] border-[3px] border-navy bg-white shadow-bloco">
-            <div className="flex items-center justify-between gap-4 bg-verde px-6 py-5 text-white">
-              <div className="flex items-center gap-3">
-                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full border-2 border-white/40 bg-white/15">
-                  <IconWhats className="h-7 w-7" />
-                </span>
-                <h3 id="canal-whats" className="titulo text-[28px] sm:text-[32px]">
-                  WhatsApp
-                </h3>
-              </div>
-              <span className="-rotate-3 whitespace-nowrap rounded-lg border-2 border-navy bg-sol px-3 py-1 text-sm font-black uppercase tracking-[0.12em] text-navy shadow-bloco-sm">
-                Sem taxa
+        <div className="mt-10 grid gap-5 md:grid-cols-2 md:gap-6">
+          {/* Vendas sem taxa — o ÚNICO canal com a indicação "sem taxa" */}
+          <article data-reveal aria-labelledby="canal-whats" className="flex flex-col rounded-[24px] bg-white p-6 sm:p-8">
+            <div className="flex items-center gap-3">
+              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-verde text-white">
+                <IconWhats className="h-6 w-6" />
               </span>
-            </div>
-            <div className="flex flex-1 flex-col p-6">
-              <p className="text-lg font-semibold leading-snug text-navy">Fale com a equipe e consulte os ingressos disponíveis.</p>
-              <div className="mt-auto pt-6">
-                <a href={canalWhatsApp.href} target="_blank" rel="noopener noreferrer" className="btn btn-whats w-full text-base">
-                  <IconWhats /> {canalWhatsApp.rotuloBotao}
-                  <span className="sr-only">(abre em nova aba)</span>
-                </a>
-                {!whatsappConfigurado && (
-                  <p className="mt-3 text-center text-[13px] font-medium text-navy/70">Você será direcionado à central de links oficial.</p>
-                )}
+              <div>
+                <h3 id="canal-whats" className="titulo text-[26px] text-marinho">
+                  {canalWhatsApp.rotulo}
+                </h3>
+                <p className="rotulo text-[11px] text-verde">Atendimento pelo WhatsApp</p>
               </div>
+            </div>
+            <p className="mt-5 text-[17px] leading-snug text-marinho">Fale com a equipe e consulte os ingressos disponíveis.</p>
+            <div className="mt-auto pt-6">
+              <BotaoWhats className="w-full" />
+              {!whatsappConfigurado && (
+                <p className="mt-3 text-center text-[13px] text-marinho/70">Você será direcionado aos canais oficiais de atendimento.</p>
+              )}
             </div>
           </article>
 
-          {/* Bilheteria Digital */}
-          <article data-reveal style={{ ["--d" as string]: "90ms" }} aria-labelledby="canal-bilheteria" className="relative flex flex-col overflow-hidden rounded-[26px] border-[3px] border-navy bg-white shadow-bloco">
-            <div className="flex items-center gap-3 bg-vermelho px-6 py-5 text-white">
-              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full border-2 border-white/40 bg-white/15">
-                <IconTicket className="h-7 w-7" />
+          {/* Vendas digitais — Bilheteria Digital */}
+          <article data-reveal style={{ ["--d" as string]: "80ms" }} aria-labelledby="canal-bilheteria" className="flex flex-col rounded-[24px] bg-white p-6 sm:p-8">
+            <div className="flex items-center gap-3">
+              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-vermelho text-white">
+                <IconTicket className="h-6 w-6" />
               </span>
-              <h3 id="canal-bilheteria" className="titulo text-[28px] sm:text-[32px]">
-                Bilheteria Digital
-              </h3>
-            </div>
-            <div className="flex flex-1 flex-col p-6">
-              <p className="text-lg font-semibold leading-snug text-navy">Consulte os ingressos e finalize sua compra na plataforma.</p>
-              <div className="mt-auto pt-6">
-                <a href={BILHETERIA_URL} target="_blank" rel="noopener noreferrer" className="btn btn-bilheteria w-full text-base">
-                  <IconTicket /> Ir para a Bilheteria Digital <IconArrow />
-                  <span className="sr-only">(abre em nova aba)</span>
-                </a>
+              <div>
+                <h3 id="canal-bilheteria" className="titulo text-[26px] text-marinho">
+                  {canalBilheteria.rotulo}
+                </h3>
+                <p className="rotulo text-[11px] text-vermelho">Bilheteria Digital</p>
               </div>
+            </div>
+            <p className="mt-5 text-[17px] leading-snug text-marinho">Consulte os ingressos e finalize sua compra na plataforma.</p>
+            <div className="mt-auto pt-6">
+              <BotaoBilheteria className="w-full" />
             </div>
           </article>
         </div>
 
-        <p data-reveal className="mx-auto mt-8 max-w-2xl text-center text-[15px] font-medium text-navy/80">
-          Valores, lotes e disponibilidade são informados diretamente nos canais oficiais. Todos os canais em um só lugar:{" "}
-          <a href={CENTRAL_LINKS_URL} target="_blank" rel="noopener noreferrer" className="font-extrabold text-navy underline decoration-vermelho decoration-[3px] underline-offset-4">
+        <p data-reveal className="mx-auto mt-8 max-w-2xl text-center text-[15px] text-marinho">
+          Valores, lotes e disponibilidade são informados nos canais oficiais. Todos os canais em um só lugar:{" "}
+          <a href={CENTRAL_LINKS_URL} target="_blank" rel="noopener noreferrer" className="font-bold underline decoration-vermelho decoration-2 underline-offset-4">
             central de links<span className="sr-only"> (abre em nova aba)</span>
           </a>
           .

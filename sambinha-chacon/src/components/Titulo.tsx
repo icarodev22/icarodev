@@ -1,27 +1,29 @@
-import { Sol } from "./Ornamentos";
-
+/** Cabeçalho de seção. Marcador = traço simples (elemento complementar, não oficial). */
 export default function Titulo({
   id,
-  kicker,
+  rotulo,
   children,
   claro = false,
+  sobreAmarelo = false,
   centro = false,
   className = "",
 }: {
   id: string;
-  kicker: string;
+  rotulo: string;
   children: React.ReactNode;
   claro?: boolean;
+  /** Em fundo amarelo o rótulo usa azul-marinho (vermelho não atinge contraste AA). */
+  sobreAmarelo?: boolean;
   centro?: boolean;
   className?: string;
 }) {
   return (
     <div className={`${centro ? "text-center" : ""} ${className}`} data-reveal>
-      <p className={`kicker ${claro ? "text-sol" : "text-vermelho"} ${centro ? "justify-center" : ""}`}>
-        <Sol className="h-5 w-5" />
-        {kicker}
+      <p className={`rotulo flex items-center gap-3 ${claro ? "text-amarelo" : sobreAmarelo ? "text-marinho" : "text-vermelho"} ${centro ? "justify-center" : ""}`}>
+        <span className={`h-[3px] w-8 rounded-full ${claro ? "bg-amarelo" : sobreAmarelo ? "bg-marinho" : "bg-vermelho"}`} aria-hidden="true" />
+        {rotulo}
       </p>
-      <h2 id={id} className={`titulo mt-2 text-balance text-[clamp(34px,6vw,64px)] ${claro ? "text-white" : "text-navy"}`}>
+      <h2 id={id} className={`titulo mt-3 text-balance text-[clamp(32px,5.2vw,56px)] ${claro ? "text-white" : "text-marinho"}`}>
         {children}
       </h2>
     </div>

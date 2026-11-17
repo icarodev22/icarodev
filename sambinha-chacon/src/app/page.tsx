@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
-import Faixa from "@/components/Faixa";
+import FaixaOficial from "@/components/FaixaOficial";
 import Eventos from "@/components/Eventos";
 import Atracoes from "@/components/Atracoes";
 import Experiencia from "@/components/Experiencia";
@@ -18,11 +18,10 @@ export default function Home() {
       <Header />
       <main id="conteudo">
         <Hero />
-        <Faixa />
+        <FaixaOficial />
         <Eventos />
         <Atracoes />
         <Experiencia />
-        <Faixa variante="navy" />
         <Galeria />
         <Ingressos />
         <Faq />

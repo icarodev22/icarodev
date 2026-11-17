@@ -64,28 +64,20 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 h-[var(--header-h)] bg-navy text-white transition-shadow ${
-        rolou ? "shadow-[0_6px_0_0_rgba(255,184,0,1)]" : "shadow-[0_4px_0_0_rgba(255,184,0,1)]"
+      className={`fixed inset-x-0 top-0 z-50 h-[var(--header-h)] border-b-4 border-amarelo bg-marinho text-white transition-shadow ${
+        rolou ? "shadow-[0_8px_24px_-12px_rgba(2,31,79,0.6)]" : ""
       }`}
     >
       <a
         href="#conteudo"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-[60] focus:rounded-lg focus:bg-sol focus:px-4 focus:py-2 focus:font-bold focus:text-navy"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-[60] focus:rounded-lg focus:bg-amarelo focus:px-4 focus:py-2 focus:font-bold focus:text-marinho"
       >
         Pular para o conteúdo
       </a>
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-        <a href="#inicio" className="group flex shrink-0 items-center gap-2.5" aria-label="Sambinha Chacon – voltar ao início">
-          <img
-            src="/img/logo-badge-256.png"
-            alt=""
-            width={48}
-            height={48}
-            className="h-12 w-12 transition-transform duration-500 group-hover:rotate-[20deg]"
-          />
-          <span className="hidden font-display text-xl font-extrabold leading-none sm:block lg:hidden xl:block xl:text-[22px]">
-            Sambinha <span className="text-sol">Chacon</span>
-          </span>
+        <a href="#inicio" className="flex shrink-0 items-center" aria-label="Sambinha Chacon – voltar ao início">
+          {/* Logo oficial (versão circular) — sem efeitos, sem texto digitado ao lado */}
+          <img src="/img/logo-badge-256.png" alt="" width={56} height={56} className="h-14 w-14" />
         </a>
 
         <nav aria-label="Menu principal" className="hidden lg:block">
@@ -95,13 +87,13 @@ export default function Header() {
                 <a
                   href={m.href}
                   aria-current={ativo === m.href ? "location" : undefined}
-                  className={`relative block whitespace-nowrap rounded-lg px-2 py-2 text-[12.5px] font-bold uppercase tracking-[0.08em] transition-colors hover:text-sol xl:px-3 ${
-                    ativo === m.href ? "text-sol" : "text-white/90"
+                  className={`relative block whitespace-nowrap rounded-lg px-2 py-2 text-[13px] font-semibold uppercase tracking-[0.1em] transition-colors hover:text-amarelo xl:px-3 ${
+                    ativo === m.href ? "text-amarelo" : "text-white/90"
                   }`}
                 >
                   {m.rotulo}
                   <span
-                    className={`absolute inset-x-3 -bottom-0.5 h-[3px] rounded-full bg-sol transition-transform duration-300 ${
+                    className={`absolute inset-x-3 -bottom-0.5 h-[3px] rounded-full bg-amarelo transition-transform duration-300 ${
                       ativo === m.href ? "scale-x-100" : "scale-x-0"
                     }`}
                   />
@@ -112,7 +104,7 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <a href="#ingressos" className="btn btn-sol min-h-[44px] whitespace-nowrap border-2 px-3.5 text-[13px] shadow-[3px_3px_0_0_#fff] hover:shadow-[4px_4px_0_0_#fff] sm:px-4">
+          <a href="#ingressos" className="btn btn-amarelo min-h-[44px] whitespace-nowrap px-4 text-[13px] sm:px-5">
             <IconTicket className="h-[18px] w-[18px]" />
             <span className="hidden min-[380px]:inline">Comprar ingressos</span>
             <span className="min-[380px]:hidden">Ingressos</span>
@@ -140,9 +132,8 @@ export default function Header() {
         id="menu-mobile"
         ref={painelRef}
         hidden={!aberto}
-        className="fixed inset-x-0 bottom-0 top-[var(--header-h)] z-40 overflow-y-auto bg-navy lg:hidden"
+        className="fixed inset-x-0 bottom-0 top-[var(--header-h)] z-40 overflow-y-auto bg-marinho lg:hidden"
       >
-        <div className="listras h-2.5" aria-hidden="true" />
         <nav aria-label="Menu principal (celular)" className="px-5 pb-10 pt-4">
           <ul className="divide-y divide-white/10">
             {MENU.map((m, i) => (
@@ -150,17 +141,17 @@ export default function Header() {
                 <a
                   href={m.href}
                   onClick={() => setAberto(false)}
-                  className="flex items-center justify-between py-4 font-display text-[28px] font-extrabold"
+                  className="titulo flex min-h-[56px] items-center justify-between py-3 text-[26px]"
                 >
                   {m.rotulo}
-                  <span className="text-sm font-sans font-bold text-sol" aria-hidden="true">
+                  <span className="text-sm font-bold text-amarelo" aria-hidden="true">
                     0{i + 1}
                   </span>
                 </a>
               </li>
             ))}
           </ul>
-          <a href="#ingressos" onClick={() => setAberto(false)} className="btn btn-sol mt-6 w-full">
+          <a href="#ingressos" onClick={() => setAberto(false)} className="btn btn-amarelo mt-6 w-full">
             <IconTicket /> Comprar ingressos
           </a>
           <button
@@ -169,7 +160,7 @@ export default function Header() {
               setAberto(false);
               botaoRef.current?.focus();
             }}
-            className="mx-auto mt-6 flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-bold uppercase tracking-widest text-white/80"
+            className="mx-auto mt-6 flex min-h-[44px] items-center gap-2 rounded-lg px-3 py-2 text-sm font-bold uppercase tracking-widest text-white/80"
           >
             <IconClose className="h-5 w-5" /> Fechar
           </button>

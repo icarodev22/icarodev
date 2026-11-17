@@ -78,7 +78,7 @@ export default function Lightbox({
       role="dialog"
       aria-modal="true"
       aria-label={`Imagem ${indice + 1} de ${total}: ${item.legenda ?? item.alt}`}
-      className="fixed inset-0 z-[80] flex flex-col bg-navy-ink/95 backdrop-blur-sm"
+      className="fixed inset-0 z-[80] flex flex-col bg-marinho-escuro/95 backdrop-blur-sm"
       onClick={(e) => e.target === e.currentTarget && onFechar()}
       onTouchStart={(e) => (toque.current = e.touches[0].clientX)}
       onTouchEnd={(e) => {
@@ -89,7 +89,7 @@ export default function Lightbox({
       }}
     >
       <div className="flex items-center justify-between px-4 py-3 text-white sm:px-6">
-        <p className="text-sm font-bold uppercase tracking-[0.2em] text-sol" aria-live="polite">
+        <p className="text-sm font-bold uppercase tracking-[0.2em] text-amarelo" aria-live="polite">
           {indice + 1} / {total}
         </p>
         <button
@@ -121,7 +121,7 @@ export default function Lightbox({
             <button
               type="button"
               onClick={() => ir(-1)}
-              className="absolute left-2 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full border-2 border-navy bg-sol text-navy shadow-bloco-sm transition hover:scale-105 sm:left-5"
+              className="absolute left-2 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-amarelo text-marinho transition-colors hover:bg-amarelo-claro sm:left-5"
               aria-label="Imagem anterior"
             >
               <IconChevron dir="left" />
@@ -129,7 +129,7 @@ export default function Lightbox({
             <button
               type="button"
               onClick={() => ir(1)}
-              className="absolute right-2 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full border-2 border-navy bg-sol text-navy shadow-bloco-sm transition hover:scale-105 sm:right-5"
+              className="absolute right-2 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-amarelo text-marinho transition-colors hover:bg-amarelo-claro sm:right-5"
               aria-label="Próxima imagem"
             >
               <IconChevron />

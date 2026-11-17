@@ -1,38 +1,35 @@
 import type { Config } from "tailwindcss";
 
+/**
+ * Paleta extraída dos arquivos oficiais (logo + arte do evento).
+ * Valores amostrados por quantização de cor; não há manual de marca fornecido.
+ */
 export default {
   content: ["./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        navy: { DEFAULT: "#13256B", deep: "#0B1747", ink: "#0A1238" },
-        royal: { DEFAULT: "#1F4FD1", light: "#3B6CF0" },
-        sol: { DEFAULT: "#FFB800", soft: "#FFD45C" },
-        laranja: "#F2661B",
-        vermelho: { DEFAULT: "#D7261E", deep: "#A9190F" },
-        rosa: { DEFAULT: "#F49AC9", soft: "#FBD3E7" },
-        verde: { DEFAULT: "#1F8A4C", soft: "#4DBE74" },
-        creme: { DEFAULT: "#FFF4DC", deep: "#FBE7BE" },
-        ceu: { DEFAULT: "#DCFCFC", deep: "#BDEFF2" },
+        // Azul-marinho do lettering da logo
+        marinho: { DEFAULT: "#032E71", escuro: "#021F4F" },
+        // Azul royal dos coqueiros, janelas e venezianas da arte
+        royal: { DEFAULT: "#0648AE", claro: "#1F4BA9" },
+        // Amarelo do fundo da logo / sol
+        amarelo: { DEFAULT: "#FFB200", claro: "#FDC85A" },
+        // Vermelho do sol da logo e da arte
+        vermelho: { DEFAULT: "#C62B11", escuro: "#9F2319" },
+        // Laranja do anel da logo
+        laranja: "#F17C1B",
+        // Verde das folhas de coqueiro
+        verde: { DEFAULT: "#227947", escuro: "#1A5E37" },
+        // Rosa dos casarões
+        rosa: "#F49CD3",
+        // Céu e creme da arte
+        ceu: { DEFAULT: "#E0FCFC", medio: "#C0E0E3" },
+        creme: { DEFAULT: "#FBF4E6", escuro: "#F8E7C7" },
       },
       fontFamily: {
-        display: ['"Sansita Swashed"', "Georgia", "serif"],
-        sans: ['"Archivo Variable"', "Archivo", "system-ui", "sans-serif"],
-      },
-      boxShadow: {
-        bloco: "6px 6px 0 0 #13256B",
-        "bloco-sm": "4px 4px 0 0 #13256B",
-        "bloco-sol": "5px 5px 0 0 #FFB800",
-      },
-      keyframes: {
-        girar: { to: { transform: "rotate(360deg)" } },
-        balanco: { "0%,100%": { transform: "rotate(-4deg)" }, "50%": { transform: "rotate(4deg)" } },
-        faixa: { to: { transform: "translateX(-50%)" } },
-      },
-      animation: {
-        girar: "girar 40s linear infinite",
-        balanco: "balanco 3.5s ease-in-out infinite",
-        faixa: "faixa 38s linear infinite",
+        // Fonte de apoio COMPLEMENTAR (a fonte oficial da marca não foi fornecida)
+        sans: ['"Archivo Variable"', "Archivo", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
       },
     },
   },

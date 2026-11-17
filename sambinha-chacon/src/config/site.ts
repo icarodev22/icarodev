@@ -35,21 +35,26 @@ export const CENTRAL_LINKS_URL = "https://linklist.bio/gobu8_xxkv";
 
 export const whatsappConfigurado = WHATSAPP_URL.trim().length > 0;
 
-/** Link e rótulos usados por todos os botões de WhatsApp do site. */
-export const canalWhatsApp = whatsappConfigurado
-  ? {
-      href: WHATSAPP_URL,
-      rotuloHero: "Comprar sem taxa pelo WhatsApp",
-      rotuloBotao: "Comprar pelo WhatsApp",
-      rotuloCurto: "WhatsApp sem taxa",
-    }
-  : {
-      // Fallback temporário → Central de links oficial
-      href: CENTRAL_LINKS_URL,
-      rotuloHero: "Consultar compra sem taxa",
-      rotuloBotao: "Consultar compra sem taxa",
-      rotuloCurto: "Consultar sem taxa",
-    };
+/**
+ * Rótulos oficiais dos dois canais (pedido do cliente):
+ *  - "Vendas sem taxa"  → WhatsApp
+ *  - "Vendas digitais"  → Bilheteria Digital
+ *
+ * Enquanto WHATSAPP_URL estiver vazio, "Vendas sem taxa" abre a Central de links
+ * oficial (onde estão os canais de atendimento). Preencha WHATSAPP_URL para
+ * apontar direto para o WhatsApp de vendas.
+ */
+export const canalWhatsApp = {
+  href: whatsappConfigurado ? WHATSAPP_URL : CENTRAL_LINKS_URL,
+  rotulo: "Vendas sem taxa",
+  destino: whatsappConfigurado ? "WhatsApp" : "Central de links oficial",
+};
+
+export const canalBilheteria = {
+  href: BILHETERIA_URL,
+  rotulo: "Vendas digitais",
+  destino: "Bilheteria Digital",
+};
 
 /* ------------------------------------------------------------
  * 2) EDIÇÕES
@@ -235,12 +240,12 @@ export const FAQ: Pergunta[] = [
   {
     pergunta: "Como compro meu ingresso?",
     resposta:
-      "Você pode comprar por dois canais oficiais: falando com a equipe pelo WhatsApp, sem taxa, ou finalizando a compra na Bilheteria Digital. Os dois botões estão na seção Ingressos e na barra de compra.",
+      "Por dois canais oficiais: \"Vendas sem taxa\", falando com a equipe pelo WhatsApp, ou \"Vendas digitais\", finalizando a compra na Bilheteria Digital. Os dois botões estão na seção Ingressos e na barra de compra.",
   },
   {
-    pergunta: "Qual a diferença entre o WhatsApp e a Bilheteria Digital?",
+    pergunta: "Qual a diferença entre Vendas sem taxa e Vendas digitais?",
     resposta:
-      "Pelo WhatsApp você fala direto com a equipe e consulta os ingressos disponíveis sem taxa. Na Bilheteria Digital você consulta os ingressos e conclui a compra on-line, pela plataforma.",
+      "Em \"Vendas sem taxa\" você fala com a equipe pelo WhatsApp e consulta os ingressos disponíveis, sem taxa. Em \"Vendas digitais\" você consulta os ingressos e conclui a compra on-line, na Bilheteria Digital.",
   },
   {
     pergunta: "Qual a classificação etária?",
@@ -291,6 +296,6 @@ export const MENU = [
   { href: "#eventos", rotulo: "Próximos eventos" },
   { href: "#atracoes", rotulo: "Atrações" },
   { href: "#experiencia", rotulo: "A experiência" },
-  { href: "#galeria", rotulo: "Galeria" },
+  { href: "#recordacoes", rotulo: "Recordações" },
   { href: "#ingressos", rotulo: "Ingressos" },
 ];

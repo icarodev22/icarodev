@@ -5,24 +5,20 @@ import { CENTRAL_LINKS_URL, EDICOES, edicaoDestaque, type Edicao } from "@/confi
 import { IconArrow, IconExpand, IconPin, IconTicket } from "./Icons";
 import Lightbox from "./Lightbox";
 import Titulo from "./Titulo";
-import { Bandeirinhas } from "./Ornamentos";
 
 function Card({ e, onAmpliar, i }: { e: Edicao; onAmpliar: () => void; i: number }) {
   const bloco = e.tema === "bloco";
   return (
     <article
       data-reveal
-      style={{ ["--d" as string]: `${i * 90}ms` }}
+      style={{ ["--d" as string]: `${i * 80}ms` }}
       aria-labelledby={`ev-${e.id}`}
-      className={`group relative flex w-[82vw] max-w-[380px] shrink-0 snap-center flex-col overflow-hidden rounded-[22px] border-[3px] border-navy shadow-bloco sm:w-[46vw] lg:w-full lg:max-w-none ${
-        bloco ? "bg-sol" : "bg-white"
-      }`}
+      className="group flex w-[80vw] max-w-[360px] shrink-0 snap-center flex-col overflow-hidden rounded-[20px] bg-white ring-1 ring-marinho/10 sm:w-[44vw] lg:w-full lg:max-w-none"
     >
-      {/* Arte oficial completa (sem corte) */}
       <button
         type="button"
         onClick={onAmpliar}
-        className={`relative block aspect-[4/5] w-full overflow-hidden border-b-[3px] border-navy ${bloco ? "bg-[#F6B21A]" : "bg-ceu"}`}
+        className={`relative block aspect-[4/5] w-full overflow-hidden ${bloco ? "bg-amarelo" : "bg-ceu"}`}
         aria-label={`Ampliar arte oficial da edição ${e.dia} ${e.mes}`}
       >
         <img
@@ -32,33 +28,29 @@ function Card({ e, onAmpliar, i }: { e: Edicao; onAmpliar: () => void; i: number
           height={e.arte.altura}
           loading="lazy"
           decoding="async"
-          className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.03]"
+          className="h-full w-full object-contain"
         />
-        <span className="absolute right-3 top-3 grid h-10 w-10 place-items-center rounded-full border-2 border-navy bg-white/95 text-navy opacity-90 shadow-bloco-sm" aria-hidden="true">
+        <span className="absolute right-3 top-3 grid h-10 w-10 place-items-center rounded-full bg-white/95 text-marinho" aria-hidden="true">
           <IconExpand className="h-[18px] w-[18px]" />
         </span>
       </button>
 
-      {/* Canhoto do ingresso */}
-      <div className="relative flex flex-1 flex-col p-5">
-        <span className="absolute -left-3 -top-3 h-6 w-6 rounded-full border-[3px] border-navy bg-creme" aria-hidden="true" />
-        <span className="absolute -right-3 -top-3 h-6 w-6 rounded-full border-[3px] border-navy bg-creme" aria-hidden="true" />
-
+      <div className="flex flex-1 flex-col p-5">
         <div className="flex items-start gap-4">
-          <div className={`flex shrink-0 flex-col items-center rounded-xl border-[3px] border-navy px-3 py-1.5 leading-none ${bloco ? "bg-royal text-sol" : "bg-navy text-sol"}`}>
-            <span className="font-display text-[34px] font-extrabold">{e.dia}</span>
-            <span className="mt-0.5 text-[13px] font-black tracking-[0.2em] text-white">{e.mes}</span>
+          <div className="flex shrink-0 flex-col items-center rounded-xl bg-marinho px-3 py-2 leading-none text-white">
+            <span className="titulo text-[30px] text-amarelo">{e.dia}</span>
+            <span className="mt-1 text-[12px] font-bold tracking-[0.2em]">{e.mes}</span>
           </div>
           <div className="min-w-0">
-            {e.subtitulo && <p className={`text-[12px] font-extrabold uppercase tracking-[0.18em] ${bloco ? "text-vermelho-deep" : "text-vermelho"}`}>{e.subtitulo}</p>}
-            <h3 id={`ev-${e.id}`} className="titulo mt-1 text-[26px] text-navy">
+            {e.subtitulo && <p className="rotulo text-[11px] text-vermelho">{e.subtitulo}</p>}
+            <h3 id={`ev-${e.id}`} className="titulo mt-1 text-[22px] text-marinho">
               {e.nome}
             </h3>
           </div>
         </div>
 
         {(e.cidade || e.local || e.horario) && (
-          <ul className="mt-4 space-y-1.5 text-[15px] font-semibold text-navy">
+          <ul className="mt-4 space-y-1.5 text-[15px] font-medium text-marinho">
             {e.local && (
               <li className="flex items-center gap-2">
                 <IconPin className="h-4 w-4 shrink-0 text-vermelho" />
@@ -76,12 +68,11 @@ function Card({ e, onAmpliar, i }: { e: Edicao; onAmpliar: () => void; i: number
         )}
 
         <div className="mt-auto pt-5">
-          <p className="mb-3 inline-flex items-center gap-2 rounded-full border-2 border-navy/15 px-3 py-1 text-[12px] font-bold uppercase tracking-[0.12em] text-navy/80">
-            <span className={`h-2 w-2 rounded-full ${e.aVenda ? "bg-verde-soft" : "bg-sol"}`} aria-hidden="true" />
-            {e.aVenda ? "Ingressos à venda" : "Consulte nos canais oficiais"}
+          <p className="mb-3 text-[13px] font-medium text-marinho/70">
+            {e.aVenda ? "Ingressos à venda." : "Consulte a disponibilidade nos canais oficiais."}
           </p>
-          <a href="#ingressos" className={`btn w-full ${bloco ? "btn-claro" : "btn-sol"}`}>
-            <IconTicket /> Acessar ingressos
+          <a href="#ingressos" className="btn btn-contorno w-full">
+            <IconTicket /> Ver ingressos
           </a>
         </div>
       </div>
@@ -100,19 +91,23 @@ export default function Eventos() {
   }));
 
   return (
-    <section id="eventos" aria-labelledby="eventos-titulo" className="relative overflow-hidden bg-creme py-16 sm:py-24">
-      <Bandeirinhas className="absolute inset-x-0 top-0 h-9 w-full" />
+    <section id="eventos" aria-labelledby="eventos-titulo" className="fundo-claro relative bg-creme py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-          <Titulo id="eventos-titulo" kicker="Agenda">
+          <Titulo id="eventos-titulo" rotulo="Agenda">
             Próximos eventos
           </Titulo>
           <div className="max-w-md lg:text-right" data-reveal>
-            {!edicaoDestaque && <p className="titulo text-2xl text-vermelho">Confira a próxima edição</p>}
-            <p className="mt-1 text-[15px] font-medium leading-relaxed text-navy/80">
-              Cada edição tem sua arte e suas informações. Datas conforme as artes oficiais — consulte a disponibilidade nos canais de compra.
+            {!edicaoDestaque && <p className="titulo text-[22px] text-vermelho">Confira a próxima edição</p>}
+            <p className="mt-1 text-[15px] leading-relaxed text-marinho/80">
+              Cada edição tem sua arte e suas informações. Datas conforme as artes oficiais.
             </p>
-            <a href={CENTRAL_LINKS_URL} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex items-center gap-1.5 text-sm font-extrabold uppercase tracking-[0.12em] text-royal underline decoration-sol decoration-[3px] underline-offset-4 hover:text-navy">
+            <a
+              href={CENTRAL_LINKS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-1 inline-flex min-h-[44px] items-center gap-1.5 text-sm font-bold uppercase tracking-[0.12em] text-royal underline decoration-amarelo decoration-2 underline-offset-4 hover:text-marinho"
+            >
               Canais oficiais <IconArrow />
               <span className="sr-only">(abre em nova aba)</span>
             </a>
@@ -121,18 +116,17 @@ export default function Eventos() {
       </div>
 
       <div className="mx-auto mt-10 max-w-7xl lg:px-6">
-        <div
-          className="scrollbar-none flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-6 pt-1 sm:px-6 lg:grid lg:grid-cols-3 lg:gap-7 lg:overflow-visible lg:px-0"
-          role="list"
+        <ul
+          className="scrollbar-none flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 sm:px-6 lg:grid lg:grid-cols-3 lg:gap-6 lg:overflow-visible lg:px-0"
           aria-label="Edições do Sambinha Chacon"
         >
           {EDICOES.map((e, i) => (
-            <div role="listitem" key={e.id} className="flex">
+            <li key={e.id} className="flex">
               <Card e={e} i={i} onAmpliar={() => setAberto(i)} />
-            </div>
+            </li>
           ))}
-        </div>
-        <p className="px-4 text-center text-xs font-semibold uppercase tracking-[0.18em] text-navy/50 lg:hidden" aria-hidden="true">
+        </ul>
+        <p className="px-4 text-center text-xs font-semibold uppercase tracking-[0.18em] text-marinho/60 lg:hidden" aria-hidden="true">
           Arraste para o lado →
         </p>
       </div>
