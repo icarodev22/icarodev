@@ -3,115 +3,134 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --header-h: 72px;
-    --buybar-h: 0px;
-    color-scheme: light;
-  }
-  html {
-    scroll-behavior: smooth;
-    scroll-padding-top: calc(var(--header-h) + 8px);
-    -webkit-text-size-adjust: 100%;
-  }
+  html,
   body {
-    @apply bg-marinho-escuro font-sans text-marinho antialiased;
-    font-variation-settings: "wdth" 100;
-    padding-bottom: var(--buybar-h);
-  }
-  @media (max-width: 1023.98px) {
-    :root {
-      --buybar-h: calc(76px + env(safe-area-inset-bottom));
-    }
-  }
-  ::selection {
-    @apply bg-amarelo text-marinho;
+    @apply bg-marinho font-sans antialiased;
   }
   :focus-visible {
-    outline: 3px solid #ffb200;
+    outline: 3px solid #032e71;
     outline-offset: 3px;
-    border-radius: 8px;
-  }
-  .fundo-claro :focus-visible {
-    outline-color: #0648ae;
   }
 }
 
-@layer components {
-  /* ---------- Botões (elemento de interface complementar) ---------- */
-  .btn {
-    @apply inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full px-6 text-[15px] font-bold uppercase leading-tight tracking-[0.06em] transition-colors duration-150;
-    font-variation-settings: "wdth" 90;
-  }
-  .btn-whats {
-    @apply bg-verde text-white hover:bg-verde-escuro;
-  }
-  .btn-bilheteria {
-    @apply bg-vermelho text-white hover:bg-vermelho-escuro;
-  }
-  .btn-amarelo {
-    @apply bg-amarelo text-marinho hover:bg-amarelo-claro;
-  }
-  .btn-contorno {
-    @apply border-2 border-marinho bg-transparent text-marinho hover:bg-marinho hover:text-white;
-  }
-
-  /* ---------- Tipografia ---------- */
-  .rotulo {
-    @apply text-[13px] font-bold uppercase tracking-[0.2em];
-  }
-  .titulo {
-    @apply font-extrabold leading-[1.04] tracking-[-0.015em];
-    font-variation-settings: "wdth" 88;
-  }
-
-  /* ---------- Faixa ornamental: recorte da arte oficial 07 NOV ---------- */
-  .faixa-oficial {
-    height: 40px;
-    background-image: url(/img/orn-faixa-oficial.webp);
-    background-size: auto 100%;
-    background-repeat: repeat-x;
-    background-position: center;
-    background-color: #c2260d;
-  }
+/* ---------- Estrutura ---------- */
+.capa {
+  position: relative;
+  min-height: 100svh;
+  overflow-x: hidden;
+}
+.preenchimento {
+  position: fixed;
+  inset: -40px;
+  background: url(/img/hero-desktop-960.webp) center / cover no-repeat;
+  filter: blur(28px) saturate(1.1);
+  opacity: 0.85;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+/* Horizontal: arte inteira, no maior tamanho que cabe na tela (contain), centralizada */
+.layout-h {
+  display: none;
+}
+.palco-h {
+  position: relative;
+  width: min(100vw, calc(100svh * 1672 / 941));
+  aspect-ratio: 1672 / 941;
+  container-type: inline-size;
+}
+/* Vertical: coluna com a arte vertical; o céu do meio estica sem deformar */
+.coluna-v {
+  position: relative;
+  margin: 0 auto;
+  display: flex;
+  min-height: 100svh;
+  width: min(100vw, 540px);
+  flex-direction: column;
+  box-shadow: 0 0 60px rgba(3, 46, 113, 0.35);
+}
+.ceu-v {
+  background: url(/img/hero-m-band.png) top / 100% auto repeat-y;
+}
+@media (min-aspect-ratio: 1/1) and (min-height: 540px) {
+  .layout-h {
+    position: relative;
+    display: grid;
+    min-height: 100svh;
+    place-items: center;
   }
-  .scrollbar-none {
-    scrollbar-width: none;
-  }
-  .scrollbar-none::-webkit-scrollbar {
+  .layout-v {
     display: none;
   }
 }
 
-/* Entrada discreta */
-[data-reveal] {
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-  transition-delay: var(--d, 0ms);
+/* ---------- Botões ---------- */
+.btn {
+  display: inline-flex;
+  width: 100%;
+  min-height: max(44px, var(--btn-h, 56px));
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  padding: 0 1.6em;
+  border-radius: 999px;
+  font-size: var(--btn-fs, 16px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #fff;
+  font-variation-settings: "wdth" 92;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18), 0 6px 14px -6px rgba(3, 46, 113, 0.45);
+  transition: transform 200ms ease, box-shadow 200ms ease, background-color 200ms ease;
 }
-[data-reveal].is-visible,
-.no-js [data-reveal] {
-  opacity: 1;
-  transform: none;
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18), 0 12px 22px -8px rgba(3, 46, 113, 0.55);
+}
+.btn:active {
+  transform: translateY(0) scale(0.97);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.18), 0 4px 10px -6px rgba(3, 46, 113, 0.45);
+}
+.btn:focus-visible {
+  outline: 3px solid #032e71;
+  outline-offset: 3px;
+}
+/* Verde das folhas e vermelho do sol da arte oficial */
+.btn-verde {
+  background: #227947;
+}
+.btn-verde:hover {
+  background: #1d6b3e;
+}
+.btn-vermelho {
+  background: #c62b11;
+}
+.btn-vermelho:hover {
+  background: #ad250e;
+}
+
+/* ---------- Entrada única: opacidade + 8px ---------- */
+@keyframes entrada {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.entrada {
+  animation: entrada 500ms ease-out both;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+  .entrada {
+    animation: none;
   }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    transition-duration: 0.001ms !important;
-  }
-  [data-reveal] {
-    opacity: 1;
+  .btn,
+  .btn:hover,
+  .btn:active {
+    transition: background-color 200ms ease;
     transform: none;
   }
 }

@@ -8,7 +8,6 @@ export const metadata: Metadata = {
   title: SITE.titulo,
   description: SITE.descricao,
   applicationName: SITE.nome,
-  keywords: ["Sambinha Chacon", "samba Recife", "festa Recife", "Bloco Sambinha Chacon", "ingressos"],
   icons: { icon: "/favicon.png", apple: "/img/apple-touch-icon.png" },
   openGraph: {
     type: "website",
@@ -34,13 +33,10 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className="no-js">
+    <html lang="pt-BR">
       <head>
-        <script
-          dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.remove('no-js')" }}
-        />
-        <link rel="preload" as="image" href="/img/hero-m-top.webp" media="(max-width: 1023.98px)" />
-        <link rel="preload" as="image" href="/img/hero-desktop.webp" media="(min-width: 1024px)" />
+        <link rel="preload" as="image" href="/img/hero-m-top.webp" media="not all and (min-aspect-ratio: 1/1) and (min-height: 540px)" />
+        <link rel="preload" as="image" href="/img/hero-desktop.webp" media="(min-aspect-ratio: 1/1) and (min-height: 540px)" />
       </head>
       <body>{children}</body>
     </html>
