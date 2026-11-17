@@ -1,9 +1,9 @@
 [
   {
     "id": "jonas-exclusive",
-    "status": "rascunho",
+    "status": "publicado",
     "titulo": "Sambinha Chacon · Jonas Exclusive",
-    "data": "",
+    "data": "2026-11-21",
     "horario": "",
     "local": "Recife – PE",
     "imagem": "/img/arte-21-nov-sm.webp",
@@ -11,13 +11,13 @@
     "imagemAltura": 853,
     "imagemAlt": "Arte oficial Sambinha Chacon Jonas Exclusive – 21 NOV, Recife-PE, com Jonas Esticado, Kátia & Aduílio, Boa Ousadia e Sambinha Chacon.",
     "linkCompra": "https://www.bilheteriadigital.com/sambinhachacon",
-    "obs": "Arte informa 21 NOV sem ano. Preencha a data completa (AAAA-MM-DD) e mude para publicado quando confirmado."
+    "obs": "Confirmado pelo organizador: 21/11. Horário não informado."
   },
   {
     "id": "bloco-sambinha-chacon",
-    "status": "rascunho",
+    "status": "publicado",
     "titulo": "Bloco Sambinha Chacon",
-    "data": "",
+    "data": "2027-01-30",
     "horario": "",
     "local": "Arena Chacon · Recife – PE",
     "imagem": "/img/arte-30-jan-bloco-sm.webp",
@@ -25,7 +25,7 @@
     "imagemAltura": 768,
     "imagemAlt": "Arte oficial do Bloco Sambinha Chacon (BSC 27) – 30 JAN, Arena Chacon, Recife-PE.",
     "linkCompra": "https://www.bilheteriadigital.com/sambinhachacon",
-    "obs": "Arte informa 30 JAN sem ano. Preencha a data completa e mude para publicado quando lançado."
+    "obs": "Confirmado pelo organizador. 30 JAN; ano 2027 (próximo 30/01; arte 'BSC 27'). Horário não informado."
   },
   {
     "id": "save-the-date-07-nov",
