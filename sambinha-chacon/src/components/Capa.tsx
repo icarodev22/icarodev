@@ -2,8 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { BOTOES } from "@/config/site";
-import { MOMENTOS, dataPorExtenso, proximasDatas, type Evento } from "@/lib/dados";
-import Carrossel from "./Carrossel";
+import { MOMENTOS, dataDestaque, proximasDatas, type Evento } from "@/lib/dados";
 import Lightbox from "./Lightbox";
 
 /* ---------- Ícones vetoriais ---------- */
@@ -21,6 +20,26 @@ const IconTicket = () => (
 const IconPlay = () => (
   <svg viewBox="0 0 24 24" className="h-6 w-6" fill="currentColor" aria-hidden="true">
     <path d="M8 5.5v13l11-6.5z" />
+  </svg>
+);
+const IconCasa = () => (
+  <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M3 10.5 12 3l9 7.5" />
+    <path d="M5 9.5V20h14V9.5" />
+    <path d="M10 20v-6h4v6" />
+  </svg>
+);
+const IconAgenda = () => (
+  <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect x="3.5" y="5" width="17" height="15.5" rx="2.5" />
+    <path d="M3.5 10h17M8 3v4M16 3v4" />
+  </svg>
+);
+const IconPontos = () => (
+  <svg viewBox="0 0 24 24" className="h-6 w-6" fill="currentColor" aria-hidden="true">
+    <circle cx="12" cy="5" r="2" />
+    <circle cx="12" cy="12" r="2" />
+    <circle cx="12" cy="19" r="2" />
   </svg>
 );
 
@@ -55,6 +74,92 @@ function Botoes({ className }: { className: string }) {
   );
 }
 
+
+
+/* ---------- Menu ⋮ (canto superior direito) ---------- */
+function MenuPontos() {
+  const [aberto, setAberto] = useState(false);
+  const raiz = useRef<HTMLDivElement>(null);
+  const botao = useRef<HTMLButtonElement>(null);
+  const lista = useRef<HTMLUListElement>(null);
+  const { semTaxa, digitais } = BOTOES;
+
+  const fechar = (devolverFoco = true) => {
+    setAberto(false);
+    if (devolverFoco) botao.current?.focus();
+  };
+
+  useEffect(() => {
+    if (!aberto) return;
+    lista.current?.querySelector<HTMLElement>("a")?.focus();
+    const fora = (e: PointerEvent) => {
+      if (!raiz.current?.contains(e.target as Node)) fechar(false);
+    };
+    const tecla = (e: KeyboardEvent) => {
+      const itens = [...(lista.current?.querySelectorAll<HTMLElement>("a") ?? [])];
+      const i = itens.indexOf(document.activeElement as HTMLElement);
+      if (e.key === "Escape") {
+        e.preventDefault();
+        fechar();
+      } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        itens[(i + (e.key === "ArrowDown" ? 1 : -1) + itens.length) % itens.length]?.focus();
+      } else if (e.key === "Tab") {
+        fechar(false);
+      }
+    };
+    document.addEventListener("pointerdown", fora);
+    document.addEventListener("keydown", tecla);
+    return () => {
+      document.removeEventListener("pointerdown", fora);
+      document.removeEventListener("keydown", tecla);
+    };
+  }, [aberto]);
+
+  const itens = [
+    { href: "#inicio", rotulo: "Início", icone: <IconCasa />, externo: false },
+    { href: "#agenda", rotulo: "Agenda", icone: <IconAgenda />, externo: false },
+    { href: semTaxa.href, rotulo: semTaxa.rotulo, icone: <IconWhats />, externo: true, extra: semTaxa.destino },
+    { href: digitais.href, rotulo: digitais.rotulo, icone: <IconTicket />, externo: true, extra: digitais.destino },
+  ];
+
+  return (
+    <div ref={raiz} className="menu-pontos">
+      <button
+        ref={botao}
+        type="button"
+        className="menu-botao"
+        aria-label={aberto ? "Fechar menu" : "Abrir menu"}
+        aria-expanded={aberto}
+        aria-controls="menu-pontos-lista"
+        onClick={() => setAberto((v) => !v)}
+      >
+        <IconPontos />
+      </button>
+      {aberto && (
+        <nav aria-label="Menu">
+          <ul id="menu-pontos-lista" ref={lista} className="menu-lista">
+            {itens.map((it, k) => (
+              <li key={it.rotulo}>
+                {k === 2 && <div className="menu-sep" aria-hidden="true" />}
+                <a
+                  href={it.href}
+                  className={`menu-item ${k === 2 ? "is-whats" : k === 3 ? "is-online" : ""}`}
+                  onClick={() => fechar(false)}
+                  {...(it.externo ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                >
+                  <span className="menu-icone">{it.icone}</span>
+                  <span>{it.rotulo}</span>
+                  {it.externo && <span className="sr-only">({it.extra}, abre em nova aba)</span>}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
+    </div>
+  );
+}
 
 /* ---------- Momentos ---------- */
 type M = (typeof MOMENTOS)[number];
@@ -126,100 +231,87 @@ function MosaicoMomentos({ onAbrir }: { onAbrir: (i: number) => void }) {
   );
 }
 
-/* ---------- Próximas datas ---------- */
-const MAX_INICIAL = 2;
-
-function CardData({ e }: { e: Evento }) {
+function Momentos() {
+  const [midia, setMidia] = useState<number | null>(null);
+  const itens = MOMENTOS.map((m) => ({ src: m.src, alt: m.alt, largura: m.largura, altura: m.altura, tipo: m.tipo, poster: m.poster }));
   return (
-    <article className="card-data" aria-labelledby={`ev-${e.id}`}>
-      <div className="card-arte">
+    <section id="momentos" aria-labelledby="momentos-titulo" className="momentos">
+      <h2 id="momentos-titulo" className="secao-titulo">
+        Momentos do Sambinha
+      </h2>
+      <MosaicoMomentos onAbrir={setMidia} />
+      <Lightbox itens={itens} indice={midia} onFechar={() => setMidia(null)} onIr={setMidia} />
+    </section>
+  );
+}
+
+/* ---------- Agenda ---------- */
+function CardEvento({ e }: { e: Evento }) {
+  const d = dataDestaque(e);
+  return (
+    <article className="evento" aria-labelledby={`ev-${e.id}`}>
+      <div className="evento-cartaz">
         <img src={e.imagem} alt={e.imagemAlt} width={e.imagemLargura} height={e.imagemAltura} loading="lazy" decoding="async" />
       </div>
-      <div className="flex flex-1 flex-col gap-1 p-4 sm:p-5">
-        <h3 id={`ev-${e.id}`} className="text-[18px] font-extrabold leading-tight text-white">
+      <div className="evento-info">
+        <p className="evento-data">
+          <time dateTime={e.horario ? `${e.data}T${e.horario}` : e.data}>
+            <span className="evento-dia">{d.dia}</span>
+            <span className="evento-mes">
+              {d.mes} {d.ano}
+              <span className="evento-semana">
+                {d.semana}
+                {d.hora ? ` · ${d.hora}` : ""}
+              </span>
+            </span>
+          </time>
+        </p>
+        <h3 id={`ev-${e.id}`} className="evento-nome">
           {e.titulo}
         </h3>
-        <InfoData e={e} />
-        <div className="mt-auto pt-4">
-          <BotaoCompra e={e} />
+        {e.local && <p className="evento-local">{e.local}</p>}
+        <div className="evento-acao">
+        <a href={e.linkCompra} target="_blank" rel="noopener noreferrer" className="btn btn-amarelo evento-btn">
+          <IconTicket />
+          <span>Comprar ingressos</span>
+          <span className="sr-only">para {e.titulo} (abre em nova aba)</span>
+        </a>
         </div>
       </div>
     </article>
   );
 }
 
-function InfoData({ e }: { e: Evento }) {
+function Agenda() {
+  // Calculado no navegador com a data/hora atual de São Paulo (a página é estática).
+  const [datas, setDatas] = useState<Evento[] | null>(null);
+  useEffect(() => setDatas(proximasDatas()), []);
   return (
-    <>
-      <p className="text-[15px] font-semibold text-amarelo">
-        <time dateTime={e.horario ? `${e.data}T${e.horario}` : e.data}>{dataPorExtenso(e)}</time>
-      </p>
-      {e.local && <p className="text-[14px] text-white/80">{e.local}</p>}
-    </>
-  );
-}
-
-function BotaoCompra({ e }: { e: Evento }) {
-  return (
-    <a href={e.linkCompra} target="_blank" rel="noopener noreferrer" className="btn btn-amarelo [--btn-fs:14px] [--btn-h:50px]">
-      <IconTicket />
-      <span>Comprar ingressos</span>
-      <span className="sr-only">para {e.titulo} (abre em nova aba)</span>
-    </a>
-  );
-}
-
-/** Celular: lista vertical compacta; mostra as 2 próximas e "Ver todas as datas" se houver mais. */
-function ListaDatas({ datas }: { datas: Evento[] }) {
-  const [todas, setTodas] = useState(false);
-  const terceira = useRef<HTMLLIElement>(null);
-  useEffect(() => {
-    if (todas) terceira.current?.querySelector("a")?.focus({ preventScroll: true });
-  }, [todas]);
-  const lista = todas ? datas : datas.slice(0, MAX_INICIAL);
-  return (
-    <div>
-      <ul className="lista-datas" aria-label="Próximas datas do Sambinha Chacon">
-        {lista.map((e, i) => (
-          <li key={e.id} ref={i === MAX_INICIAL ? terceira : undefined} className={i >= MAX_INICIAL ? "entrada" : undefined}>
-            <article className="data-compacta" aria-labelledby={`evm-${e.id}`}>
-              <div className="data-compacta-arte">
-                <img src={e.imagem} alt={e.imagemAlt} width={e.imagemLargura} height={e.imagemAltura} loading="lazy" decoding="async" />
-              </div>
-              <div className="flex min-w-0 flex-col justify-center gap-1">
-                <h3 id={`evm-${e.id}`} className="text-[16px] font-extrabold leading-tight text-white">
-                  {e.titulo}
-                </h3>
-                <InfoData e={e} />
-              </div>
-              <div className="data-compacta-acao">
-                <BotaoCompra e={e} />
-              </div>
-            </article>
-          </li>
-        ))}
-      </ul>
-      {!todas && datas.length > MAX_INICIAL && (
-        <button type="button" className="ver-mais" onClick={() => setTodas(true)}>
-          Ver todas as datas ({datas.length})
-        </button>
+    <section id="agenda" aria-labelledby="agenda-titulo" className="agenda">
+      <h2 id="agenda-titulo" className="secao-titulo">
+        Agenda
+      </h2>
+      {datas === null ? null : datas.length === 0 ? (
+        <p className="agenda-vazia">Novas datas em breve.</p>
+      ) : (
+        <ul className="agenda-lista">
+          {datas.map((e) => (
+            <li key={e.id}>
+              <CardEvento e={e} />
+            </li>
+          ))}
+        </ul>
       )}
-    </div>
+    </section>
   );
 }
 
 /* ---------- Página ---------- */
 export default function Capa() {
-  const [midia, setMidia] = useState<number | null>(null);
-  // Calculado no navegador com a data/hora atual de São Paulo (a página é estática).
-  const [datas, setDatas] = useState<Evento[]>([]);
-  useEffect(() => setDatas(proximasDatas()), []);
-
-  const itens = MOMENTOS.map((m) => ({ src: m.src, alt: m.alt, largura: m.largura, altura: m.altura, tipo: m.tipo, poster: m.poster }));
-
   return (
     <>
-      <main className="relative">
+      <MenuPontos />
+      <main id="inicio" tabIndex={-1} className="relative outline-none">
         {/* ===================== HERO ===================== */}
         <header className="capa">
           {/* Telas horizontais: arte horizontal inteira */}
@@ -262,36 +354,11 @@ export default function Capa() {
         </header>
 
         <div className="faixa-oficial" aria-hidden="true" />
-
-        <div className="conteudo">
-          {/* ===================== MOMENTOS ===================== */}
-          <Carrossel
-            id="momentos"
-            titulo="Momentos do Sambinha"
-            rotulo="Fotos e vídeos do Sambinha Chacon"
-            mobile={<MosaicoMomentos onAbrir={setMidia} />}
-          >
-            {MOMENTOS.map((m, i) => (
-              <li key={m.src} className="item-momento">
-                <Midia m={m} i={i} onAbrir={setMidia} />
-              </li>
-            ))}
-          </Carrossel>
-
-          {/* ===================== PRÓXIMAS DATAS (oculta se não houver) ===================== */}
-          {datas.length > 0 && (
-            <Carrossel id="proximas-datas" titulo="Próximas datas" rotulo="Próximas datas do Sambinha Chacon" mobile={<ListaDatas datas={datas} />}>
-              {datas.map((e) => (
-                <li key={e.id} className="item-data">
-                  <CardData e={e} />
-                </li>
-              ))}
-            </Carrossel>
-          )}
-        </div>
+        <Agenda />
+        {/* Fotos: somente no celular, depois da Agenda */}
+        <Momentos />
         <div className="faixa-oficial" aria-hidden="true" />
       </main>
-      <Lightbox itens={itens} indice={midia} onFechar={() => setMidia(null)} onIr={setMidia} />
     </>
   );
 }

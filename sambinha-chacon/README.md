@@ -17,12 +17,11 @@ Tudo em `src/config/site.ts`:
 - `SITE.url` — domínio definitivo (imagem de compartilhamento).
 
 ## Estrutura
-Hero (arte + logo transparente + "Comprar pelo WhatsApp" e "Comprar online") → **Momentos do Sambinha** (desktop: carrossel; celular: mosaico 1 grande + 4 e "Ver mais momentos") → **Próximas datas** (desktop: carrossel; celular: lista com 2 e "Ver todas as datas")
-— oculta quando não há edição futura publicada.
+Capa (arte + logo transparente + "Comprar pelo WhatsApp" e "Comprar online") → **Agenda** → **Momentos do Sambinha** (fotos; somente no celular).
+Menu ⋮ no canto superior direito: Início, Agenda, Comprar pelo WhatsApp, Comprar online.
 
 - Cadastro de edições: `src/data/eventos.json` — veja **EVENTOS.md** (status rascunho/publicado, data com ano,
-  horário opcional, fuso de São Paulo).
-- Fotos/vídeos reais: `src/data/momentos.json` — veja **EVENTOS.md**.
+  horário opcional, fuso de São Paulo). Sem edição futura: "Novas datas em breve."
 
 ## Composição
 - Telas horizontais (largura ≥ altura e altura ≥ 540 px): arte horizontal inteira, sem corte nem distorção;

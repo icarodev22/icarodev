@@ -1,4 +1,4 @@
-# Como adicionar uma edição em "Próximas datas"
+# Como adicionar uma edição na "Agenda"
 
 Todo o cadastro fica em **`src/data/eventos.json`**. O layout não precisa ser alterado.
 
@@ -33,13 +33,12 @@ Todo o cadastro fica em **`src/data/eventos.json`**. O layout não precisa ser a
 
 - A verificação usa a data/hora atual de **São Paulo**, calculada no navegador: a edição some sozinha quando passa, sem apagar o cadastro e sem precisar publicar de novo.
 - Ordem automática: da data mais próxima para a mais distante.
-- Sem nenhuma edição futura publicada, a seção "Próximas datas" (e o link dela no topo) fica oculta.
+- Sem nenhuma edição futura publicada, a Agenda mostra apenas "Novas datas em breve."
 
-# Como adicionar fotos e vídeos em "Momentos"
+# Fotos em "Momentos do Sambinha" (somente no celular)
 
-Edite **`src/data/momentos.json`** (somente registros reais do evento).
+Edite **`src/data/momentos.json`** (somente registros reais do evento). A primeira foto é a grande do mosaico;
+com mais de 5 itens aparece "Ver mais momentos".
 
 - Foto: `{ "tipo": "foto", "src": "/img/foto.webp", "miniatura": "/img/foto-sm.webp", "largura": 1800, "altura": 1200, "foco": "50% 40%", "alt": "..." }`
-- Vídeo: `{ "tipo": "video", "src": "/video/clipe.mp4", "poster": "/img/clipe-capa.webp", "miniatura": "/img/clipe-capa.webp", "largura": 1080, "altura": 1920, "alt": "..." }`
-  — abre com controles, sem reprodução automática e sem som automático.
-- `foco` ajusta o enquadramento da miniatura (posição horizontal e vertical) para manter as pessoas no quadro.
+- Vídeo: `{ "tipo": "video", "src": "/video/clipe.mp4", "poster": "/img/capa.webp", "miniatura": "/img/capa.webp", "largura": 1080, "altura": 1920, "alt": "..." }` — abre com controles, sem reprodução automática.

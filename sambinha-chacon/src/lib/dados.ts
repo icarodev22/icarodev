@@ -50,23 +50,18 @@ export function proximasDatas(agora = agoraEmSaoPaulo()): Evento[] {
     .map(({ e }) => e);
 }
 
-const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
-const DIAS = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"];
+const MES_CURTO = ["JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"];
+const SEMANA = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
 
-/** "sáb, 21 de novembro de 2026 · 22h" */
-export function dataPorExtenso(e: Evento): string {
+/** Partes da data para o destaque do card: 21 · NOV 2026 · Sábado · 22h */
+export function dataDestaque(e: Evento) {
   const [a, m, d] = e.data.split("-").map(Number);
-  const dia = DIAS[new Date(Date.UTC(a, m - 1, d)).getUTCDay()];
-  let s = `${dia}, ${d} de ${MESES[m - 1]} de ${a}`;
-  if (horaValida(e.horario)) {
-    const [h, min] = e.horario!.split(":");
-    s += ` · ${Number(h)}h${min !== "00" ? min : ""}`;
-  }
-  return s;
+  const hora = horaValida(e.horario) ? `${Number(e.horario!.split(":")[0])}h${e.horario!.split(":")[1] !== "00" ? e.horario!.split(":")[1] : ""}` : "";
+  return { dia: String(d).padStart(2, "0"), mes: MES_CURTO[m - 1], ano: String(a), semana: SEMANA[new Date(Date.UTC(a, m - 1, d)).getUTCDay()], hora };
 }
 
 /* ============================================================
- * MOMENTOS — fotos/vídeos reais em src/data/momentos.json
+ * MOMENTOS (somente celular) — fotos/vídeos reais em src/data/momentos.json
  * ============================================================ */
 export type Momento = {
   tipo: "foto" | "video";
@@ -76,7 +71,7 @@ export type Momento = {
   largura: number;
   altura: number;
   foco?: string;
-  /** Enquadramento quando a foto é a grande do mosaico do celular (opcional). */
+  /** Enquadramento quando a foto é a grande do mosaico (opcional). */
   focoDestaque?: string;
   alt: string;
 };
