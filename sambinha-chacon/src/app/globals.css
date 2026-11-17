@@ -23,36 +23,39 @@ body {
 .capa {
   position: relative;
 }
-.preenchimento {
-  position: fixed;
-  inset: -40px;
-  background: url(/img/hero-desktop-960.webp) center / cover no-repeat;
-  filter: blur(28px) saturate(1.1);
-  opacity: 0.85;
-}
-
-/* Horizontal: arte inteira, no maior tamanho que cabe na tela (contain), centralizada */
+/* Horizontal: arte inteira de ponta a ponta (largura total, proporção original, sem cortes) */
 .layout-h {
   display: none;
 }
 .palco-h {
   position: relative;
-  width: min(100vw, calc(100svh * 1672 / 941));
+  width: 100%;
   aspect-ratio: 1672 / 941;
   container-type: inline-size;
 }
-/* Vertical: coluna com a arte vertical; o céu do meio estica sem deformar */
+/* Vertical: arte vertical inteira em largura total; o céu do meio estica sem deformar a ilustração */
 .coluna-v {
   position: relative;
-  margin: 0 auto;
   display: flex;
   min-height: 100svh;
-  width: min(100vw, 540px);
+  width: 100%;
   flex-direction: column;
-  box-shadow: 0 0 60px rgba(3, 46, 113, 0.35);
 }
 .ceu-v {
   background: url(/img/hero-m-band.png) top / 100% auto repeat-y;
+  /* as bordas do topo e do cenário já têm um pouco de céu: sobrepõe para ganhar espaço */
+  margin: -2.2vw 0 -3vw;
+  position: relative;
+  z-index: 1;
+}
+.coluna-v > img {
+  position: relative;
+  z-index: 0;
+}
+/* Logo do celular: o maior tamanho que ainda deixa a arte inteira visível na tela
+   (topo + cenário da arte = 104,8vw de altura; botões e espaços ≈ 175px) */
+.logo-v {
+  width: clamp(max(140px, 26vw), calc((100svh - 104.8vw - 175px) * 1.4), min(64vw, 300px));
 }
 @media (min-aspect-ratio: 1/1) and (min-height: 540px) {
   .layout-h {

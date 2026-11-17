@@ -219,7 +219,6 @@ export default function Capa() {
 
   return (
     <>
-      <div className="preenchimento" aria-hidden="true" />
       <main className="relative">
         {/* ===================== HERO ===================== */}
         <header className="capa">
@@ -247,9 +246,9 @@ export default function Capa() {
           <div className="layout-v">
             <div className="coluna-v">
               <img src="/img/hero-m-top.webp" alt="" width={941} height={225} className="block w-full" fetchPriority="high" />
-              <div className="ceu-v flex flex-1 flex-col items-center justify-center px-[9%] pb-[5%] pt-[2%]">
-                <Logo className="w-[min(66%,300px)]" />
-                <Botoes className="mt-[clamp(24px,5.5vh,44px)] flex w-full max-w-[340px] flex-col gap-3 [--btn-fs:16px]" />
+              <div className="ceu-v flex flex-1 flex-col items-center justify-center px-[9%] py-2">
+                <Logo className="logo-v" />
+                <Botoes className="mt-[clamp(16px,3vh,32px)] flex w-full max-w-[340px] flex-col gap-3 [--btn-fs:16px]" />
               </div>
               <img
                 src="/img/hero-m-bottom.webp"
