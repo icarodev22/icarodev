@@ -25,5 +25,6 @@ function institutionalHtml() {
 
 export default defineConfig({
   plugins: [institutionalHtml()],
+  base: './',
   build: { target: 'es2019', cssCodeSplit: false, assetsInlineLimit: 0 },
 });

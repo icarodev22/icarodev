@@ -1,0 +1,41 @@
+PROMPT PARA CLAUDE CODE — INTEGRAÇÃO DAS ARTES V+ NO SITE
+
+Trabalhe no projeto existente da V+. Antes de alterar qualquer coisa, examine a estrutura, componentes, estilos, imagens e comportamento responsivo. Preserve a identidade visual, as fontes já instaladas, a navegação, os efeitos e o conteúdo atual. Não recrie o site, não substitua logos oficiais por logos geradas e não invente dados, eventos ou depoimentos.
+
+ARQUIVOS FORNECIDOS
+assets/vplus/sports/sports-01.png
+assets/vplus/sports/sports-02.png
+assets/vplus/tickets/tickets-01.png
+assets/vplus/tickets/tickets-02.png
+assets/vplus/producoes/producoes-01.png
+assets/vplus/producoes/producoes-02.png
+
+1. SEÇÃO “3 EMPRESAS, 1 GRUPO SÓ”
+Localize essa seção pelo título real, mesmo que haja diferenças de maiúsculas e acentos. Em cada bloco existente, integre exatamente uma arte correspondente:
+- V+ Sports: sports-01.png
+- V+ Tickets: tickets-01.png
+- V+ Produções: producoes-01.png
+
+As imagens devem acompanhar a identidade de cada empresa, sem substituir a logo oficial nem encobrir títulos, links ou botões. Prefira composição editorial: imagem com proporção vertical, corte integral (object-fit: contain quando necessário), bordas discretas e bom equilíbrio entre imagem e texto. Evite repetir a mesma arte na mesma página. Não acrescente três cartões gigantes se a seção já tiver sua própria estrutura; integre as imagens aos elementos existentes.
+
+2. OUTRAS ÁREAS DAS EMPRESAS
+Use as artes restantes (sports-02, tickets-02 e producoes-02) nos blocos correspondentes de cada empresa, somente onde houver contexto visual apropriado. Se não houver espaço natural, crie uma pequena faixa editorial dentro da seção correspondente, sem aumentar desnecessariamente a altura da página. Nunca misture artes entre empresas.
+
+3. SEÇÃO “CONHEÇA O GRUPO V+”
+Esta seção deve priorizar FOTOGRAFIAS REAIS DE PESSOAS EM EVENTOS, não os seis cartazes promocionais. Identifique as fotografias reais já existentes no repositório (público, atletas, equipes, produtores, DJs, bastidores e experiências). Selecione as melhores com boa resolução e sem duplicatas. Não invente fotos, não use prints de vídeos como substituto e não gere rostos por IA. Caso não existam fotos suficientes, prepare espaços com nomes de arquivo explícitos e informe quais imagens precisam ser fornecidas, sem exibir imagens quebradas.
+
+Transforme a apresentação das fotos em uma galeria editorial de alto padrão, integrada à seção atual: uma foto principal de impacto e fotos secundárias de momentos humanos, com enquadramentos diferentes, ritmo visual, sobreposições muito discretas e tipografia já existente. Priorize pessoas, emoção e atmosfera real. Use tratamento de cor coerente com o roxo/preto da V+, mas preserve tons de pele naturais. Nada de molduras genéricas de IA, efeitos exagerados, textos fictícios, números inventados ou animações que prejudiquem o carregamento.
+
+4. RESPONSIVIDADE E DESEMPENHO
+Desktop: imagens bem distribuídas, sem grandes vazios e sem esticar fotos. Mobile: uma imagem principal por vez quando necessário; carrossel com swipe natural apenas se melhorar a navegação, sem setas intrusivas. Evite overflow horizontal, layouts minimizados e cortes de texto. Use loading="lazy" para imagens abaixo da dobra, width/height ou aspect-ratio para prevenir layout shift, e formatos otimizados quando possível. Respeite prefers-reduced-motion.
+
+5. CRITÉRIOS DE ENTREGA
+- Não modificar hero, header, footer ou outras seções fora do escopo.
+- Não substituir imagens reais já existentes sem avaliar a qualidade e o contexto.
+- Não mudar o texto das artes nem editar as artes originais.
+- Manter links, botões e acessibilidade funcionando.
+- Validar desktop e mobile, sem imagens quebradas ou erros no console.
+- Informar exatamente quais arquivos e componentes foram alterados e quais fotos reais foram utilizadas.
+- Se alguma seção ou imagem não for localizada, informar o bloqueio em vez de inventar estrutura ou conteúdo.
+
+IMPORTANTE: os seis PNGs fornecidos são propostas visuais geradas; use-os como materiais aprovados provisoriamente. Logos e fotografias reais oficiais do projeto têm prioridade para a versão final publicada.

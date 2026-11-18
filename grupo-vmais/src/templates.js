@@ -3,8 +3,10 @@
  * gerando HTML estático (SEO, acessível e funcional mesmo sem JavaScript).
  * O JavaScript do cliente apenas adiciona movimento e interações.
  */
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
 import {
-  links, grupo, historia, empresas, producoes, momentos, depoimentos,
+  links, grupo, historia, galeriaGrupo, empresas, producoes, momentos, depoimentos,
   bastidores, videos, heroVideo,
 } from './data/content.js';
 import { VIEWBOX, V_PATH, PLUS_PATH } from './brand/vplus-paths.js';
@@ -22,6 +24,10 @@ const photo = ({ src, alt, w = 406, h = 720 }, { eager = false, sizes = '' } = {
 /** Sprite único do símbolo oficial (V e + separados) — referenciado via <use>. */
 export const sprite = () =>
   `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><path id="vp-v" d="${V_PATH}"/><path id="vp-plus" d="${PLUS_PATH}"/></defs></svg>`;
+
+/** Arte de campanha: proporção integral (contain), não clicável. */
+const art = ({ src, srcLg, alt, w, h }) =>
+  `<img class="photo photo--art" src="${esc(src)}" srcset="${esc(src)} 640w, ${esc(srcLg)} 1086w" sizes="(min-width: 1200px) 16vw, (min-width: 768px) 24vw, 45vw" alt="${esc(alt)}" width="${w}" height="${h}" loading="lazy" decoding="async" draggable="false">`;
 
 export const symbol = (cls = '', label = 'Grupo V+') =>
   `<svg class="vplus ${cls}" viewBox="${VIEWBOX}" role="img" aria-label="${esc(label)}"><use href="#vp-v"/><use class="vplus__plus" href="#vp-plus"/></svg>`;
@@ -96,6 +102,7 @@ export const hero = () => `
         <video class="hero__video" src="${heroVideo.src}" poster="${heroVideo.poster}" muted loop playsinline autoplay preload="metadata" aria-label="${esc(heroVideo.alt)}" disablepictureinpicture></video>
         ${corners}
         <span class="rec" aria-hidden="true"><i></i>Bastidores V+</span>
+        <button class="sound-toggle" type="button" data-sound aria-pressed="false" aria-label="Ativar som do vídeo"><span class="sound-toggle__ico" aria-hidden="true"><i></i><i></i><i></i></span><span class="sound-toggle__txt">Ativar som</span></button>
       </div>
       ${symbolDeco('hero__symbol')}
     </div>
@@ -105,6 +112,14 @@ export const hero = () => `
 </section>`;
 
 /* ---------------------------------------------------------------- HISTÓRIA */
+/** Galeria de fotos reais: só renderiza arquivos que existem em public/. */
+const storyGallery = () => {
+  const fotos = galeriaGrupo.filter((f) => existsSync(resolve('public', f.arquivo)));
+  if (!fotos.length) return '<!-- Galeria “Conheça o Grupo V+”: aguardando fotos reais (ver docs/FOTOS-NECESSARIAS.md) -->';
+  return `<div class="story__gallery story__gallery--${Math.min(fotos.length, 6)}" aria-label="Fotografias de eventos do Grupo V+">
+      ${fotos.map((f, i) => `<figure class="sg sg--${f.papel} sg--${i}"${i ? ` data-speed="${[1, 1.12, 0.92, 1.08, 0.95, 1.1][i]}"` : ''} data-mask>${photo({ src: f.arquivo, alt: f.alt, w: f.w, h: f.h }, { eager: false })}</figure>`).join('')}
+    </div>`;
+};
 export const story = () => `
 <section class="story" id="grupo" aria-labelledby="story-title">
   <div class="container story__grid">
@@ -114,6 +129,8 @@ export const story = () => `
       <p class="story__lead" data-reveal>Uma marca institucional formada por três empresas com atuações próprias: produção de eventos, venda de ingressos e esporte.</p>
       <div class="story__counter" aria-hidden="true"><span class="story__counter-now">01</span> / 0${historia.length}</div>
     </div>
+    <div class="story__col">
+    ${storyGallery()}
     <div class="story__steps">
       ${historia.map((b, i) => `
       <article class="story__step" data-step="${i}">
@@ -128,6 +145,7 @@ export const story = () => `
           <p class="source" data-reveal>Fonte: ${esc(b.fonte)}</p>
         </div>
       </article>`).join('')}
+    </div>
     </div>
   </div>
 </section>`;
@@ -148,7 +166,7 @@ const ecoPanel = (e, i) => `
     ${e.cupom ? `<p class="eco-cupom"><span>Cupom</span><strong>${esc(e.cupom.codigo)}</strong><em>${esc(e.cupom.texto)}</em></p>` : ''}
     <div class="eco-panel__links">${e.links.map((l) => ext(l.url, esc(l.rotulo), l.principal ? 'btn btn--yellow' : 'link-arrow')).join('')}</div>
   </div>
-  ${e.midia.length ? `<div class="eco-panel__media">${e.midia.map((m) => `<figure>${photo(m)}</figure>`).join('')}</div>` : ''}
+  ${e.midia.length ? `<div class="eco-panel__media">${e.midia.map((m) => `<figure class="eco-art">${m.arte ? art(m) : photo(m)}</figure>`).join('')}</div>` : ''}
 </article>`;
 
 export const ecosystem = () => `

@@ -88,3 +88,11 @@ Comprimi os vídeos para a web (H.264, faststart): hero 0,8 MB, 02 → 3,0 MB, 0
 | Em movimento | Vídeos 02 e 01 com player próprio |
 | Feedbacks | **Não publicada.** Estrutura pronta (`depoimentos`) |
 | Contato | WhatsApp, site V+ Tickets, Instagrams e Linktree verificados. Sem formulário (não há um destino de envio confirmado) |
+
+## Atualização — 6 artes V+ (PROMPT_ARTES_VPLUS.txt)
+
+- Os PNGs originais estão preservados, sem nenhuma edição, em `source-assets/vplus/`. As versões WebP (1086 e 640 px) estão em `public/media/artes/`.
+- Artes integradas nos painéis do Ecossistema, cada uma na sua empresa, sem misturar: Produções (`producoes-01`, `producoes-02`), Tickets (`tickets-01`, `tickets-02`) e Sports (`sports-01`, `sports-02`). Cada arte aparece uma única vez na página.
+- Segundo o prompt, as artes são propostas geradas e estão **aprovadas provisoriamente**. Quando houver fotos e logos oficiais, elas têm prioridade.
+- Galeria de fotos reais em "Conheça o Grupo": **bloqueada por falta de fotos**. Ver `docs/FOTOS-NECESSARIAS.md`.
+- Som: todos os vídeos agora têm áudio. O loop do hero foi recodificado com som, começa mudo (por regra dos navegadores) e ganhou o botão "Ativar som". Os vídeos do player tocam com som. Só um vídeo toca por vez.
