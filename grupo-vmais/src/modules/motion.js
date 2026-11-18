@@ -21,7 +21,7 @@ export function heroEntrance(afterIntro) {
 
   gsap.set(words, { yPercent: 110 });
   gsap.set(items, { y: 24, opacity: 0 });
-  gsap.set(frame, { clipPath: 'inset(100% 0% 0% 0%)' });
+  if (frame) gsap.set(frame, { clipPath: 'inset(100% 0% 0% 0%)', opacity: 0 });
   gsap.set(symbol, { scale: 0.8, rotation: -6, opacity: 0, transformOrigin: '50% 80%' });
   root.classList.add('hero-ready');
 
@@ -29,9 +29,9 @@ export function heroEntrance(afterIntro) {
   tl.fromTo(hero, { scale: afterIntro ? 1.06 : 1 }, { scale: 1, duration: 1.2, clearProps: 'transform' }, 0)
     .to(items[0], { y: 0, opacity: 1, duration: 0.8 }, 0.1)
     .to(words, { yPercent: 0, duration: 1, stagger: 0.04 }, 0.15)
-    .to(frame, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.2, ease: 'expo.inOut' }, 0.2)
     .to(symbol, { scale: 1, rotation: 0, opacity: 1, duration: 1.3 }, 0.35)
     .to([...items].slice(1), { y: 0, opacity: 1, duration: 0.8, stagger: 0.08 }, 0.55);
+  if (frame) tl.to(frame, { clipPath: 'inset(0% 0% 0% 0%)', opacity: 1, duration: 1.2, ease: 'expo.inOut' }, 0.2);
 }
 
 /** Animações de rolagem do site inteiro. */
@@ -79,7 +79,7 @@ export function scrollMotion() {
     if (hero) {
       const st = { trigger: hero, start: 'top top', end: 'bottom top', scrub: true };
       gsap.fromTo('.hero__copy', { y: 0, opacity: 1 }, { y: -80, opacity: 0.2, ease: 'none', immediateRender: false, scrollTrigger: st });
-      gsap.to('.hero__frame', { y: -40, ease: 'none', scrollTrigger: st });
+      if (hero.querySelector('.hero__frame')) gsap.to('.hero__frame', { y: -40, ease: 'none', scrollTrigger: st });
       gsap.to('.hero__symbol', { y: 120, rotation: 6, ease: 'none', scrollTrigger: st });
     }
     // Parallax discreto nas composições fotográficas
@@ -90,17 +90,13 @@ export function scrollMotion() {
         scrollTrigger: { trigger: el.closest('.cluster'), start: 'top bottom', end: 'bottom top', scrub: 0.6 },
       });
     });
-    // Entrada da composição de bastidores
-    gsap.utils.toArray('.cluster--backstage .cluster__item').forEach((el, i) => {
-      gsap.from(el.querySelector('img'), {
-        clipPath: 'inset(0% 0% 100% 0%)', duration: 1.2, ease: 'expo.out', delay: (i % 4) * 0.08,
-        scrollTrigger: { trigger: el, start: 'top 92%', once: true },
-      });
-    });
-    // Story: leve parallax na imagem
-    document.querySelectorAll('.story__figure img').forEach((img) => {
-      gsap.fromTo(img, { yPercent: -4 }, { yPercent: 4, ease: 'none', scrollTrigger: { trigger: img, start: 'top bottom', end: 'bottom top', scrub: true } });
-    });
+  });
+
+  // Galeria do Grupo — entrada discreta das fotografias
+  gsap.set('[data-reveal-photo]', { opacity: 0 });
+  ScrollTrigger.batch('[data-reveal-photo]', {
+    start: 'top 92%', once: true,
+    onEnter: (els) => gsap.fromTo(els, { y: 32, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out', stagger: 0.1 }),
   });
 
   // Contato — símbolo entra

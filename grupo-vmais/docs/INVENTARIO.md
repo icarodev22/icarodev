@@ -96,3 +96,14 @@ Comprimi os vídeos para a web (H.264, faststart): hero 0,8 MB, 02 → 3,0 MB, 0
 - Segundo o prompt, as artes são propostas geradas e estão **aprovadas provisoriamente**. Quando houver fotos e logos oficiais, elas têm prioridade.
 - Galeria de fotos reais em "Conheça o Grupo": **bloqueada por falta de fotos**. Ver `docs/FOTOS-NECESSARIAS.md`.
 - Som: todos os vídeos agora têm áudio. O loop do hero foi recodificado com som, começa mudo (por regra dos navegadores) e ganhou o botão "Ativar som". Os vídeos do player tocam com som. Só um vídeo toca por vez.
+
+## Atualização — correções (fotos reais, banners, menu)
+
+- **Conheça o Grupo V+:** saíram as 3 peças de campanha. A seção agora usa só as 5 fotos reais enviadas (2 fotos avulsas e 3 colagens), sem corte e sem legendas. Originais em `source-assets/fotos-grupo/`.
+- **"O que acontece por trás" (Bastidores):** seção removida por completo, junto com o item do menu, as fotos e o CSS. O vídeo de bastidores continua apenas na seção "Em movimento".
+- **Hero:** o vídeo foi removido. A arte oficial ainda não chegou e o espaço está preparado (ver `docs/FOTOS-NECESSARIAS.md`).
+- **Menu:** passou a ser um ícone de três traços que abre um dropdown compacto (desktop) ou um painel compacto (mobile).
+- **Banners horizontais** (Sports, Produções e Tickets) usados no topo de cada painel de "Três empresas, um só grupo". Exportações em `source-assets/banners/` (PNG original de 2172×724 e PNG de 1920×640) e WebP de 1920, 1086 e 720 px em `public/media/banners/`.
+- Os banners foram entregues já prontos, na proporção 3:1. **Não gerei versões em 1920×800**: para chegar a essa proporção seria preciso cortar logos e textos ou inventar fundo.
+- **A arte única que junta Produções e Sports não foi criada.** Montá-la exigiria redesenhar a tipografia e recompor as fotografias, o que as regras do pedido proíbem. Ela pode ser feita por um designer a partir dos banners entregues.
+- As artes verticais `-01` saíram do site porque repetiam as fotos dos banners. Continuam guardadas em `source-assets/vplus/`.

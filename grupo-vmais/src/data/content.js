@@ -51,12 +51,6 @@ export const historia = [
     texto:
       'A V+ vem transformando momentos em experiências inesquecíveis.',
     fonte: 'vmaistickets.com.br — seção "Grupo V+"',
-    imagem: {
-      src: 'media/img/campanha-momentos-1080.webp',
-      srcSm: 'media/img/campanha-momentos-640.webp',
-      alt: 'Peça oficial da V+ Produções com o texto “Mais que eventos, criamos momentos”.',
-      legenda: 'Campanha oficial — V+ Produções',
-    },
   },
   {
     marcador: '+',
@@ -64,12 +58,6 @@ export const historia = [
     texto:
       'Atuação direta em produção de eventos sociais e esportivos, além de venda de eventos sociais.',
     fonte: 'vmaistickets.com.br — seção "Grupo V+"',
-    imagem: {
-      src: 'media/img/campanha-esporte-entretenimento-1080.webp',
-      srcSm: 'media/img/campanha-esporte-entretenimento-640.webp',
-      alt: 'Peça oficial da V+ Produções: “Do esporte ao entretenimento” — campeonatos, festas e experiência de marca.',
-      legenda: 'Campanha oficial — V+ Produções',
-    },
   },
   {
     marcador: '→',
@@ -77,28 +65,26 @@ export const historia = [
     texto:
       'Aqui na V+, a gente cuida de tudo, do começo até o último minuto do evento. Porque o básico nunca foi o suficiente.',
     fonte: 'Vídeo oficial V+ Produções (VMAIS-VIDEO-02)',
-    imagem: {
-      src: 'media/img/campanha-detalhes-1080.webp',
-      srcSm: 'media/img/campanha-detalhes-640.webp',
-      alt: 'Peça oficial da V+ Produções: “Grandes eventos começam nos detalhes”.',
-      legenda: 'Campanha oficial — V+ Produções',
-    },
   },
 ];
 
 /**
- * GALERIA “CONHEÇA O GRUPO V+” — FOTOGRAFIAS REAIS de pessoas em eventos.
- * Os espaços abaixo só aparecem no site quando o arquivo existir em
- * public/media/fotos/grupo/ (verificado no build). Não usar prints de vídeo,
- * cartazes ou imagens geradas. Formato recomendado: WebP, ≥1600px no lado maior.
+ * GALERIA “CONHEÇA O GRUPO V+” — fotografias reais de eventos enviadas pela V+
+ * (originais em source-assets/fotos-grupo/). Somente apresentação: não clicáveis.
+ * Cada arquivo só é publicado se existir em public/ (verificado no build).
+ * `src` = versão 1400px; `srcSm` = 720px.
  */
+const foto = (nome, w, h, alt, papel) => ({
+  arquivo: `media/fotos/grupo/${nome}-1400.webp`,
+  arquivoSm: `media/fotos/grupo/${nome}-720.webp`,
+  w, h, alt, papel,
+});
 export const galeriaGrupo = [
-  { arquivo: 'media/fotos/grupo/grupo-01-principal.webp', papel: 'principal', w: 1600, h: 1067, alt: '', pede: 'Foto principal horizontal: público em evento V+ (palco/pista), com emoção.' },
-  { arquivo: 'media/fotos/grupo/grupo-02-publico.webp', papel: 'vertical', w: 1067, h: 1600, alt: '', pede: 'Vertical: pessoas do público (rostos, celebração).' },
-  { arquivo: 'media/fotos/grupo/grupo-03-esporte.webp', papel: 'vertical', w: 1067, h: 1600, alt: '', pede: 'Vertical: atletas em competição V+ Sports.' },
-  { arquivo: 'media/fotos/grupo/grupo-04-equipe.webp', papel: 'horizontal', w: 1600, h: 1067, alt: '', pede: 'Horizontal: equipe V+ trabalhando no evento.' },
-  { arquivo: 'media/fotos/grupo/grupo-05-palco.webp', papel: 'quadrada', w: 1400, h: 1400, alt: '', pede: 'Quadrada: atração/DJ no palco.' },
-  { arquivo: 'media/fotos/grupo/grupo-06-entrada.webp', papel: 'horizontal', w: 1600, h: 1067, alt: '', pede: 'Horizontal: entrada/acesso do público (V+ Tickets).' },
+  foto('grupo-tardezinha-27', 1400, 1867, 'Grupo de amigos posando juntos na pista durante a festa “Tardezinha da 27”.', 'principal'),
+  foto('grupo-med27', 1400, 1867, 'Três amigas sorrindo para a câmera em evento Med27 & V+.', 'lateral'),
+  foto('grupo-colagem-laranja', 1400, 1867, 'Colagem de quatro fotos do público: amigas, grupo reunido e casal diante de painel laranja.', 'lateral'),
+  foto('grupo-colagem-copos', 1400, 1750, 'Colagem de quatro fotos do público na pista, com copos personalizados do evento.', 'baixo'),
+  foto('grupo-colagem-producoes', 1080, 1353, 'Colagem de quatro fotos do público em festa da V+ Produções.', 'baixo'),
 ];
 
 /** Ecossistema — as três empresas */
@@ -123,9 +109,9 @@ export const empresas = [
     // Fonte: vídeo oficial VMAIS-VIDEO-02 (legendas)
     publico: 'Para atléticas, comissões e turmas universitárias: banda, estrutura e som — do começo até o último minuto do evento.',
     links: [{ rotulo: 'Instagram @grupovmais', url: links.instagram.grupo.url }],
-    // Artes de campanha aprovadas provisoriamente (docs/PROMPT_ARTES_VPLUS.txt)
+    // Banner horizontal + arte vertical (materiais enviados pela V+)
+    banner: { src: 'media/banners/banner-producoes-1086.webp', srcLg: 'media/banners/banner-producoes-1920.webp', srcSm: 'media/banners/banner-producoes-720.webp', alt: 'Banner V+ Produções: “Produção que entrega — estrutura, organização e experiência do início ao fim.”', w: 1920, h: 640 },
     midia: [
-      { src: 'media/artes/producoes-01-640.webp', srcLg: 'media/artes/producoes-01-1086.webp', alt: 'Arte V+ Produções: “Produção que entrega — estrutura, organização e experiência do início ao fim.”', w: 1086, h: 1448, arte: true },
       { src: 'media/artes/producoes-02-640.webp', srcLg: 'media/artes/producoes-02-1086.webp', alt: 'Arte V+ Produções: “Produção de eventos — estrutura, organização e execução para grandes experiências.”', w: 1086, h: 1448, arte: true },
     ],
   },
@@ -154,8 +140,8 @@ export const empresas = [
       { rotulo: 'Para produtores', url: links.ticketsProdutores },
       { rotulo: 'Instagram @vmaistickets', url: links.instagram.tickets.url },
     ],
+    banner: { src: 'media/banners/banner-tickets-1086.webp', srcLg: 'media/banners/banner-tickets-1920.webp', srcSm: 'media/banners/banner-tickets-720.webp', alt: 'Banner V+ Tickets: “O mesmo cuidado da V+, agora também na hora de garantir seu ingresso.”', w: 1920, h: 640 },
     midia: [
-      { src: 'media/artes/tickets-01-640.webp', srcLg: 'media/artes/tickets-01-1086.webp', alt: 'Arte V+ Tickets: “Do primeiro ingresso ao último beat.”', w: 1086, h: 1448, arte: true },
       { src: 'media/artes/tickets-02-640.webp', srcLg: 'media/artes/tickets-02-1086.webp', alt: 'Arte V+ Tickets: “Seu acesso à próxima experiência.”', w: 1086, h: 1448, arte: true },
     ],
   },
@@ -174,8 +160,8 @@ export const empresas = [
     frase: 'O que vem a + já chegou.',
     destaques: [],
     links: [{ rotulo: 'Instagram @sportsvmais', url: links.instagram.sports.url }],
+    banner: { src: 'media/banners/banner-sports-1086.webp', srcLg: 'media/banners/banner-sports-1920.webp', srcSm: 'media/banners/banner-sports-720.webp', alt: 'Banner V+ Sports: “Esporte é experiência — competições, energia e grandes momentos.”', w: 1920, h: 640 },
     midia: [
-      { src: 'media/artes/sports-01-640.webp', srcLg: 'media/artes/sports-01-1086.webp', alt: 'Arte V+ Sports: “Esporte é experiência — competições, energia e grandes momentos.”', w: 1086, h: 1448, arte: true },
       { src: 'media/artes/sports-02-640.webp', srcLg: 'media/artes/sports-02-1086.webp', alt: 'Arte V+ Sports: “Esporte que conecta — eventos esportivos que movimentam pessoas, atletas e torcidas.”', w: 1086, h: 1448, arte: true },
     ],
     pendente: ['Modalidades, campeonatos realizados e fotos reais de eventos esportivos'],
@@ -201,20 +187,6 @@ export const momentos = [];
  * { texto, autor, fonte, evento }
  */
 export const depoimentos = [];
-
-/** BASTIDORES — quadros reais extraídos do vídeo VMAIS-VIDEO-01 */
-export const bastidores = {
-  fonte: 'Quadros do vídeo oficial VMAIS-VIDEO-01',
-  fotos: [
-    { src: 'media/img/bastidores-21.webp', alt: 'Integrante da equipe apresenta o espaço com a iluminação montada.', legenda: 'Luz e estrutura' },
-    { src: 'media/img/bastidores-38.webp', alt: 'Integrante da equipe carrega uma caixa de materiais.', legenda: 'Materiais' },
-    { src: 'media/img/bastidores-128.webp', alt: 'Entrada do espaço com painel iluminado ao fundo.', legenda: 'O espaço' },
-    { src: 'media/img/bastidores-52.webp', alt: 'Integrante da equipe mostra copos que serão usados no evento.', legenda: 'Detalhes' },
-    { src: 'media/img/bastidores-84.webp', alt: 'Dois integrantes da equipe durante a preparação.', legenda: 'Equipe' },
-    { src: 'media/img/bastidores-56.webp', alt: 'Salão vazio durante a preparação.', legenda: 'Antes de abrir' },
-    { src: 'media/img/bastidores-158.webp', alt: 'Integrante da equipe sentado ao fim da preparação.', legenda: 'Pronto' },
-  ],
-};
 
 /** VÍDEOS */
 export const videos = [
@@ -242,8 +214,14 @@ export const videos = [
   },
 ];
 
-export const heroVideo = {
-  src: 'media/video/hero-loop.mp4',
-  poster: 'media/img/poster-hero.webp',
-  alt: 'Espaço de evento com iluminação montada — registro dos bastidores V+.',
+/**
+ * HERO — arte oficial de destaque. Aguardando o arquivo da V+:
+ * salve em public/media/hero/hero-arte.webp (vertical ou quadrada, ≥1200px)
+ * e preencha `alt`. Sem o arquivo, o Hero mostra só o símbolo oficial.
+ */
+export const heroArte = {
+  arquivo: 'media/hero/hero-arte.webp',
+  w: 1200,
+  h: 1500,
+  alt: '',
 };

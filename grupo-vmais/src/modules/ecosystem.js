@@ -3,7 +3,7 @@ import { reduceMotion } from './motion.js';
 
 /**
  * Ecossistema V+ — três painéis de marca.
- * Desktop (≥1024px): seção fixada; a rolagem (ou as abas) troca a empresa em destaque.
+ * Desktop (≥1024px): as abas trocam a empresa em destaque no mesmo lugar (sem fixar a rolagem).
  * Mobile/tablet: trilho horizontal por toque (scroll-snap) sincronizado com as abas.
  */
 export function initEcosystem() {
@@ -17,7 +17,6 @@ export function initEcosystem() {
   const bar = section.querySelector('.eco-tabs__bar');
   const n = panels.length;
   let active = 0;
-  let st = null;
   let leaveTimer;
 
   const moveBar = () => {
@@ -48,13 +47,11 @@ export function initEcosystem() {
     moveBar();
   };
 
-  const mq = window.matchMedia('(min-width: 1200px) and (min-height: 680px)');
+  const mq = window.matchMedia('(min-width: 1024px)');
   const isDesktop = () => section.classList.contains('is-enhanced');
 
   const goTo = (i) => {
-    if (isDesktop() && st) {
-      const y = st.start + (st.end - st.start) * (i / (n - 1));
-      window.scrollTo({ top: Math.round(y) + 1, behavior: reduceMotion() ? 'auto' : 'smooth' });
+    if (isDesktop()) {
       setActive(i);
     } else {
       track.scrollTo({ left: i * track.clientWidth, behavior: reduceMotion() ? 'auto' : 'smooth' });
@@ -85,27 +82,11 @@ export function initEcosystem() {
 
   const enable = () => {
     section.classList.add('is-enhanced');
-    const headH = head.offsetHeight + (parseFloat(getComputedStyle(pin).paddingTop) || 0);
-    section.style.setProperty('--eco-head', `${headH}px`);
     track.scrollLeft = 0;
-    st = ScrollTrigger.create({
-      trigger: pin,
-      start: 'top top',
-      end: () => `+=${window.innerHeight * 0.85 * (n - 1)}`,
-      pin: true,
-      anticipatePin: 1,
-      snap: reduceMotion() ? false : { snapTo: 1 / (n - 1), duration: { min: 0.2, max: 0.6 }, delay: 0.08, ease: 'power2.inOut' },
-      onUpdate: (self) => {
-        const i = Math.round(self.progress * (n - 1));
-        if (i !== active) setActive(i);
-      },
-    });
     setActive(active);
   };
   const disable = () => {
     section.classList.remove('is-enhanced');
-    st?.kill(true);
-    st = null;
     panels.forEach((p) => p.removeAttribute('aria-hidden'));
     track.scrollLeft = active * track.clientWidth;
     moveBar();

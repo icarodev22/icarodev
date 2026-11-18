@@ -34,9 +34,9 @@ src/
   modules/
     intro.js           ← abertura cinematográfica
     motion.js          ← reveals, text reveal, máscaras, parallax
-    ecosystem.js       ← painéis das 3 empresas (pin no desktop, swipe no mobile)
-    player.js          ← player de vídeo e vídeo do hero
-    header.js          ← cabeçalho e menu mobile
+    ecosystem.js       ← painéis das 3 empresas (abas no desktop, swipe no mobile)
+    player.js          ← player de vídeo (com som)
+    header.js          ← cabeçalho e menu compacto (três traços)
     split.js           ← divisão de títulos em palavras
   styles/main.css      ← tokens de cor e estilos
 public/
