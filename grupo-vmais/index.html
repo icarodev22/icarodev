@@ -23,7 +23,7 @@
   <script>
     // Define o estado da abertura antes do primeiro paint (evita flash do conteúdo).
     (function () {
-      var d = document.documentElement; d.className = d.className.replace('no-js', 'js');
+      var d = document.documentElement; d.classList.remove('no-js'); d.classList.add('js');
       try {
         var force = /[?&]intro=1/.test(location.search);
         var seen = sessionStorage.getItem('vmais-intro');
