@@ -43,6 +43,13 @@ export const grupo = {
   ],
 };
 
+/** Indicadores institucionais — informados pelo Grupo V+. Não acrescentar números sem confirmação. */
+export const indicadores = [
+  { valor: 3, prefixo: '', sufixo: '', rotulo: 'anos de trajetória' },
+  { valor: 300, prefixo: '+', sufixo: '', rotulo: 'eventos realizados' },
+  { valor: 1000, prefixo: '', sufixo: '', rotulo: 'clientes satisfeitos' },
+];
+
 /** História — narrativa por blocos. Cada bloco: título, texto e imagem associada. */
 export const historia = [
   {
@@ -103,14 +110,13 @@ export const empresas = [
     },
     // Fonte: vmaistickets.com.br (home e /grupo)
     resumo: 'Produção e assessoria de eventos sociais e privados.',
-    frase: 'Dos palcos às arquibancadas: a V+ transforma experiências em momentos memoráveis.',
     // Fonte: peça oficial "Do esporte ao entretenimento"
     destaques: ['Campeonatos', 'Festas', 'Experiência de marca'],
     // Fonte: vídeo oficial VMAIS-VIDEO-02 (legendas)
-    publico: 'Para atléticas, comissões e turmas universitárias: banda, estrutura e som — do começo até o último minuto do evento.',
+    publico: 'Para atléticas, comissões e turmas universitárias: banda, estrutura e som.',
     links: [{ rotulo: 'Instagram @grupovmais', url: links.instagram.grupo.url }],
     // Banner horizontal + arte vertical (materiais enviados pela V+)
-    banner: { src: 'media/banners/banner-producoes-1086.webp', srcLg: 'media/banners/banner-producoes-1920.webp', srcSm: 'media/banners/banner-producoes-720.webp', alt: 'Banner V+ Produções: “Produção que entrega — estrutura, organização e experiência do início ao fim.”', w: 1920, h: 640 },
+    banner: { src: 'media/banners/banner-producoes-festas-1086.webp', srcLg: 'media/banners/banner-producoes-festas-1920.webp', srcSm: 'media/banners/banner-producoes-festas-720.webp', alt: 'Banner V+ Produções: “as festas e experiências que já fazem parte da sua história”, com fotos do público e de DJ.', w: 1920, h: 640 },
     midia: [
       { src: 'media/artes/producoes-02-640.webp', srcLg: 'media/artes/producoes-02-1086.webp', alt: 'Arte V+ Produções: “Produção de eventos — estrutura, organização e execução para grandes experiências.”', w: 1086, h: 1448, arte: true },
     ],
@@ -157,10 +163,15 @@ export const empresas = [
     },
     // Fonte: vmaistickets.com.br (home e /grupo)
     resumo: 'Campeonatos e produção esportiva.',
-    frase: 'O que vem a + já chegou.',
+    // Texto institucional enviado pelo Grupo V+ (refinamento final)
+    manifesto: {
+      titulo: 'A V+ sempre soube produzir um evento.',
+      destaque: 'evento',
+      texto: 'Dos palcos às arquibancadas, a V+ transformou experiências em momentos memoráveis. Agora, toda essa trajetória entra em campo.',
+    },
     destaques: [],
     links: [{ rotulo: 'Instagram @sportsvmais', url: links.instagram.sports.url }],
-    banner: { src: 'media/banners/banner-sports-1086.webp', srcLg: 'media/banners/banner-sports-1920.webp', srcSm: 'media/banners/banner-sports-720.webp', alt: 'Banner V+ Sports: “Esporte é experiência — competições, energia e grandes momentos.”', w: 1920, h: 640 },
+    banner: { src: 'media/banners/banner-sports-temporada-1086.webp', srcLg: 'media/banners/banner-sports-temporada-1920.webp', srcSm: 'media/banners/banner-sports-temporada-720.webp', alt: 'Banner V+ Sports: “Essa temporada tem campeonato novo. Uma nova forma de viver o esporte está chegando. Preparados para entrar em campo com a V+ Sports?”', w: 1920, h: 640 },
     midia: [
       { src: 'media/artes/sports-02-640.webp', srcLg: 'media/artes/sports-02-1086.webp', alt: 'Arte V+ Sports: “Esporte que conecta — eventos esportivos que movimentam pessoas, atletas e torcidas.”', w: 1086, h: 1448, arte: true },
     ],
@@ -194,7 +205,7 @@ export const videos = [
     id: 'cuida-de-tudo',
     titulo: 'A gente cuida de tudo',
     empresa: 'V+ Produções',
-    descricao: 'Para atléticas, comissões e turmas: do começo até o último minuto do evento.',
+    descricao: 'Vídeo oficial da V+ Produções para atléticas, comissões e turmas.',
     src: 'media/video/vmais-cuida-de-tudo.mp4',
     poster: 'media/img/poster-cuida-de-tudo.webp',
     duracao: '0:22',
@@ -205,7 +216,7 @@ export const videos = [
     id: 'bastidores',
     titulo: 'Bastidores da preparação',
     empresa: 'Grupo V+',
-    descricao: 'O espaço, a luz, os materiais e a equipe antes do evento.',
+    descricao: 'Registro da preparação de um evento.',
     src: 'media/video/bastidores-preparacao.mp4',
     poster: 'media/img/poster-bastidores.webp',
     duracao: '2:45',

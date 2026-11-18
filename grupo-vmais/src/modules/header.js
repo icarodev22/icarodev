@@ -43,6 +43,18 @@ export function initHeader() {
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && open) setOpen(false, { focusButton: true }); });
   window.addEventListener('resize', () => setOpen(false), { passive: true });
 
+  // Indicador animado da seção ativa (desktop, ao lado do menu)
+  const label = document.getElementById('menu-current');
+  let labelTimer;
+  const setCurrent = (txt) => {
+    if (!label || label.textContent === txt) return;
+    label.classList.add('is-swap');
+    clearTimeout(labelTimer);
+    labelTimer = setTimeout(() => { label.textContent = txt; label.classList.remove('is-swap'); }, 220);
+  };
+  const heroEl = document.getElementById('topo');
+  if (heroEl) new IntersectionObserver(([en]) => { if (en.isIntersecting) { setCurrent(''); } }, { rootMargin: '-45% 0px -50% 0px' }).observe(heroEl);
+
   // Link ativo conforme a seção visível
   const links = [...document.querySelectorAll('.menu-panel a[href^="#"]')];
   const map = new Map(links.map((a) => [a.getAttribute('href').slice(1), a]));
@@ -50,7 +62,9 @@ export function initHeader() {
     entries.forEach((en) => {
       if (!en.isIntersecting) return;
       links.forEach((a) => a.removeAttribute('aria-current'));
-      map.get(en.target.id)?.setAttribute('aria-current', 'true');
+      const link = map.get(en.target.id);
+      link?.setAttribute('aria-current', 'true');
+      setCurrent(link ? link.textContent : '');
     });
   }, { rootMargin: '-45% 0px -50% 0px' });
   map.forEach((_, id) => { const s = document.getElementById(id); if (s) io.observe(s); });

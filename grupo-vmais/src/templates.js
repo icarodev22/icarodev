@@ -6,7 +6,7 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import {
-  links, grupo, historia, galeriaGrupo, empresas, producoes, momentos, depoimentos,
+  links, grupo, historia, galeriaGrupo, indicadores, empresas, producoes, momentos, depoimentos,
   videos, heroArte,
 } from './data/content.js';
 import { VIEWBOX, V_PATH, PLUS_PATH } from './brand/vplus-paths.js';
@@ -35,7 +35,6 @@ export const symbol = (cls = '', label = 'Grupo V+') =>
 const symbolDeco = (cls = '') =>
   `<svg class="vplus ${cls}" viewBox="${VIEWBOX}" aria-hidden="true" focusable="false"><use href="#vp-v"/><use class="vplus__plus" href="#vp-plus"/></svg>`;
 
-const corners = '<span class="vf" aria-hidden="true"><i></i><i></i><i></i><i></i></span>';
 
 /* ---------------------------------------------------------------- INTRO */
 export const intro = () => `${sprite()}
@@ -60,6 +59,8 @@ const navItems = [
 
 export const header = () => `
 <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<div class="progress" aria-hidden="true"><i id="progress-bar"></i></div>
+<div class="ambient" aria-hidden="true"><i class="ambient__a"></i><i class="ambient__b"></i><i class="ambient__c"></i><i class="ambient__grain"></i></div>
 <header class="site-header" id="site-header">
   <a class="brand" href="#topo" aria-label="Grupo V+ — início">
     ${symbolDeco('brand__mark')}
@@ -67,6 +68,7 @@ export const header = () => `
   </a>
   ${ext(links.whatsapp, 'Contato comercial', 'btn btn--sm btn--yellow header-cta')}
   <div class="menu">
+    <span class="menu-current" id="menu-current" aria-hidden="true"></span>
     <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Abrir menu">
       <span class="menu-btn__icon" aria-hidden="true"><i></i><i></i><i></i></span>
     </button>
@@ -74,6 +76,7 @@ export const header = () => `
       <ul>${navItems.map(([h, t]) => `<li><a href="${h}">${t}</a></li>`).join('')}</ul>
       <div class="menu-panel__foot">
         ${ext(links.whatsapp, 'Contato comercial', 'menu-panel__cta')}
+        <button class="present-toggle" id="present-toggle" type="button" aria-pressed="false"><span class="present-toggle__dot" aria-hidden="true"></span>Modo apresentação <kbd>P</kbd></button>
         <p>${ext(links.instagram.grupo.url, links.instagram.grupo.handle)} ${ext(links.instagram.tickets.url, links.instagram.tickets.handle)} ${ext(links.instagram.sports.url, links.instagram.sports.handle)}</p>
       </div>
     </nav>
@@ -83,12 +86,13 @@ export const header = () => `
 /* ---------------------------------------------------------------- HERO */
 const heroArteExiste = () => existsSync(resolve('public', heroArte.arquivo));
 export const hero = () => `
-<section class="hero" id="topo" aria-labelledby="hero-title">
+<section class="hero" id="topo" aria-labelledby="hero-title" data-present>
+  <div class="hero__light" aria-hidden="true"><i></i><i></i><i class="hero__beam"></i><i class="hero__beam hero__beam--2"></i></div>
   <div class="hero__inner">
     <div class="hero__copy">
       <p class="eyebrow hero__eyebrow" data-hero>Grupo V+ <span>·</span> Produções <span>·</span> Tickets <span>·</span> Sports</p>
       <h1 class="hero__title" id="hero-title" data-split>${esc(grupo.assinatura).replace('experiência', '<em>experiência</em>')}</h1>
-      <p class="hero__tags" data-hero>${grupo.frentes.map((f) => `<span>${esc(f)}</span>`).join('')}</p>
+      <p class="hero__fronts" data-hero>${grupo.frentes.map((f) => esc(f)).join('<span aria-hidden="true"> / </span>')}</p>
       <div class="hero__actions" data-hero>
         <a class="btn btn--white" href="#grupo">Conhecer o grupo</a>
         ${ext(links.whatsapp, 'Contato comercial', 'btn btn--ghost')}
@@ -109,17 +113,18 @@ const storyGallery = () => {
   const fotos = galeriaGrupo.filter((f) => existsSync(resolve('public', f.arquivo)));
   if (!fotos.length) return '<!-- Galeria “Conheça o Grupo V+”: aguardando fotos reais -->';
   return `<div class="gallery" aria-label="Fotografias de eventos do Grupo V+">
-      ${fotos.map((f, i) => `<figure class="gallery__item gallery__item--${i}" data-reveal-photo><img class="photo" src="${esc(f.arquivo)}" srcset="${esc(f.arquivoSm)} 720w, ${esc(f.arquivo)} 1400w" sizes="${i === 0 ? '(min-width: 1024px) 40vw, 100vw' : '(min-width: 1024px) 22vw, 50vw'}" alt="${esc(f.alt)}" width="${f.w}" height="${f.h}" loading="lazy" decoding="async" draggable="false"></figure>`).join('')}
+      ${fotos.map((f, i) => `<figure class="gallery__item gallery__item--${i} holo" data-holo${i === 0 ? ' data-mask-photo' : ' data-reveal-photo'}>
+        <div class="holo__card"><img class="photo" src="${esc(f.arquivo)}" srcset="${esc(f.arquivoSm)} 720w, ${esc(f.arquivo)} 1400w" sizes="${i === 0 ? '(min-width: 1024px) 40vw, 82vw' : '(min-width: 1024px) 22vw, 78vw'}" alt="${esc(f.alt)}" width="${f.w}" height="${f.h}" loading="lazy" decoding="async" draggable="false"><span class="holo__shine" aria-hidden="true"></span><span class="holo__glare" aria-hidden="true"></span></div>
+      </figure>`).join('')}
     </div>`;
 };
 export const story = () => `
-<section class="story" id="grupo" aria-labelledby="story-title">
+<section class="story" id="grupo" aria-labelledby="story-title" data-present>
   <div class="container story__grid">
     <div class="story__head">
-      <p class="eyebrow">01 — O Grupo</p>
-      <h2 class="display" id="story-title" data-split>Conheça o Grupo V+</h2>
-      <p class="story__lead" data-reveal>Uma marca institucional formada por três empresas com atuações próprias: produção de eventos, venda de ingressos e esporte.</p>
-      <div class="story__counter" aria-hidden="true"><span class="story__counter-now">01</span> / 0${historia.length}</div>
+      <h2 class="display" id="story-title" data-split>Conheça o <span class="hl">Grupo V+</span></h2>
+      <p class="story__lead" data-reveal>Três empresas com atuações próprias: produção de eventos, venda de ingressos e esporte.</p>
+      ${indicadores.length ? `<dl class="stats">${indicadores.map((n) => `<div class="stat" data-reveal><dt class="sr-only">${esc(n.rotulo)}</dt><dd><span class="stat__num" data-count="${n.valor}" data-prefix="${esc(n.prefixo)}">${esc(n.prefixo)}${n.valor.toLocaleString('pt-BR')}</span><span class="stat__label" aria-hidden="true">${esc(n.rotulo)}</span></dd></div>`).join('')}</dl>` : ''}
     </div>
     <div class="story__col">
     ${storyGallery()}
@@ -130,7 +135,6 @@ export const story = () => `
           <span class="story__mark" aria-hidden="true">${esc(b.marcador)}</span>
           <h3 data-split>${esc(b.titulo)}</h3>
           <p data-reveal>${esc(b.texto)}</p>
-          <p class="source" data-reveal>Fonte: ${esc(b.fonte)}</p>
         </div>
       </article>`).join('')}
     </div>
@@ -146,9 +150,8 @@ const ecoPanel = (e, i) => `
     <img class="eco-logo eco-logo--${e.tema}" src="${e.logo.src}" alt="${esc(e.logo.alt)}" width="${e.logo.w}" height="${e.logo.h}" loading="lazy" decoding="async" draggable="false">
   </div>
   <div class="eco-panel__body">
-    <p class="eco-panel__index" aria-hidden="true">0${i + 1} / 03</p>
     <h3 class="eco-panel__name">${esc(e.nome)}</h3>
-    <p class="eco-panel__resumo">${esc(e.resumo)}</p>
+    ${e.manifesto ? `<p class="eco-manifesto">${esc(e.manifesto.titulo).replace(e.manifesto.destaque, `<em>${esc(e.manifesto.destaque)}</em>`)}</p><p class="eco-panel__resumo">${esc(e.manifesto.texto)}</p>` : `<p class="eco-panel__resumo">${esc(e.resumo)}</p>`}
     ${e.frase ? `<p class="eco-panel__frase">“${esc(e.frase)}”</p>` : ''}
     ${e.destaques.length ? `<ul class="eco-panel__list">${e.destaques.map((d) => `<li>${esc(d)}</li>`).join('')}</ul>` : ''}
     ${e.publico ? `<p class="eco-panel__publico">${esc(e.publico)}</p>` : ''}
@@ -159,18 +162,16 @@ const ecoPanel = (e, i) => `
 </article>`;
 
 export const ecosystem = () => `
-<section class="eco" id="empresas" aria-labelledby="eco-title">
+<section class="eco" id="empresas" aria-labelledby="eco-title" data-present data-eco-theme="${empresas[0].tema}">
   <div class="eco__pin">
     <div class="container eco__head">
-      <p class="eyebrow">02 — Ecossistema V+</p>
       <h2 class="display" id="eco-title" data-split>Três empresas, um só grupo</h2>
       <div class="eco-tabs" role="tablist" aria-label="Empresas do Grupo V+">
-        ${empresas.map((e, i) => `<button class="eco-tab" id="tab-${e.id}" role="tab" type="button" aria-controls="eco-${e.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}" data-index="${i}"><span>0${i + 1}</span>${esc(e.nome)}</button>`).join('')}
+        ${empresas.map((e, i) => `<button class="eco-tab" id="tab-${e.id}" role="tab" type="button" aria-controls="eco-${e.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}" data-index="${i}">${esc(e.nome)}</button>`).join('')}
         <span class="eco-tabs__bar" aria-hidden="true"></span>
       </div>
     </div>
     <div class="eco__stage" data-theme="${empresas[0].tema}">
-      ${symbolDeco('eco__watermark')}
       <div class="eco__track">${empresas.map(ecoPanel).join('')}</div>
     </div>
   </div>
@@ -203,15 +204,14 @@ export const moments = () =>
 
 /* ---------------------------------------------------------------- VÍDEOS */
 export const films = () => `
-<section class="films" id="videos" aria-labelledby="films-title">
+<section class="films" id="videos" aria-labelledby="films-title" data-present>
   <div class="container films__grid">
     <div class="films__head">
-      <p class="eyebrow">03 — Experiências em movimento</p>
       <h2 class="display" id="films-title" data-split>Em movimento</h2>
       <ol class="films__list" role="list">
         ${videos.map((v, i) => `
         <li><button class="film-item${i === 0 ? ' is-active' : ''}" type="button" data-video="${i}" aria-pressed="${i === 0}">
-          <span class="film-item__n">0${i + 1}</span>
+          <span class="film-item__n" aria-hidden="true"></span>
           <span class="film-item__t"><strong>${esc(v.titulo)}</strong><em>${esc(v.empresa)} · ${esc(v.duracao)}</em></span>
         </button></li>`).join('')}
       </ol>
@@ -221,7 +221,6 @@ export const films = () => `
       <div class="player__screen">
         <video class="player__video" id="player-video" src="${videos[0].src}" poster="${videos[0].poster}" playsinline preload="none" width="${videos[0].w}" height="${videos[0].h}"></video>
         <button class="player__big" type="button" aria-label="Reproduzir vídeo: ${esc(videos[0].titulo)}"><span aria-hidden="true"></span></button>
-        ${corners}
         <p class="player__error" hidden>Não foi possível carregar o vídeo.</p>
       </div>
       <div class="player__bar">
@@ -247,12 +246,12 @@ export const testimonials = () =>
 
 /* ---------------------------------------------------------------- CONTATO */
 export const contact = () => `
-<section class="contact" id="contato" aria-labelledby="contact-title">
+<section class="contact" id="contato" aria-labelledby="contact-title" data-present>
+  <div class="contact__light" aria-hidden="true"><i class="hero__beam"></i></div>
   <svg class="edge edge--top" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0v62c200 46 420 58 640 30S1080 8 1260 34c80 12 140 30 180 44V0Z"/></svg>
   <div class="container contact__grid">
     <div class="contact__main">
       ${symbol('contact__symbol')}
-      <p class="eyebrow">04 — Contato comercial</p>
       <h2 class="contact__title" id="contact-title" data-split>${esc(grupo.encerramento)}</h2>
       <p class="contact__text" data-reveal>Para produções, parcerias e oportunidades comerciais, fale com o Grupo V+ pelo WhatsApp oficial.</p>
       <div class="contact__actions" data-reveal>

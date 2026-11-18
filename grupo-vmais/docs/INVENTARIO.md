@@ -107,3 +107,12 @@ Comprimi os vídeos para a web (H.264, faststart): hero 0,8 MB, 02 → 3,0 MB, 0
 - Os banners foram entregues já prontos, na proporção 3:1. **Não gerei versões em 1920×800**: para chegar a essa proporção seria preciso cortar logos e textos ou inventar fundo.
 - **A arte única que junta Produções e Sports não foi criada.** Montá-la exigiria redesenhar a tipografia e recompor as fotografias, o que as regras do pedido proíbem. Ela pode ser feita por um designer a partir dos banners entregues.
 - As artes verticais `-01` saíram do site porque repetiam as fotos dos banners. Continuam guardadas em `source-assets/vplus/`.
+
+## Atualização — refinamento final (V+ Live Experience)
+
+- **Banners novos:** V+ Produções ("as festas e experiências que já fazem parte da sua história") e V+ Sports ("Essa temporada tem campeonato novo") substituíram os banners anteriores dessas duas empresas. O banner da V+ Tickets continua o mesmo. Os originais ficam em `source-assets/banners/` e os banners antigos saíram de `public/`.
+- **Texto da V+ Sports:** "A V+ sempre soube produzir um evento." e "Dos palcos às arquibancadas, a V+ transformou experiências em momentos memoráveis. Agora, toda essa trajetória entra em campo." Textos enviados pelo Grupo V+. A frase parecida que existia em V+ Produções foi removida para não repetir.
+- **Indicadores:** "3 anos de trajetória", "+300 eventos realizados" e "1.000 clientes satisfeitos". Números **informados pelo Grupo V+** no refinamento; o site não traz nenhum outro número.
+- **HoloCard:** o código do React Bits citado como anexo não chegou. Fiz um componente equivalente em JS + CSS (`src/modules/holo.js`), com os mesmos parâmetros pedidos, sem WebGL, e por isso funciona em qualquer navegador.
+- **Limpeza editorial:** saíram os números decorativos acima dos títulos, as linhas de "Fonte" visíveis, o contador 01/03, as etiquetas em pílula, os cantos de visor e as frases repetidas. As fontes de cada texto continuam registradas em `src/data/content.js`.
+- **Hero:** a arte oficial continua pendente (`public/media/hero/hero-arte.webp`). Por isso o Hero mantém o símbolo oficial.

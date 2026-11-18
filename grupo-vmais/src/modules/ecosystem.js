@@ -38,6 +38,7 @@ export function initEcosystem() {
     });
     clearTimeout(leaveTimer);
     leaveTimer = setTimeout(() => panels.forEach((p) => p.classList.remove('is-leaving')), 950);
+    section.dataset.ecoTheme = panels[i].className.match(/eco-panel--(\w+)/)?.[1] || '';
     tabs.forEach((t, k) => {
       t.setAttribute('aria-selected', String(k === i));
       t.tabIndex = k === i ? 0 : -1;
@@ -90,6 +91,17 @@ export function initEcosystem() {
     panels.forEach((p) => p.removeAttribute('aria-hidden'));
     track.scrollLeft = active * track.clientWidth;
     moveBar();
+  };
+
+  // API usada pelo modo apresentação: avança/volta entre as empresas
+  window.__vmaisEco = {
+    step(dir) {
+      const next = active + dir;
+      if (next < 0 || next >= n) return false;
+      goTo(next);
+      if (isDesktop()) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return true;
+    },
   };
 
   const apply = () => { (mq.matches ? enable : disable)(); ScrollTrigger.refresh(); };

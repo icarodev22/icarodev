@@ -36,7 +36,9 @@ src/
     motion.js          ← reveals, text reveal, máscaras, parallax
     ecosystem.js       ← painéis das 3 empresas (abas no desktop, swipe no mobile)
     player.js          ← player de vídeo (com som)
-    header.js          ← cabeçalho e menu compacto (três traços)
+    header.js          ← cabeçalho, menu compacto e indicador da seção ativa
+    holo.js            ← efeito HoloCard nas fotos do Grupo (não clicáveis)
+    present.js         ← modo apresentação (tecla P, setas, Esc)
     split.js           ← divisão de títulos em palavras
   styles/main.css      ← tokens de cor e estilos
 public/
