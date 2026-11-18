@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="pt-BR" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Grupo V+ — V+ Produções, V+ Tickets e V+ Sports</title>
+  <meta name="description" content="Grupo V+: tudo que faz uma experiência acontecer. Produção de eventos sociais e esportivos, venda de ingressos e campeonatos — V+ Produções, V+ Tickets e V+ Sports.">
+  <meta name="theme-color" content="#8338EB">
+  <meta name="author" content="Grupo V+">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Grupo V+">
+  <meta property="og:title" content="Grupo V+ — Tudo que faz uma experiência acontecer.">
+  <meta property="og:description" content="V+ Produções, V+ Tickets e V+ Sports. Eventos universitários, esportes e ingressos.">
+  <meta property="og:image" content="/brand/og-grupo-vmais.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/brand/icon-32.png">
+  <link rel="apple-touch-icon" href="/brand/icon-180.png">
+  <link rel="preload" as="image" href="/media/img/poster-hero.webp" fetchpriority="high">
+  <script>
+    // Define o estado da abertura antes do primeiro paint (evita flash do conteúdo).
+    (function () {
+      var d = document.documentElement; d.className = d.className.replace('no-js', 'js');
+      try {
+        var force = /[?&]intro=1/.test(location.search);
+        var seen = sessionStorage.getItem('vmais-intro');
+        var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if ((force || !seen) && !reduce && !location.hash) d.classList.add('has-intro');
+      } catch (e) {}
+      // Segurança: nunca bloquear o conteúdo se a animação falhar.
+      setTimeout(function () { d.classList.remove('has-intro'); d.classList.add('intro-done'); }, 5000);
+    })();
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Grupo V+",
+    "slogan": "Tudo que faz uma experiência acontecer.",
+    "foundingDate": "2023",
+    "sameAs": [
+      "https://www.instagram.com/grupovmais/",
+      "https://www.instagram.com/vmaistickets/",
+      "https://www.instagram.com/sportsvmais/",
+      "https://linktr.ee/grupovmais",
+      "https://vmaistickets.com.br"
+    ],
+    "subOrganization": [
+      { "@type": "Organization", "name": "V+ Produções" },
+      { "@type": "Organization", "name": "V+ Tickets", "url": "https://vmaistickets.com.br" },
+      { "@type": "Organization", "name": "V+ Sports" }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <!--INTRO-->
+  <!--HEADER-->
+  <main id="conteudo">
+    <!--MAIN-->
+  </main>
+  <!--FOOTER-->
+  <script id="videos-data" type="application/json"><!--VIDEOS_JSON--></script>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
