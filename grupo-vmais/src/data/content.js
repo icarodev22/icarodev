@@ -152,8 +152,6 @@ export const empresas = [
     cupom: { codigo: 'VMAIS', texto: 'Aplique o cupom VMAIS no checkout.' },
     links: [
       { rotulo: 'Acessar vmaistickets.com.br', url: links.tickets, principal: true },
-      { rotulo: 'Para produtores', url: links.ticketsProdutores },
-      { rotulo: 'Instagram @vmaistickets', url: links.instagram.tickets.url },
     ],
     banner: { src: 'media/banners/banner-tickets-1086.webp', srcLg: 'media/banners/banner-tickets-1920.webp', srcSm: 'media/banners/banner-tickets-720.webp', alt: 'Banner V+ Tickets: “O mesmo cuidado da V+, agora também na hora de garantir seu ingresso.”', w: 1920, h: 640 },
   },

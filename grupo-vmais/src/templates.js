@@ -142,10 +142,10 @@ const ecoPanel = (e, i) => `
   <div class="eco-panel__info">
     <div class="eco-panel__brand">
       <img class="eco-logo eco-logo--${e.tema}" src="${e.logo.src}" alt="${esc(e.logo.alt)}" width="${e.logo.w}" height="${e.logo.h}" loading="lazy" decoding="async" draggable="false">
-      <h3 class="eco-panel__name">${esc(e.nome)}</h3>
+      <h3 class="eco-panel__name sr-only">${esc(e.nome)}</h3>
     </div>
     <div class="eco-panel__body">
-      ${e.manifesto ? `<p class="eco-manifesto">${esc(e.manifesto.titulo).replace(e.manifesto.destaque, `<em>${esc(e.manifesto.destaque)}</em>`)}</p><p class="eco-panel__resumo">${esc(e.manifesto.texto)}</p>` : `<p class="eco-panel__resumo">${esc(e.resumo)}</p>`}
+      <p class="eco-panel__resumo">${esc(e.manifesto ? e.manifesto.texto : e.resumo)}</p>
       ${e.frase ? `<p class="eco-panel__frase">${esc(e.frase)}</p>` : ''}
       ${e.destaques.length ? `<ul class="eco-panel__list">${e.destaques.map((d) => `<li>${esc(d)}</li>`).join('')}</ul>` : ''}
       ${e.publico ? `<p class="eco-panel__publico">${esc(e.publico)}</p>` : ''}

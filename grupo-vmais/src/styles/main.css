@@ -749,3 +749,33 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--yellow); outlin
   .contact__grid { grid-template-columns: minmax(0, 1fr); }
   .contact__main { max-width: 620px; }
 }
+
+/* =====================================================================
+   AJUSTES — logo centralizada no hero, cabeçalho e abas das empresas
+   ===================================================================== */
+/* Hero: conteúdo sempre abaixo do cabeçalho */
+.hero { padding-top: calc(var(--header-h) + 40px); }
+.site-header.is-solid { background: rgba(18,10,28,.92); }
+/* Hero (layout empilhado): símbolo completo (V e +) centralizado abaixo dos botões */
+@media (max-width: 767px) {
+  .hero__media--symbol { justify-self: center; width: min(64%, 260px); margin: 28px auto 0; }
+  .hero__media--symbol .hero__symbol { margin: 0 auto; }
+}
+/* Abas: as três sempre inteiras, distribuídas na largura, sem recorte */
+.eco-tabs { min-width: 0; }
+.eco-tab { min-width: 0; line-height: 1.15; }
+@media (max-width: 767px) {
+  .eco-tabs { width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .eco-tab {
+    padding: 8px 4px; min-height: 48px; white-space: normal; overflow-wrap: anywhere; text-align: center;
+    font-size: clamp(.74rem, 3.4vw, .95rem);
+  }
+}
+/* Painéis: altura sempre do conteúdo (sem altura fixa nem recorte) */
+.eco__stage { height: auto; overflow: visible; }
+.eco-panel__info { gap: 20px; }
+.eco-panel__brand { gap: 0; }
+/* Telas estreitas com texto ampliado: nenhuma palavra longa empurra a página */
+.ed > * { min-width: 0; }
+.ed-statement { overflow-wrap: break-word; }
+@media (max-width: 380px) { .ed-statement { font-size: clamp(1.9rem, 1.1rem + 5vw, 2.4rem); } }

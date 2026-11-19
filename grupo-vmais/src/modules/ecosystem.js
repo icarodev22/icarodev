@@ -82,7 +82,7 @@ export function initEcosystem() {
         stage.style.height = `${h0}px`;
         gsap.to(stage, { height: h1, duration: 0.35, ease: 'power2.inOut', onComplete: () => { stage.style.height = ''; refresh(); } });
         const banner = next.querySelector('.eco-banner');
-        const parts = [next.querySelector('.eco-logo'), next.querySelector('.eco-panel__name'), ...next.querySelectorAll('.eco-panel__body > *')].filter(Boolean);
+        const parts = [next.querySelector('.eco-logo'), ...next.querySelectorAll('.eco-panel__body > *')].filter(Boolean);
         gsap.fromTo(banner, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out', clearProps: 'opacity,transform' });
         gsap.fromTo(parts, { opacity: 0, y: 8 }, {
           opacity: 1, y: 0, duration: 0.35, ease: 'power2.out', stagger: 0.03, delay: 0.08, clearProps: 'opacity,transform',
@@ -125,6 +125,9 @@ export function initEcosystem() {
     },
   };
 
+  if ('ResizeObserver' in window) {
+    new ResizeObserver(() => { if (!busy) stage.style.height = ''; moveBar(); }).observe(stage);
+  }
   window.addEventListener('resize', moveBar, { passive: true });
   if (document.fonts?.ready) document.fonts.ready.then(moveBar);
   updateTabs(false);

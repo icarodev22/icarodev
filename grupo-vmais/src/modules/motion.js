@@ -26,7 +26,7 @@ export function heroEntrance(afterIntro) {
   root.classList.add('hero-ready');
 
   const tl = gsap.timeline({ delay: afterIntro ? 0.05 : 0.15, defaults: { ease: 'expo.out' } });
-  tl.fromTo(hero, { scale: afterIntro ? 1.06 : 1 }, { scale: 1, duration: 1.2, clearProps: 'transform' }, 0)
+  tl.fromTo(hero.querySelector('.hero__inner'), { scale: afterIntro ? 1.04 : 1 }, { scale: 1, duration: 1.2, clearProps: 'transform' }, 0)
     .to(items[0], { y: 0, opacity: 1, duration: 0.8 }, 0.1)
     .to(words, { yPercent: 0, duration: 0.85, ease: 'power4.out', stagger: 0.035 }, 0.15)
     .to(symbol, { scale: 1, rotation: 0, opacity: 1, duration: 1.3 }, 0.35)
