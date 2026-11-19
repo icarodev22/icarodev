@@ -8,6 +8,7 @@ import { initEcosystem } from './modules/ecosystem.js';
 import { initPlayer, initHeroVideo } from './modules/player.js';
 import { initHolo } from './modules/holo.js';
 import { initPresentation } from './modules/present.js';
+import { initContact } from './modules/contact.js';
 
 const safe = (fn, name) => { try { fn(); } catch (e) { console.error(`[V+] ${name}:`, e); } };
 
@@ -18,6 +19,7 @@ safe(initEcosystem, 'ecossistema');
 safe(scrollMotion, 'motion');
 safe(initHolo, 'holo');
 safe(initPresentation, 'apresentação');
+safe(initContact, 'contato');
 
 safe(() => runIntro({ onReveal: (afterIntro) => safe(() => heroEntrance(afterIntro), 'hero') }), 'intro');
 

@@ -34,11 +34,12 @@ src/
   modules/
     intro.js           ← abertura cinematográfica
     motion.js          ← reveals, text reveal, máscaras, parallax
-    ecosystem.js       ← painéis das 3 empresas (abas no desktop, swipe no mobile)
+    ecosystem.js       ← seletor das 3 empresas (tabs acessíveis, toque e teclado)
     player.js          ← player de vídeo (com som)
     header.js          ← cabeçalho, menu compacto e indicador da seção ativa
     holo.js            ← efeito HoloCard nas fotos do Grupo (não clicáveis)
     present.js         ← modo apresentação (tecla P, setas, Esc)
+    contact.js         ← contato inteligente (mensagem pronta para o WhatsApp)
     split.js           ← divisão de títulos em palavras
   styles/main.css      ← tokens de cor e estilos
 public/

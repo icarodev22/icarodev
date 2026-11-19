@@ -21,7 +21,8 @@ export function initHolo() {
     if (!card) return;
     el.style.setProperty('--holo-i', String(cfg.intensity));
     el.style.setProperty('--holo-glare', String(cfg.glare));
-    if (reduce) return; // movimento reduzido: fotografia estática, sem reflexos animados
+    // Movimento reduzido ou toque: fotografia estática com reflexo discreto (prioridade à rolagem)
+    if (reduce || !fine) return;
 
     const st = { tx: 0.5, ty: 0.5, x: 0.5, y: 0.5, hover: 0, h: 0, visible: false, raf: 0, seed: i * 1.7 };
     const frame = (t) => {

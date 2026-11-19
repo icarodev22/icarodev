@@ -75,19 +75,36 @@ export function scrollMotion() {
     scrollTrigger: { trigger: '.films__list', start: 'top 88%', once: true },
   });
 
+  mm.add('(min-width: 1024px)', () => {
   // Foto principal do Grupo — Image Mask Reveal (somente nela)
-  document.querySelectorAll('[data-mask-photo]').forEach((fig) => {
-    const img = fig.querySelector('img');
-    const tl = gsap.timeline({ scrollTrigger: { trigger: fig, start: 'top 85%', once: true } });
-    tl.fromTo(fig, { clipPath: 'inset(100% 0% 0% 0% round 12px)' }, { clipPath: 'inset(0% 0% 0% 0% round 12px)', duration: 1.2, ease: 'expo.inOut', clearProps: 'clipPath' })
-      .fromTo(img, { scale: 1.14 }, { scale: 1, duration: 1.5, ease: 'expo.out' }, 0.1);
+    document.querySelectorAll('[data-mask-photo]').forEach((fig) => {
+      const img = fig.querySelector('img');
+      const tl = gsap.timeline({ scrollTrigger: { trigger: fig, start: 'top 85%', once: true } });
+      tl.fromTo(fig, { clipPath: 'inset(100% 0% 0% 0% round 12px)' }, { clipPath: 'inset(0% 0% 0% 0% round 12px)', duration: 1.2, ease: 'expo.inOut', clearProps: 'clipPath' })
+        .fromTo(img, { scale: 1.14 }, { scale: 1, duration: 1.5, ease: 'expo.out' }, 0.1);
+    });
+  
+    // Demais fotografias — entrada cinematográfica progressiva
+    gsap.set('[data-reveal-photo]', { opacity: 0 });
+    ScrollTrigger.batch('[data-reveal-photo]', {
+      start: 'top 92%', once: true,
+      onEnter: (els) => gsap.fromTo(els, { y: 48, opacity: 0, scale: 0.97 }, { y: 0, opacity: 1, scale: 1, duration: 1.1, ease: 'power3.out', stagger: 0.12 }),
+    });
   });
 
-  // Demais fotografias — entrada cinematográfica progressiva
-  gsap.set('[data-reveal-photo]', { opacity: 0 });
-  ScrollTrigger.batch('[data-reveal-photo]', {
-    start: 'top 92%', once: true,
-    onEnter: (els) => gsap.fromTo(els, { y: 48, opacity: 0, scale: 0.97 }, { y: 0, opacity: 1, scale: 1, duration: 1.1, ease: 'power3.out', stagger: 0.12 }),
+  // Mobile/tablet: galeria horizontal controlada pela rolagem vertical (pin + scrub)
+  mm.add('(max-width: 1023px)', () => {
+    const gal = document.querySelector('.ed-gallery');
+    const track = gal?.querySelector('.ed-track');
+    if (!gal || !track) return undefined;
+    gal.classList.add('is-pinned');
+    gal.scrollLeft = 0;
+    const dist = () => Math.max(0, track.scrollWidth - gal.clientWidth);
+    const tween = gsap.to(track, {
+      x: () => -dist(), ease: 'none',
+      scrollTrigger: { trigger: gal, start: 'center center', end: () => `+=${dist()}`, pin: true, scrub: 0.5, anticipatePin: 1, invalidateOnRefresh: true },
+    });
+    return () => { tween.scrollTrigger?.kill(); tween.kill(); gsap.set(track, { clearProps: 'transform' }); gal.classList.remove('is-pinned'); };
   });
 
   mm.add('(min-width: 768px)', () => {

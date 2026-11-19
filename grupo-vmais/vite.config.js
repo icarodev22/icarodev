@@ -18,7 +18,8 @@ function institutionalHtml() {
         .replace('<!--HEADER-->', r.header)
         .replace('<!--MAIN-->', r.main)
         .replace('<!--FOOTER-->', r.footer)
-        .replace('<!--VIDEOS_JSON-->', t.videosJSON());
+        .replace('<!--VIDEOS_JSON-->', t.videosJSON())
+        .replace('<!--CONTATO_JSON-->', t.contatoJSON());
     },
   };
 }

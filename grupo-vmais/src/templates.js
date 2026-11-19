@@ -6,7 +6,7 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import {
-  links, grupo, historia, galeriaGrupo, indicadores, empresas, producoes, momentos, depoimentos,
+  links, grupo, historia, galeriaGrupo, indicadores, contato, secaoVideos, whatsappPorEmpresa, empresas, producoes, momentos, depoimentos,
   videos, heroArte,
 } from './data/content.js';
 import { VIEWBOX, V_PATH, PLUS_PATH } from './brand/vplus-paths.js';
@@ -66,7 +66,7 @@ export const header = () => `
     ${symbolDeco('brand__mark')}
     <span class="brand__name">Grupo V+</span>
   </a>
-  ${ext(links.whatsapp, 'Contato comercial', 'btn btn--sm btn--yellow header-cta')}
+  <a class="btn btn--sm btn--yellow header-cta" href="#contato">Contato comercial</a>
   <div class="menu">
     <span class="menu-current" id="menu-current" aria-hidden="true"></span>
     <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Abrir menu">
@@ -75,7 +75,7 @@ export const header = () => `
     <nav class="menu-panel" id="site-menu" aria-label="Principal" hidden>
       <ul>${navItems.map(([h, t]) => `<li><a href="${h}">${t}</a></li>`).join('')}</ul>
       <div class="menu-panel__foot">
-        ${ext(links.whatsapp, 'Contato comercial', 'menu-panel__cta')}
+        <a class="menu-panel__cta" href="#contato">Contato comercial</a>
         <button class="present-toggle" id="present-toggle" type="button" aria-pressed="false"><span class="present-toggle__dot" aria-hidden="true"></span>Modo apresentação <kbd>P</kbd></button>
         <p>${ext(links.instagram.grupo.url, links.instagram.grupo.handle)} ${ext(links.instagram.tickets.url, links.instagram.tickets.handle)} ${ext(links.instagram.sports.url, links.instagram.sports.handle)}</p>
       </div>
@@ -95,7 +95,7 @@ export const hero = () => `
       <p class="hero__fronts" data-hero>${grupo.frentes.map((f) => esc(f)).join('<span aria-hidden="true"> / </span>')}</p>
       <div class="hero__actions" data-hero>
         <a class="btn btn--white" href="#grupo">Conhecer o grupo</a>
-        ${ext(links.whatsapp, 'Contato comercial', 'btn btn--ghost')}
+        <a class="btn btn--ghost" href="#contato">Contato comercial</a>
       </div>
     </div>
     <div class="hero__media${heroArteExiste() ? '' : ' hero__media--symbol'}" data-hero-media>
@@ -108,72 +108,67 @@ export const hero = () => `
 </section>`;
 
 /* ---------------------------------------------------------------- HISTÓRIA */
-/** Galeria de fotos reais: só renderiza arquivos que existem em public/. */
-const storyGallery = () => {
+/** Fotos reais (só as que existem em public/). Fotos: somente apresentação, com HoloCard. */
+const fotoGrupo = (f, i) => `<figure class="ed-photo ed-photo--${i} holo" style="aspect-ratio: ${f.w} / ${f.h}" data-holo${i === 0 ? ' data-mask-photo' : ' data-reveal-photo'}>
+        <div class="holo__card"><img class="photo" src="${esc(f.arquivo)}" srcset="${esc(f.arquivoSm)} 720w, ${esc(f.arquivo)} 1400w" sizes="(min-width: 768px) 40vw, 60vw" alt="${esc(f.alt)}" width="${f.w}" height="${f.h}" loading="lazy" decoding="async" draggable="false"><span class="holo__shine" aria-hidden="true"></span><span class="holo__glare" aria-hidden="true"></span></div>
+      </figure>`;
+
+const numero = (n) => `<strong class="ed-num" data-count="${n.valor}" data-prefix="${esc(n.prefixo)}">${esc(n.prefixo)}${n.valor.toLocaleString('pt-BR')}</strong>`;
+
+export const story = () => {
   const fotos = galeriaGrupo.filter((f) => existsSync(resolve('public', f.arquivo)));
-  if (!fotos.length) return '<!-- Galeria “Conheça o Grupo V+”: aguardando fotos reais -->';
-  return `<div class="gallery" aria-label="Fotografias de eventos do Grupo V+">
-      ${fotos.map((f, i) => `<figure class="gallery__item gallery__item--${i} holo" data-holo${i === 0 ? ' data-mask-photo' : ' data-reveal-photo'}>
-        <div class="holo__card"><img class="photo" src="${esc(f.arquivo)}" srcset="${esc(f.arquivoSm)} 720w, ${esc(f.arquivo)} 1400w" sizes="${i === 0 ? '(min-width: 1024px) 40vw, 82vw' : '(min-width: 1024px) 22vw, 78vw'}" alt="${esc(f.alt)}" width="${f.w}" height="${f.h}" loading="lazy" decoding="async" draggable="false"><span class="holo__shine" aria-hidden="true"></span><span class="holo__glare" aria-hidden="true"></span></div>
-      </figure>`).join('')}
-    </div>`;
-};
-export const story = () => `
+  const [anos, eventos, clientes] = indicadores;
+  return `
 <section class="story" id="grupo" aria-labelledby="story-title" data-present>
-  <div class="container story__grid">
-    <div class="story__head">
-      <h2 class="display" id="story-title" data-split>Conheça o <span class="hl">Grupo V+</span></h2>
-      <p class="story__lead" data-reveal>Três empresas com atuações próprias: produção de eventos, venda de ingressos e esporte.</p>
-      ${indicadores.length ? `<dl class="stats">${indicadores.map((n) => `<div class="stat" data-reveal><dt class="sr-only">${esc(n.rotulo)}</dt><dd><span class="stat__num" data-count="${n.valor}" data-prefix="${esc(n.prefixo)}">${esc(n.prefixo)}${n.valor.toLocaleString('pt-BR')}</span><span class="stat__label" aria-hidden="true">${esc(n.rotulo)}</span></dd></div>`).join('')}</dl>` : ''}
-    </div>
-    <div class="story__col">
-    ${storyGallery()}
-    <div class="story__steps">
-      ${historia.map((b, i) => `
-      <article class="story__step" data-step="${i}">
-        <div class="story__text">
-          <span class="story__mark" aria-hidden="true">${esc(b.marcador)}</span>
-          <h3 data-split>${esc(b.titulo)}</h3>
-          <p data-reveal>${esc(b.texto)}</p>
-        </div>
-      </article>`).join('')}
-    </div>
-    </div>
+  <div class="container ed">
+    <header class="ed-head">
+      <h2 class="ed-kicker" id="story-title">Conheça o Grupo V+</h2>
+      <p class="ed-statement" data-split>Nascida em 2023, a V+ vem transformando momentos em <em>experiências inesquecíveis.</em></p>
+    </header>
+    <p class="ed-copy" data-reveal>Somos o mais (+) que você procura: produção de eventos sociais e esportivos, ingressos e campeonatos, com a V+ Produções, a V+ Tickets e a V+ Sports.</p>
+    ${fotos.length ? `<div class="ed-gallery" aria-label="Fotografias de eventos do Grupo V+"><div class="ed-track">
+      ${fotos.map(fotoGrupo).join('')}
+    </div></div>` : '<!-- Galeria: aguardando fotos reais -->'}
+    ${indicadores.length === 3 ? `<p class="ed-figures" data-reveal>Em ${numero(anos)} anos de trajetória, ${numero(eventos)} eventos realizados e ${numero(clientes)} clientes satisfeitos.</p>` : ''}
+    <blockquote class="ed-quote" data-reveal><p>“Aqui na V+, a gente cuida de tudo, do começo até o último minuto do evento. Porque o básico nunca foi o suficiente.”</p></blockquote>
   </div>
 </section>`;
+};
 
 /* ---------------------------------------------------------------- ECOSSISTEMA */
 const ecoPanel = (e, i) => `
-<article class="eco-panel eco-panel--${e.tema}${i === 0 ? ' is-active' : ''}" id="eco-${e.id}" role="tabpanel" aria-labelledby="tab-${e.id}" data-index="${i}">
-  ${e.banner ? `<figure class="eco-banner"><img class="photo" src="${esc(e.banner.src)}" srcset="${esc(e.banner.srcSm)} 720w, ${esc(e.banner.src)} 1086w, ${esc(e.banner.srcLg)} 1920w" sizes="100vw" alt="${esc(e.banner.alt)}" width="${e.banner.w}" height="${e.banner.h}" loading="lazy" decoding="async" draggable="false"></figure>` : ''}
-  <div class="eco-panel__brand">
-    <img class="eco-logo eco-logo--${e.tema}" src="${e.logo.src}" alt="${esc(e.logo.alt)}" width="${e.logo.w}" height="${e.logo.h}" loading="lazy" decoding="async" draggable="false">
+<article class="eco-panel eco-panel--${e.tema}" id="eco-${e.id}" role="tabpanel" aria-labelledby="tab-${e.id}" tabindex="0" data-index="${i}"${i === 0 ? '' : ' hidden'}>
+  ${e.banner ? `<figure class="eco-banner"><img class="photo" src="${esc(e.banner.src)}" srcset="${esc(e.banner.srcSm)} 720w, ${esc(e.banner.src)} 1086w, ${esc(e.banner.srcLg)} 1920w" sizes="(min-width: 1440px) 1328px, calc(100vw - 2 * var(--gutter, 16px))" alt="${esc(e.banner.alt)}" width="${e.banner.w}" height="${e.banner.h}" loading="lazy" decoding="async" draggable="false"></figure>` : ''}
+  <div class="eco-panel__info">
+    <div class="eco-panel__brand">
+      <img class="eco-logo eco-logo--${e.tema}" src="${e.logo.src}" alt="${esc(e.logo.alt)}" width="${e.logo.w}" height="${e.logo.h}" loading="lazy" decoding="async" draggable="false">
+      <h3 class="eco-panel__name">${esc(e.nome)}</h3>
+    </div>
+    <div class="eco-panel__body">
+      ${e.manifesto ? `<p class="eco-manifesto">${esc(e.manifesto.titulo).replace(e.manifesto.destaque, `<em>${esc(e.manifesto.destaque)}</em>`)}</p><p class="eco-panel__resumo">${esc(e.manifesto.texto)}</p>` : `<p class="eco-panel__resumo">${esc(e.resumo)}</p>`}
+      ${e.frase ? `<p class="eco-panel__frase">${esc(e.frase)}</p>` : ''}
+      ${e.destaques.length ? `<ul class="eco-panel__list">${e.destaques.map((d) => `<li>${esc(d)}</li>`).join('')}</ul>` : ''}
+      ${e.publico ? `<p class="eco-panel__publico">${esc(e.publico)}</p>` : ''}
+      ${e.cupom ? `<p class="eco-cupom"><span>Cupom</span><strong>${esc(e.cupom.codigo)}</strong><em>${esc(e.cupom.texto)}</em></p>` : ''}
+      <div class="eco-panel__links">
+        <a class="btn btn--yellow btn--sm" href="#contato" data-contact="${e.id}">Falar com a ${esc(e.nome)}</a>
+        ${e.links.map((l) => ext(l.url, esc(l.rotulo), 'link-arrow')).join('')}
+      </div>
+    </div>
   </div>
-  <div class="eco-panel__body">
-    <h3 class="eco-panel__name">${esc(e.nome)}</h3>
-    ${e.manifesto ? `<p class="eco-manifesto">${esc(e.manifesto.titulo).replace(e.manifesto.destaque, `<em>${esc(e.manifesto.destaque)}</em>`)}</p><p class="eco-panel__resumo">${esc(e.manifesto.texto)}</p>` : `<p class="eco-panel__resumo">${esc(e.resumo)}</p>`}
-    ${e.frase ? `<p class="eco-panel__frase">“${esc(e.frase)}”</p>` : ''}
-    ${e.destaques.length ? `<ul class="eco-panel__list">${e.destaques.map((d) => `<li>${esc(d)}</li>`).join('')}</ul>` : ''}
-    ${e.publico ? `<p class="eco-panel__publico">${esc(e.publico)}</p>` : ''}
-    ${e.cupom ? `<p class="eco-cupom"><span>Cupom</span><strong>${esc(e.cupom.codigo)}</strong><em>${esc(e.cupom.texto)}</em></p>` : ''}
-    <div class="eco-panel__links">${e.links.map((l) => ext(l.url, esc(l.rotulo), l.principal ? 'btn btn--yellow' : 'link-arrow')).join('')}</div>
-  </div>
-  ${e.midia.length ? `<div class="eco-panel__media">${e.midia.map((m) => `<figure class="eco-art">${m.arte ? art(m) : photo(m)}</figure>`).join('')}</div>` : ''}
 </article>`;
 
 export const ecosystem = () => `
-<section class="eco" id="empresas" aria-labelledby="eco-title" data-present data-eco-theme="${empresas[0].tema}">
-  <div class="eco__pin">
-    <div class="container eco__head">
-      <h2 class="display" id="eco-title" data-split>Três empresas, um só grupo</h2>
+<section class="eco" id="empresas" aria-labelledby="eco-title" data-present>
+  <div class="container">
+    <div class="eco__head">
+      <h2 class="display eco__title" id="eco-title" data-split>Três empresas, um só grupo</h2>
       <div class="eco-tabs" role="tablist" aria-label="Empresas do Grupo V+">
         ${empresas.map((e, i) => `<button class="eco-tab" id="tab-${e.id}" role="tab" type="button" aria-controls="eco-${e.id}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}" data-index="${i}">${esc(e.nome)}</button>`).join('')}
         <span class="eco-tabs__bar" aria-hidden="true"></span>
       </div>
     </div>
-    <div class="eco__stage" data-theme="${empresas[0].tema}">
-      <div class="eco__track">${empresas.map(ecoPanel).join('')}</div>
-    </div>
+    <div class="eco__stage">${empresas.map(ecoPanel).join('')}</div>
   </div>
 </section>`;
 
@@ -207,7 +202,9 @@ export const films = () => `
 <section class="films" id="videos" aria-labelledby="films-title" data-present>
   <div class="container films__grid">
     <div class="films__head">
-      <h2 class="display" id="films-title" data-split>Em movimento</h2>
+      <p class="eyebrow films__label">${esc(secaoVideos.rotulo)}</p>
+      <h2 class="display films__title" id="films-title" data-split>${esc(secaoVideos.titulo)}</h2>
+      <p class="films__intro" data-reveal>${esc(secaoVideos.texto)}</p>
       <ol class="films__list" role="list">
         ${videos.map((v, i) => `
         <li><button class="film-item${i === 0 ? ' is-active' : ''}" type="button" data-video="${i}" aria-pressed="${i === 0}">
@@ -252,19 +249,38 @@ export const contact = () => `
   <div class="container contact__grid">
     <div class="contact__main">
       ${symbol('contact__symbol')}
-      <h2 class="contact__title" id="contact-title" data-split>${esc(grupo.encerramento)}</h2>
-      <p class="contact__text" data-reveal>Para produções, parcerias e oportunidades comerciais, fale com o Grupo V+ pelo WhatsApp oficial.</p>
-      <div class="contact__actions" data-reveal>
-        ${ext(links.whatsapp, 'Falar no WhatsApp', 'btn btn--yellow btn--lg')}
-        <p class="contact__phone">WhatsApp oficial · ${links.whatsappExibicao}</p>
-      </div>
+      <h2 class="contact__title" id="contact-title" data-split>${esc(contato.titulo)}</h2>
+      <p class="contact__text" data-reveal>${esc(contato.texto)}</p>
     </div>
-    <ul class="contact__links" role="list">
-      <li data-reveal><span>V+ Produções</span>${ext(links.instagram.grupo.url, links.instagram.grupo.handle, 'link-arrow')}</li>
-      <li data-reveal><span>V+ Tickets</span>${ext(links.tickets, 'vmaistickets.com.br', 'link-arrow')}${ext(links.instagram.tickets.url, links.instagram.tickets.handle, 'link-arrow')}</li>
-      <li data-reveal><span>V+ Sports</span>${ext(links.instagram.sports.url, links.instagram.sports.handle, 'link-arrow')}</li>
-      <li data-reveal><span>Todos os canais</span>${ext(links.linktree, 'linktr.ee/grupovmais', 'link-arrow')}</li>
-    </ul>
+    <form class="lead" id="lead-form" novalidate>
+      <fieldset class="lead__services">
+        <legend class="lead__label">Tipo de projeto</legend>
+        <div class="lead__options">
+          ${contato.servicos.map((sv, i) => `<label class="lead__option">
+            <input type="radio" name="servico" value="${sv.id}"${i === 0 ? ' checked' : ''}>
+            <span class="lead__option-name">${esc(sv.nome)}</span>
+            <span class="lead__option-desc">${esc(sv.descricao)}</span>
+          </label>`).join('')}
+        </div>
+      </fieldset>
+      <div class="lead__field">
+        <label class="lead__label" for="lead-nome">Nome</label>
+        <input id="lead-nome" name="nome" type="text" autocomplete="name" required maxlength="80" aria-describedby="lead-nome-erro">
+        <p class="lead__error" id="lead-nome-erro" hidden>Informe seu nome para continuar.</p>
+      </div>
+      <div class="lead__field">
+        <label class="lead__label" for="lead-sobre">Sobre o projeto</label>
+        <textarea id="lead-sobre" name="sobre" rows="3" maxlength="600" placeholder="Conte em poucas linhas o que você está planejando."></textarea>
+      </div>
+      <div class="lead__field lead__field--date">
+        <label class="lead__label" for="lead-data">Data prevista <span>(opcional)</span></label>
+        <input id="lead-data" name="data" type="date">
+      </div>
+      <div class="lead__actions">
+        <button class="btn btn--yellow btn--lg lead__submit" type="submit">${esc(contato.botao)}</button>
+        <p class="lead__note">Abre o WhatsApp oficial com a mensagem pronta. O envio é feito por você, no WhatsApp.</p>
+      </div>
+    </form>
   </div>
 </section>`;
 
@@ -273,6 +289,14 @@ export const footer = () => `
   <div class="container site-footer__grid">
     <a class="brand" href="#topo" aria-label="Grupo V+ — voltar ao início">${symbolDeco('brand__mark')}<span class="brand__name">Grupo V+</span></a>
     <nav aria-label="Rodapé"><ul>${navItems.map(([h, t]) => `<li><a href="${h}">${t}</a></li>`).join('')}</ul></nav>
+    <ul class="site-footer__links" aria-label="Canais oficiais">
+      <li>${ext(links.instagram.grupo.url, links.instagram.grupo.handle)}</li>
+      <li>${ext(links.instagram.tickets.url, links.instagram.tickets.handle)}</li>
+      <li>${ext(links.instagram.sports.url, links.instagram.sports.handle)}</li>
+      <li>${ext(links.tickets, 'vmaistickets.com.br')}</li>
+      <li>${ext(links.linktree, 'Linktree')}</li>
+      <li>${ext(links.whatsapp, `WhatsApp ${links.whatsappExibicao}`)}</li>
+    </ul>
     <p class="site-footer__copy">© ${new Date().getFullYear()} Grupo V+ · V+ Produções · V+ Tickets · V+ Sports</p>
   </div>
 </footer>`;
@@ -283,5 +307,7 @@ export const renderAll = () => ({
   main: [hero(), story(), ecosystem(), portfolio(), moments(), films(), testimonials(), contact()].join('\n'),
   footer: footer(),
 });
+
+export const contatoJSON = () => JSON.stringify({ whatsapp: whatsappPorEmpresa, servicos: contato.servicos.map(({ id, abertura, pedido }) => ({ id, abertura, pedido })) });
 
 export const videosJSON = () => JSON.stringify(videos.map(({ src, poster, titulo, descricao, w, h }) => ({ src, poster, titulo, descricao, w, h })));

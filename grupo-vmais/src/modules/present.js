@@ -40,8 +40,16 @@ export function initPresentation() {
     if (!target) return;
     busy = true;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const top = i === 0 ? 0 : target.offsetTop - (target.id === 'contato' ? 0 : headerH() * 0.4);
-    gsap.to(window, { scrollTo: { y: top, autoKill: false }, duration: reduce ? 0 : 0.9, ease: 'power3.inOut', onComplete: () => { busy = false; } });
+    const top = () => (i <= 0 ? 0 : target.getBoundingClientRect().top + window.scrollY - (target.id === 'contato' ? 0 : headerH() * 0.4));
+    gsap.to(window, {
+      scrollTo: { y: top(), autoKill: false }, duration: reduce ? 0 : 0.9, ease: 'power3.inOut',
+      onComplete: () => {
+        // Confere a posição final (imagens/fonte podem ter alterado o layout durante a rolagem)
+        const y = Math.max(0, top());
+        if (Math.abs(window.scrollY - y) > 4) window.scrollTo(0, y);
+        busy = false;
+      },
+    });
   };
 
   const set = (value) => {

@@ -11,6 +11,18 @@
 
 const WHATSAPP_NUMERO = '5581999687850'; // Fonte: Linktree @grupovmais + vmaistickets.com.br
 
+/**
+ * Números de WhatsApp por empresa. Só o número oficial do grupo está confirmado.
+ * Para usar um número específico de uma empresa, preencha o campo correspondente
+ * (formato internacional, só dígitos, ex.: '5581900000000'). Vazio = número do grupo.
+ */
+export const whatsappPorEmpresa = {
+  grupo: WHATSAPP_NUMERO,
+  producoes: '',
+  tickets: '',
+  sports: '',
+};
+
 export const links = {
   whatsapp: `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(
     'Olá! Vim pelo site do Grupo V+ e quero falar sobre uma oportunidade comercial.'
@@ -117,9 +129,6 @@ export const empresas = [
     links: [{ rotulo: 'Instagram @grupovmais', url: links.instagram.grupo.url }],
     // Banner horizontal + arte vertical (materiais enviados pela V+)
     banner: { src: 'media/banners/banner-producoes-festas-1086.webp', srcLg: 'media/banners/banner-producoes-festas-1920.webp', srcSm: 'media/banners/banner-producoes-festas-720.webp', alt: 'Banner V+ Produções: “as festas e experiências que já fazem parte da sua história”, com fotos do público e de DJ.', w: 1920, h: 640 },
-    midia: [
-      { src: 'media/artes/producoes-02-640.webp', srcLg: 'media/artes/producoes-02-1086.webp', alt: 'Arte V+ Produções: “Produção de eventos — estrutura, organização e execução para grandes experiências.”', w: 1086, h: 1448, arte: true },
-    ],
   },
   {
     id: 'tickets',
@@ -147,9 +156,6 @@ export const empresas = [
       { rotulo: 'Instagram @vmaistickets', url: links.instagram.tickets.url },
     ],
     banner: { src: 'media/banners/banner-tickets-1086.webp', srcLg: 'media/banners/banner-tickets-1920.webp', srcSm: 'media/banners/banner-tickets-720.webp', alt: 'Banner V+ Tickets: “O mesmo cuidado da V+, agora também na hora de garantir seu ingresso.”', w: 1920, h: 640 },
-    midia: [
-      { src: 'media/artes/tickets-02-640.webp', srcLg: 'media/artes/tickets-02-1086.webp', alt: 'Arte V+ Tickets: “Seu acesso à próxima experiência.”', w: 1086, h: 1448, arte: true },
-    ],
   },
   {
     id: 'sports',
@@ -172,9 +178,6 @@ export const empresas = [
     destaques: [],
     links: [{ rotulo: 'Instagram @sportsvmais', url: links.instagram.sports.url }],
     banner: { src: 'media/banners/banner-sports-temporada-1086.webp', srcLg: 'media/banners/banner-sports-temporada-1920.webp', srcSm: 'media/banners/banner-sports-temporada-720.webp', alt: 'Banner V+ Sports: “Essa temporada tem campeonato novo. Uma nova forma de viver o esporte está chegando. Preparados para entrar em campo com a V+ Sports?”', w: 1920, h: 640 },
-    midia: [
-      { src: 'media/artes/sports-02-640.webp', srcLg: 'media/artes/sports-02-1086.webp', alt: 'Arte V+ Sports: “Esporte que conecta — eventos esportivos que movimentam pessoas, atletas e torcidas.”', w: 1086, h: 1448, arte: true },
-    ],
     pendente: ['Modalidades, campeonatos realizados e fotos reais de eventos esportivos'],
   },
 ];
@@ -198,6 +201,34 @@ export const momentos = [];
  * { texto, autor, fonte, evento }
  */
 export const depoimentos = [];
+
+/** CONTATO INTELIGENTE — textos enviados pelo Grupo V+ */
+export const contato = {
+  titulo: 'Vamos tirar seu projeto do papel?',
+  texto: 'Conte para a V+ o que você está planejando. Selecione a área e envie sua ideia diretamente para nossa equipe.',
+  botao: 'Conversar com a V+',
+  servicos: [
+    {
+      id: 'producoes', nome: 'V+ Produções', descricao: 'Produção de eventos, festas, experiências e projetos.',
+      abertura: 'Olá, equipe V+ Produções!', pedido: 'gostaria de conversar sobre a produção de um evento.',
+    },
+    {
+      id: 'tickets', nome: 'V+ Tickets', descricao: 'Soluções de ingressos e bilheteria para eventos.',
+      abertura: 'Olá, equipe V+ Tickets!', pedido: 'gostaria de conhecer as soluções de ingressos e bilheteria para meu evento.',
+    },
+    {
+      id: 'sports', nome: 'V+ Sports', descricao: 'Campeonatos, competições e eventos esportivos.',
+      abertura: 'Olá, equipe V+ Sports!', pedido: 'gostaria de conversar sobre a realização de um projeto esportivo.',
+    },
+  ],
+};
+
+/** SEÇÃO DE VÍDEOS */
+export const secaoVideos = {
+  rotulo: '03 — Grupo V+',
+  titulo: 'A V+ em ação',
+  texto: 'Da preparação à execução, conheça de perto o trabalho por trás das experiências que realizamos.',
+};
 
 /** VÍDEOS */
 export const videos = [

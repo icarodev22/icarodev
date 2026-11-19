@@ -116,3 +116,13 @@ Comprimi os vídeos para a web (H.264, faststart): hero 0,8 MB, 02 → 3,0 MB, 0
 - **HoloCard:** o código do React Bits citado como anexo não chegou. Fiz um componente equivalente em JS + CSS (`src/modules/holo.js`), com os mesmos parâmetros pedidos, sem WebGL, e por isso funciona em qualquer navegador.
 - **Limpeza editorial:** saíram os números decorativos acima dos títulos, as linhas de "Fonte" visíveis, o contador 01/03, as etiquetas em pílula, os cantos de visor e as frases repetidas. As fontes de cada texto continuam registradas em `src/data/content.js`.
 - **Hero:** a arte oficial continua pendente (`public/media/hero/hero-arte.webp`). Por isso o Hero mantém o símbolo oficial.
+
+## Atualização — finalização premium
+
+- **Conheça o Grupo V+:** a composição foi refeita em formato editorial assimétrico, com a frase oficial "Nascida em 2023…", as áreas de atuação, os indicadores dentro de uma frase e a citação do vídeo oficial. Saíram os blocos numerados e o painel de estatísticas. No celular e no tablet, as 5 fotos reais formam uma galeria horizontal que anda conforme a rolagem; com movimento reduzido, ela vira uma rolagem lateral comum, sem prender a página. O HoloCard fica estático no toque para priorizar a fluidez.
+- **Três empresas:** seletor em abas acessíveis, com um painel visível por vez e altura que se ajusta suavemente. As artes extras (`-02`) foram removidas do site e do `public/`. Os três painéis usam a mesma superfície do grupo: as empresas se diferenciam pela logo, pelo banner e pelo conteúdo. No celular o conteúdo fica centralizado. O botão "Falar com a V+ …" leva ao contato com a área já selecionada.
+- **Contato inteligente:** formulário com nome (obrigatório), tipo de projeto, descrição e data (opcional). A mensagem é montada no navegador e abre o WhatsApp oficial. Para usar números específicos por empresa, preencha `whatsappPorEmpresa` em `src/data/content.js`; vazio usa o número do grupo. O site não mostra mensagem de "enviado".
+- **Vídeos:** a seção agora se chama "A V+ em ação", com o rótulo "03 — Grupo V+" e o texto de apoio enviado.
+- **Rodapé:** compacto, com a navegação e os canais oficiais (Instagrams, V+ Tickets, Linktree e WhatsApp).
+- **CTAs "Contato comercial"** (header, menu e Hero) agora levam ao formulário de contato.
+- **Pendente:** a arte ou fotografia oficial do Hero. O Hero não tem foto; mostra o símbolo oficial até o arquivo `public/media/hero/hero-arte.webp` ser enviado.
